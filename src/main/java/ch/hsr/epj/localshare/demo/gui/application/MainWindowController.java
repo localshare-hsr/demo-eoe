@@ -41,6 +41,7 @@ public class MainWindowController implements Initializable, PeerUpdaterIF {
 
 	@Override
 	public void update(String[] event) {
+		peerObservableList.clear();
 		for (String ip : event) {
 			peerObservableList.add(new Peer(ip, "LS user"));
 		}

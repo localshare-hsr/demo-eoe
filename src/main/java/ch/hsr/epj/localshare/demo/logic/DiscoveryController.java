@@ -3,11 +3,14 @@ package ch.hsr.epj.localshare.demo.logic;
 import ch.hsr.epj.localshare.demo.gui.application.PeerUpdaterIF;
 import ch.hsr.epj.localshare.demo.network.discovery.discovery.DiscoveredIPList;
 import ch.hsr.epj.localshare.demo.network.discovery.discovery.Discovery;
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DiscoveryController {
 
-  private ArrayList<PeerUpdaterIF> observers = new ArrayList<>();
+  private final Set<PeerUpdaterIF> observers = Collections
+      .newSetFromMap(new ConcurrentHashMap<PeerUpdaterIF, Boolean>(0));
   Discovery discovery;
 
   public DiscoveryController(PeerUpdaterIF observer) {
