@@ -13,7 +13,7 @@ public class DiscoveredIPList {
   private static DiscoveredIPList instance;
   private SortedSet<String> setOfDiscoveredIPs;
   private String myIPAddress;
-  private DiscoveryController discoveryController;
+  private DiscoveryController discoveryController = null;
 
   private DiscoveredIPList() {
     setOfDiscoveredIPs = new TreeSet<>(Comparator.comparing(this::toNumeric));
@@ -101,7 +101,9 @@ public class DiscoveredIPList {
 
   public synchronized void add(final String newIPAddress) {
     setOfDiscoveredIPs.add(newIPAddress);
-    discoveryController.notifyObservers(getArray());
+    if (discoveryController != null) {
+      discoveryController.notifyObservers(getArray());
+    }
   }
 
   public synchronized String[] getArray() {
