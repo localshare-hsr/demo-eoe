@@ -30,8 +30,9 @@
                 <version>2.4</version>
                 <configuration>
                     <archive>
+                        <index>true</index>
                         <manifest>
-                            <mainClass>ch.hsr.epj.localshare.demo.Main</mainClass>
+                            <mainClass>ch.hsr.epj.localshare.demo.gui.application.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
