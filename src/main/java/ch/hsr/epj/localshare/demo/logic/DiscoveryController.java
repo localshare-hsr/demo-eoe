@@ -6,6 +6,7 @@ import ch.hsr.epj.localshare.demo.network.discovery.discovery.Discovery;
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import javafx.application.Platform;
 
 public class DiscoveryController {
 
@@ -20,7 +21,7 @@ public class DiscoveryController {
   }
 
   public void notifyObservers(String[] event) {
-    observers.forEach(observer -> observer.update(event));
+    Platform.runLater(() -> observers.forEach(observer -> observer.update(event)));
   }
 
   private void startDiscovery() {
