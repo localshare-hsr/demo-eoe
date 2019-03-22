@@ -10,7 +10,7 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <ListView fx:id="listView" layoutX="17.0" layoutY="73.0" prefHeight="474.0" prefWidth="304.0" />
+                  <ListView fx:id="listView" layoutX="17.0" layoutY="73.0" prefHeight="474.0" prefWidth="500.0"  />
                   <Text layoutX="17.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Avaiable Peers" />
                </children></AnchorPane>
       </content>
