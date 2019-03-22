@@ -1,6 +1,7 @@
 package ch.hsr.epj.localshare.demo.logic;
 
 import ch.hsr.epj.localshare.demo.gui.application.PeerUpdaterIF;
+import ch.hsr.epj.localshare.demo.network.discovery.discovery.DiscoveredIPList;
 import ch.hsr.epj.localshare.demo.network.discovery.discovery.Discovery;
 import java.util.ArrayList;
 
@@ -11,6 +12,7 @@ public class DiscoveryController {
 
   public DiscoveryController(PeerUpdaterIF observer) {
     observers.add(observer);
+    DiscoveredIPList.getInstance().addDiscoveryController(this);
     startDiscovery();
   }
 

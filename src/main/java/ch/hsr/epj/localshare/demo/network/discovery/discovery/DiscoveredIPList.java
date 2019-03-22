@@ -101,7 +101,7 @@ public class DiscoveredIPList {
 
   public synchronized void add(final String newIPAddress) {
     setOfDiscoveredIPs.add(newIPAddress);
-    discoveryController.notifyObservers(setOfDiscoveredIPs.toArray(new String[0]));
+    discoveryController.notifyObservers(getArray());
   }
 
   public synchronized String[] getArray() {
