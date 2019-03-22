@@ -1,33 +1,18 @@
 package ch.hsr.epj.localshare.demo.network.discovery.discovery;
 
 import ch.hsr.epj.localshare.demo.network.discovery.statemachine.NetworkDiscovery;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.NetworkInterface;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.net.SocketException;
+import org.apache.commons.net.util.SubnetUtils;
 
 public class Discovery implements Runnable {
 
-  private File path;
-
   public Discovery() {
     System.out.println("Hello Ouroboros");
-    ClassLoader classLoader = getClass().getClassLoader();
-    File path = new File(
-        Objects.requireNonNull(classLoader.getResource("ip_lists/ip.list")).getFile());
-    System.out.println("Read file " + path);
-    this.path = path;
-
-  }
-
-  public String[] getIPasList() {
-    return DiscoveredIPList.getInstance().getArray();
   }
 
   private InetAddress findMyIPAddress() {
@@ -43,28 +28,29 @@ public class Discovery implements Runnable {
     return myIP;
   }
 
-  private String[] readIPfile(File filename) throws IOException {
-    FileReader fileReader = new FileReader(filename);
-    BufferedReader bufferedReader = new BufferedReader(fileReader);
-    List<String> lines = new ArrayList<>();
-    String line;
-    while ((line = bufferedReader.readLine()) != null) {
-      lines.add(line);
-    }
-    bufferedReader.close();
-    return lines.toArray(new String[0]);
+  private String findMySubnetmask(InetAddress myIPAddress) throws SocketException {
+    NetworkInterface networkInterface = NetworkInterface.getByInetAddress(myIPAddress);
+    return Integer.toString(
+        networkInterface.getInterfaceAddresses().get(1).getNetworkPrefixLength());
+  }
+
+  private String[] generateListOfAllIPsInSubnet(String ip, String subnetmask) {
+    SubnetUtils utils = new SubnetUtils(ip + "/" + subnetmask);
+    return utils.getInfo().getAllAddresses();
   }
 
   @Override
   public void run() {
     startOuroboros();
-
   }
 
   private void startOuroboros() {
     String[] listOfIPsToProbe = null;
     try {
-      listOfIPsToProbe = readIPfile(path);
+      /*      listOfIPsToProbe = generateListOfAllIPsInSubnet(path);*/
+      InetAddress myIP = findMyIPAddress();
+      listOfIPsToProbe = generateListOfAllIPsInSubnet(myIP.getHostAddress(),
+          findMySubnetmask(myIP));
       DiscoveredIPList.getInstance().setIdentity(findMyIPAddress().getHostAddress());
 
     } catch (IOException e) {

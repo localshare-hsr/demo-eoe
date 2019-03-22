@@ -11,8 +11,7 @@ import javafx.application.Platform;
 public class DiscoveryController {
 
   private final Set<PeerUpdaterIF> observers = Collections
-      .newSetFromMap(new ConcurrentHashMap<PeerUpdaterIF, Boolean>(0));
-  Discovery discovery;
+      .newSetFromMap(new ConcurrentHashMap<>(0));
 
   public DiscoveryController(PeerUpdaterIF observer) {
     observers.add(observer);
@@ -25,7 +24,7 @@ public class DiscoveryController {
   }
 
   private void startDiscovery() {
-    discovery = new Discovery();
+    Discovery discovery = new Discovery();
     Thread thread = new Thread(discovery);
     thread.setDaemon(true);
     thread.start();

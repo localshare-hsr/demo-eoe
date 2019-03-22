@@ -20,14 +20,6 @@ public class MainWindowController implements Initializable, PeerUpdaterIF {
 	public MainWindowController() {
 		
 		peerObservableList = FXCollections.observableArrayList();
-		
-		// add Peers
-/*		peerObservableList.addAll(
-			new Peer("10.0.0.1", "domi"),
-			new Peer("10.0.0.2", "martin"),
-			new Peer("10.0.0.3", "pascal")
-		);*/
-
 		DiscoveryController discoveryController = new DiscoveryController(this);
 
 	}
