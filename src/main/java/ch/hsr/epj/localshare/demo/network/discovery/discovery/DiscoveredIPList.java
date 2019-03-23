@@ -54,6 +54,9 @@ public class DiscoveredIPList {
     setOfDiscoveredIPs.addAll(Arrays.asList(newIPList));*/
 
     Collections.addAll(setOfDiscoveredIPs, newIPList);
+    if (discoveryController != null) {
+      discoveryController.notifyObservers(getArray());
+    }
   }
 
   public synchronized void updateRange(final String newIPAddress) {
