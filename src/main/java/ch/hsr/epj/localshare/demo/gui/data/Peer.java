@@ -17,4 +17,22 @@ public class Peer {
 		return friendly_name;
 	}
 
+	@Override
+	public int hashCode() {
+		return ip_address.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Peer)) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		return this.ip_address.equals(((Peer) obj).ip_address);
+	}
 }
