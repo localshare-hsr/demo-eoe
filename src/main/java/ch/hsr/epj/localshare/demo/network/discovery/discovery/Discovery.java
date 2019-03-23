@@ -2,8 +2,10 @@ package ch.hsr.epj.localshare.demo.network.discovery.discovery;
 
 import ch.hsr.epj.localshare.demo.network.discovery.statemachine.NetworkDiscovery;
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.Socket;
 import java.net.SocketException;
@@ -30,8 +32,20 @@ public class Discovery implements Runnable {
 
   private String findMySubnetmask(InetAddress myIPAddress) throws SocketException {
     NetworkInterface networkInterface = NetworkInterface.getByInetAddress(myIPAddress);
-    return Integer.toString(
-        networkInterface.getInterfaceAddresses().get(1).getNetworkPrefixLength());
+
+    short subnetmask = 32;
+
+    if (myIPAddress instanceof Inet4Address) {
+      for (InterfaceAddress interfaceAddress : networkInterface.getInterfaceAddresses()) {
+        subnetmask = (short) Math.min(subnetmask, interfaceAddress.getNetworkPrefixLength());
+      }
+    } else {
+      for (InterfaceAddress interfaceAddress : networkInterface.getInterfaceAddresses()) {
+        subnetmask = (short) Math.max(subnetmask, interfaceAddress.getNetworkPrefixLength());
+      }
+    }
+
+    return Integer.toString(subnetmask);
   }
 
   private String[] generateListOfAllIPsInSubnet(String ip, String subnetmask) {
@@ -49,8 +63,8 @@ public class Discovery implements Runnable {
     try {
       /*      listOfIPsToProbe = generateListOfAllIPsInSubnet(path);*/
       InetAddress myIP = findMyIPAddress();
-      listOfIPsToProbe = generateListOfAllIPsInSubnet(myIP.getHostAddress(),
-          findMySubnetmask(myIP));
+      listOfIPsToProbe =
+          generateListOfAllIPsInSubnet(myIP.getHostAddress(), findMySubnetmask(myIP));
       DiscoveredIPList.getInstance().setIdentity(findMyIPAddress().getHostAddress());
 
     } catch (IOException e) {
