@@ -1,6 +1,5 @@
-package ch.hsr.epj.localshare.demo.network.discovery.discovery;
+package ch.hsr.epj.localshare.demo.network.discovery.searcher;
 
-import ch.hsr.epj.localshare.demo.network.discovery.statemachine.Statemachine;
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
 
 public class NetworkDiscovery implements Runnable {
@@ -9,7 +8,7 @@ public class NetworkDiscovery implements Runnable {
   }
 
   public void startSearchProcess() {
-    System.out.println("Starting Network Discovery");
+    System.out.println("Starting Network DiscoveryManager");
     String[] listOfIPsToProbe =
         IPAddressUtil.generateIPsInNetmask(IPAddressUtil.getLocalIPAddress());
 

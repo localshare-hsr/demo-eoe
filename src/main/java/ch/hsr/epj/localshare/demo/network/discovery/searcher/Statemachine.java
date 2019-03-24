@@ -1,4 +1,4 @@
-package ch.hsr.epj.localshare.demo.network.discovery.statemachine;
+package ch.hsr.epj.localshare.demo.network.discovery.searcher;
 
 public class Statemachine implements Runnable {
 

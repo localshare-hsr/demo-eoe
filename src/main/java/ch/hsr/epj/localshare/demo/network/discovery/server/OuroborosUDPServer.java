@@ -1,5 +1,6 @@
-package ch.hsr.epj.localshare.demo.network.discovery.discovery;
+package ch.hsr.epj.localshare.demo.network.discovery.server;
 
+import ch.hsr.epj.localshare.demo.network.discovery.IPResource;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -10,7 +11,7 @@ public class OuroborosUDPServer extends UDPServer {
 
   private static final int DEFAULT_PORT = 8640;
 
-  OuroborosUDPServer() {
+  public OuroborosUDPServer() {
     super(DEFAULT_PORT);
   }
 
@@ -18,14 +19,14 @@ public class OuroborosUDPServer extends UDPServer {
   public void respond(DatagramSocket socket, DatagramPacket request) throws IOException {
 
     byte[] requestBody = request.getData();
-    DiscoveredIPList.getInstance().add(request.getAddress().getHostAddress());
+    IPResource.getInstance().add(request.getAddress().getHostAddress());
 
     switch (requestBody[0]) {
       case 'D':
         sendMyIPAddress(socket, request);
         break;
       case 'U':
-        // DiscoveredIPList.getInstance().updateRange(request.getAddress().getHostAddress());
+        // IPResource.getInstance().updateRange(request.getAddress().getHostAddress());
         sendAllIPAddresses(socket, request);
         break;
       default:
@@ -35,7 +36,7 @@ public class OuroborosUDPServer extends UDPServer {
 
   private void sendMyIPAddress(final DatagramSocket socket, DatagramPacket request)
       throws IOException {
-    String bodyString = DiscoveredIPList.getInstance().getIdentity() + ";";
+    String bodyString = IPResource.getInstance().getIdentity() + ";";
     byte[] body = bodyString.getBytes();
     DatagramPacket response =
         new DatagramPacket(body, body.length, request.getAddress(), DEFAULT_PORT);
@@ -66,12 +67,12 @@ public class OuroborosUDPServer extends UDPServer {
     }
 
     String[] dataArray = ipData.toArray(new String[0]);
-    DiscoveredIPList.getInstance().updateCompleteIPList(dataArray);
+    IPResource.getInstance().updateCompleteIPList(dataArray);
   }
 
   private String prepareSendingBody() {
     StringBuilder sb = new StringBuilder();
-    for (String s : DiscoveredIPList.getInstance().getArray()) {
+    for (String s : IPResource.getInstance().getArray()) {
       sb.append(s);
       sb.append(";");
     }

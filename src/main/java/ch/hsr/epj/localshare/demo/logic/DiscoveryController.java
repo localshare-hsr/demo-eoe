@@ -1,8 +1,8 @@
 package ch.hsr.epj.localshare.demo.logic;
 
 import ch.hsr.epj.localshare.demo.gui.application.PeerUpdaterIF;
-import ch.hsr.epj.localshare.demo.network.discovery.discovery.DiscoveredIPList;
-import ch.hsr.epj.localshare.demo.network.discovery.discovery.Discovery;
+import ch.hsr.epj.localshare.demo.network.discovery.DiscoveryManager;
+import ch.hsr.epj.localshare.demo.network.discovery.IPResource;
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,12 +12,12 @@ public class DiscoveryController {
 
   private final Set<PeerUpdaterIF> observers =
       Collections.newSetFromMap(new ConcurrentHashMap<>(0));
-  private Discovery discovery;
+  private DiscoveryManager discoveryManager;
 
   public DiscoveryController(PeerUpdaterIF observer) {
-    discovery = new Discovery();
+    discoveryManager = new DiscoveryManager();
     observers.add(observer);
-    DiscoveredIPList.getInstance().addDiscoveryController(this);
+    IPResource.getInstance().addDiscoveryController(this);
   }
 
   public void notifyObservers(String[] event) {
@@ -25,6 +25,6 @@ public class DiscoveryController {
   }
 
   public void startSearch() {
-    discovery.startSearchingProcess();
+    discoveryManager.startSearchingProcess();
   }
 }

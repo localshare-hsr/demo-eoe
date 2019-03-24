@@ -1,6 +1,6 @@
-package ch.hsr.epj.localshare.demo.network.discovery.statemachine;
+package ch.hsr.epj.localshare.demo.network.discovery.searcher;
 
-import ch.hsr.epj.localshare.demo.network.discovery.discovery.DiscoveredIPList;
+import ch.hsr.epj.localshare.demo.network.discovery.IPResource;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -27,7 +27,7 @@ class SearchingState extends Statemachine {
       e.printStackTrace();
     }
 
-    boolean foundOtherPeer = DiscoveredIPList.getInstance().hasNextPeer();
+    boolean foundOtherPeer = IPResource.getInstance().hasNextPeer();
 
     if (foundOtherPeer) {
       state = new UpdateState();
@@ -49,7 +49,7 @@ class SearchingState extends Statemachine {
       datagramSocket.send(request);
       Thread.sleep(100);
 
-      if (DiscoveredIPList.getInstance().hasNextPeer()) {
+      if (IPResource.getInstance().hasNextPeer()) {
         return;
       }
     }
@@ -61,7 +61,7 @@ class SearchingState extends Statemachine {
     int positionOfMyAddress = 0;
 
     for (int i = 0; i < listOfIps.length; i++) {
-      if (listOfIps[i].equals(DiscoveredIPList.getInstance().getIdentity())) {
+      if (listOfIps[i].equals(IPResource.getInstance().getIdentity())) {
         positionOfMyAddress = i;
         break;
       }

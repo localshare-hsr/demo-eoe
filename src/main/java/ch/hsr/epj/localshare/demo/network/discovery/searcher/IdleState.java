@@ -1,6 +1,6 @@
-package ch.hsr.epj.localshare.demo.network.discovery.statemachine;
+package ch.hsr.epj.localshare.demo.network.discovery.searcher;
 
-import ch.hsr.epj.localshare.demo.network.discovery.discovery.DiscoveredIPList;
+import ch.hsr.epj.localshare.demo.network.discovery.IPResource;
 
 class IdleState extends Statemachine {
 
@@ -17,7 +17,7 @@ class IdleState extends Statemachine {
 
   private void waitTillDiscoveryByNextPeer() throws InterruptedException {
 
-    while (!DiscoveredIPList.getInstance().hasNextPeer()) {
+    while (!IPResource.getInstance().hasNextPeer()) {
       Thread.sleep(10000);
     }
 

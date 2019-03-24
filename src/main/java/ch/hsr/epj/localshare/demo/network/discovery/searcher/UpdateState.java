@@ -1,6 +1,6 @@
-package ch.hsr.epj.localshare.demo.network.discovery.statemachine;
+package ch.hsr.epj.localshare.demo.network.discovery.searcher;
 
-import ch.hsr.epj.localshare.demo.network.discovery.discovery.DiscoveredIPList;
+import ch.hsr.epj.localshare.demo.network.discovery.IPResource;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -23,8 +23,8 @@ class UpdateState extends Statemachine {
 
   private void getUpdateFromNextPeer() throws IOException, InterruptedException {
     String nextPeer;
-    while (DiscoveredIPList.getInstance().hasNextPeer()) {
-      nextPeer = DiscoveredIPList.getInstance().getNextPeer();
+    while (IPResource.getInstance().hasNextPeer()) {
+      nextPeer = IPResource.getInstance().getNextPeer();
       System.out.println("  - get updates from " + nextPeer);
 
       try (DatagramSocket datagramSocket = new DatagramSocket(0)) {
@@ -37,7 +37,7 @@ class UpdateState extends Statemachine {
         datagramSocket.send(request);
 
       } catch (SocketException e) {
-        //      DiscoveredIPList.getInstance().removePeer(nextPeer);
+        //      IPResource.getInstance().removePeer(nextPeer);
       }
 
       Thread.sleep(9000);

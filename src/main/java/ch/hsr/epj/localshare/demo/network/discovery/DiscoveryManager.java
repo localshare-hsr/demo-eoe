@@ -1,13 +1,15 @@
-package ch.hsr.epj.localshare.demo.network.discovery.discovery;
+package ch.hsr.epj.localshare.demo.network.discovery;
 
+import ch.hsr.epj.localshare.demo.network.discovery.searcher.NetworkDiscovery;
+import ch.hsr.epj.localshare.demo.network.discovery.server.OuroborosUDPServer;
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
 
-public class Discovery {
+public class DiscoveryManager {
 
   NetworkDiscovery networkDiscovery;
 
-  public Discovery() {
-    DiscoveredIPList.getInstance().setIdentity(IPAddressUtil.getLocalIPAddress().getHostAddress());
+  public DiscoveryManager() {
+    IPResource.getInstance().setIdentity(IPAddressUtil.getLocalIPAddress().getHostAddress());
     startServer();
   }
 

@@ -1,4 +1,4 @@
-package ch.hsr.epj.localshare.demo.network.discovery.discovery;
+package ch.hsr.epj.localshare.demo.network.discovery;
 
 import ch.hsr.epj.localshare.demo.logic.DiscoveryController;
 import java.util.Collections;
@@ -8,20 +8,20 @@ import java.util.Scanner;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-public class DiscoveredIPList {
+public class IPResource {
 
-  private static DiscoveredIPList instance;
+  private static IPResource instance;
   private SortedSet<String> setOfDiscoveredIPs;
   private String myIPAddress;
   private DiscoveryController discoveryController = null;
 
-  private DiscoveredIPList() {
+  private IPResource() {
     setOfDiscoveredIPs = new TreeSet<>(Comparator.comparing(this::toNumeric));
   }
 
-  public static synchronized DiscoveredIPList getInstance() {
+  public static synchronized IPResource getInstance() {
     if (instance == null) {
-      instance = new DiscoveredIPList();
+      instance = new IPResource();
     }
     return instance;
   }
