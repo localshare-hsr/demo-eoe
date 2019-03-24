@@ -10,25 +10,21 @@ import javafx.application.Platform;
 
 public class DiscoveryController {
 
-  private final Set<PeerUpdaterIF> observers = Collections
-      .newSetFromMap(new ConcurrentHashMap<>(0));
+  private final Set<PeerUpdaterIF> observers =
+      Collections.newSetFromMap(new ConcurrentHashMap<>(0));
+  private Discovery discovery;
 
   public DiscoveryController(PeerUpdaterIF observer) {
+    discovery = new Discovery();
     observers.add(observer);
     DiscoveredIPList.getInstance().addDiscoveryController(this);
-    startDiscovery();
   }
 
   public void notifyObservers(String[] event) {
     Platform.runLater(() -> observers.forEach(observer -> observer.update(event)));
   }
 
-  private void startDiscovery() {
-    Discovery discovery = new Discovery();
-    Thread thread = new Thread(discovery);
-    thread.setDaemon(true);
-    thread.start();
+  public void startSearch() {
+    discovery.startSearchingProcess();
   }
-
-
 }

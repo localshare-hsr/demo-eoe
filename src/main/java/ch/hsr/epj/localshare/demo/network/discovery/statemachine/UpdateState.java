@@ -7,7 +7,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
-class UpdateState extends NetworkDiscovery {
+class UpdateState extends Statemachine {
 
   private static final String STATE_NAME = "UPDATE";
   private static final int PORT = 8640;

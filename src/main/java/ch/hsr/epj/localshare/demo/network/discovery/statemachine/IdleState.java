@@ -1,9 +1,8 @@
 package ch.hsr.epj.localshare.demo.network.discovery.statemachine;
 
-
 import ch.hsr.epj.localshare.demo.network.discovery.discovery.DiscoveredIPList;
 
-class IdleState extends NetworkDiscovery {
+class IdleState extends Statemachine {
 
   private static final String STATE_NAME = "IDLE";
 

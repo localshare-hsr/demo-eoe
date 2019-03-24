@@ -11,20 +11,19 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 
 public class MainWindowController implements Initializable, PeerUpdaterIF {
-	
+
 	@FXML
 	private ListView<Peer> listView;
-	
+
 	private ObservableList<Peer> peerObservableList;
-	
+
 	public MainWindowController() {
-		
+
 		peerObservableList = FXCollections.observableArrayList();
 		DiscoveryController discoveryController = new DiscoveryController(this);
-
+		discoveryController.startSearch();
 	}
-	
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		listView.setItems(peerObservableList);

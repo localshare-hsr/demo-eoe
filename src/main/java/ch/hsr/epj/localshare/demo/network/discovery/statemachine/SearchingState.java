@@ -6,7 +6,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-class SearchingState extends NetworkDiscovery {
+class SearchingState extends Statemachine {
 
   private static final String STATE_NAME = "SEARCHING";
   private static final int PORT = 8640;

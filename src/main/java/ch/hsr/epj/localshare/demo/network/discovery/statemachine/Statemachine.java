@@ -1,15 +1,15 @@
 package ch.hsr.epj.localshare.demo.network.discovery.statemachine;
 
-public class NetworkDiscovery implements Runnable {
+public class Statemachine implements Runnable {
 
-  NetworkDiscovery state;
+  Statemachine state;
   static String[] listOfIps;
 
-  public NetworkDiscovery() {
+  public Statemachine() {
   }
 
   public void addListOfIPsToScan(String[] listOfIps) {
-    NetworkDiscovery.listOfIps = listOfIps;
+    Statemachine.listOfIps = listOfIps;
   }
 
   @Override
