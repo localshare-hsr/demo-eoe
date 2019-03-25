@@ -42,6 +42,8 @@ class SearchingState extends Statemachine {
     DatagramSocket datagramSocket = new DatagramSocket(0);
     byte[] buffer = "DiscoveryIF".getBytes();
 
+    long startTimer = System.currentTimeMillis();
+
     for (String s : startIP()) {
 
       InetAddress targetAddress = InetAddress.getByName(s);
@@ -53,6 +55,10 @@ class SearchingState extends Statemachine {
         return;
       }
     }
+    long endTimer = System.currentTimeMillis();
+
+    System.out.println("IP Ranges scaned in " + (endTimer - startTimer) + "ms");
+
   }
 
   private String[] startIP() {
