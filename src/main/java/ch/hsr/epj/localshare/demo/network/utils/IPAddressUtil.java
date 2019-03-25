@@ -16,11 +16,12 @@ public class IPAddressUtil {
     InetAddress myIP = null;
     Socket socket = new Socket();
     try {
-      socket.connect(new InetSocketAddress("hsr.ch", 80));
+      socket.connect(new InetSocketAddress("www.hsr.ch", 80));
       myIP = InetAddress.getByName(socket.getLocalAddress().getHostAddress());
     } catch (IOException e) {
       e.printStackTrace();
     }
+    System.out.println("ip is " + myIP.getHostAddress());
     return myIP;
   }
 
@@ -39,6 +40,7 @@ public class IPAddressUtil {
       }
     }
 
+    System.out.println("netmask is " + Integer.toString(subnetmask));
     return Integer.toString(subnetmask);
   }
 
