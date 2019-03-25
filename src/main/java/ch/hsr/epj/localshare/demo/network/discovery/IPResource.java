@@ -26,17 +26,28 @@ public class IPResource {
     return instance;
   }
 
+  /**
+   * Set ip address of current instance.
+   */
   public synchronized void setIdentity(final String myIPAddress) {
     this.myIPAddress = myIPAddress;
     setOfDiscoveredIPs.add(myIPAddress);
   }
 
-  public void addDiscoveryController(DiscoveryController discoveryController) {
-    this.discoveryController = discoveryController;
-  }
-
+  /**
+   * Get ip address of current instance.
+   *
+   * @return
+   */
   public synchronized String getIdentity() {
     return this.myIPAddress;
+  }
+
+  /**
+   * Add a discovery controller to update the GUI
+   */
+  public void addDiscoveryController(DiscoveryController discoveryController) {
+    this.discoveryController = discoveryController;
   }
 
   /**
@@ -49,17 +60,18 @@ public class IPResource {
    * @param newIPList List of known ip addresses
    */
   public synchronized void updateCompleteIPList(final String[] newIPList) {
-    /*    setOfDiscoveredIPs = new TreeSet<>(Comparator.comparing(this::toNumeric));
-    setOfDiscoveredIPs.add(myIPAddress);
-    setOfDiscoveredIPs.addAll(Arrays.asList(newIPList));*/
-
     Collections.addAll(setOfDiscoveredIPs, newIPList);
     if (discoveryController != null) {
       discoveryController.notifyObservers(getArray());
     }
   }
 
-  public synchronized void updateRange(final String newIPAddress) {
+  /**
+   * Remove all entries from the newIPAddress till my identity address.
+   *
+   * @param newIPAddress
+   */
+  public synchronized void removeAllEntriesFromTillMyIdentity(final String newIPAddress) {
     if (newIPAddress.equals(myIPAddress)) {
       return;
     }
@@ -68,10 +80,11 @@ public class IPResource {
     removeIPRangeFrom(positionOfIP);
   }
 
-  private synchronized int size() {
-    return setOfDiscoveredIPs.size();
-  }
-
+  /**
+   * Check if there is a next peer known
+   *
+   * @return True if there is a next peer
+   */
   public synchronized boolean hasNextPeer() {
     boolean hasNextPeer;
     hasNextPeer = (size() != 1) || !setOfDiscoveredIPs.contains(myIPAddress);
@@ -79,6 +92,13 @@ public class IPResource {
     return hasNextPeer;
   }
 
+  /**
+   * Get the next peer from all know ip addresses
+   *
+   * <p>This returns the next peer relative to own identity.
+   *
+   * @return IP address as String
+   */
   public synchronized String getNextPeer() {
     String currentIP = myIPAddress;
     if (hasNextPeer()) {
@@ -102,6 +122,21 @@ public class IPResource {
     return currentIP;
   }
 
+  /**
+   * Add a single ip address to the list of discovered ip addresses
+   *
+   * @param newIPAddress New ip address string
+   */
+  public synchronized void add(final String newIPAddress) {
+    setOfDiscoveredIPs.add(newIPAddress);
+    if (discoveryController != null) {
+      discoveryController.notifyObservers(getArray());
+    }
+  }
+
+  /**
+   * Remove the next peer in the list of all known ip addresses
+   */
   public synchronized void removeNextPeer() {
     if (hasNextPeer()) {
 
@@ -113,13 +148,11 @@ public class IPResource {
     }
   }
 
-  public synchronized void add(final String newIPAddress) {
-    setOfDiscoveredIPs.add(newIPAddress);
-    if (discoveryController != null) {
-      discoveryController.notifyObservers(getArray());
-    }
-  }
-
+  /**
+   * Get all discovered ip addresses as array of strings
+   *
+   * @return Array of strings with all currently discovered ip addresses
+   */
   public synchronized String[] getArray() {
     return setOfDiscoveredIPs.toArray(new String[0]);
   }
@@ -163,5 +196,9 @@ public class IPResource {
 
       currentIP = it.next();
     }
+  }
+
+  private synchronized int size() {
+    return setOfDiscoveredIPs.size();
   }
 }

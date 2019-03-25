@@ -205,7 +205,7 @@ public class IPResourceTest {
     };
     ipList.updateCompleteIPList(updateData);
 
-    ipList.updateRange("192.168.42.36");
+    ipList.removeAllEntriesFromTillMyIdentity("192.168.42.36");
 
     String[] expected = {
         "192.168.42.30",
@@ -236,7 +236,7 @@ public class IPResourceTest {
     };
     ipList.updateCompleteIPList(updateData);
 
-    ipList.updateRange("192.168.42.50");
+    ipList.removeAllEntriesFromTillMyIdentity("192.168.42.50");
 
     String[] expected = {
         "192.168.42.42", "192.168.42.44", "192.168.42.50",
@@ -254,7 +254,7 @@ public class IPResourceTest {
     };
     ipList.updateCompleteIPList(updateData);
 
-    ipList.updateRange("192.168.42.42");
+    ipList.removeAllEntriesFromTillMyIdentity("192.168.42.42");
 
     String[] expected = {"192.168.42.42"};
     assertArrayEquals(expected, ipList.getArray());
@@ -270,7 +270,7 @@ public class IPResourceTest {
     };
     ipList.updateCompleteIPList(updateData);
 
-    ipList.updateRange("192.168.100.140");
+    ipList.removeAllEntriesFromTillMyIdentity("192.168.100.140");
 
     String[] expected = {"192.168.100.137", "192.168.100.140"};
     assertArrayEquals(expected, ipList.getArray());

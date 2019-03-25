@@ -26,7 +26,8 @@ public class OuroborosUDPServer extends UDPServer {
         sendMyIPAddress(socket, request);
         break;
       case 'U':
-        // IPResource.getInstance().updateRange(request.getAddress().getHostAddress());
+        IPResource.getInstance()
+            .removeAllEntriesFromTillMyIdentity(request.getAddress().getHostAddress());
         sendAllIPAddresses(socket, request);
         break;
       default:
