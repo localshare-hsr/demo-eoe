@@ -28,13 +28,12 @@ class UpdateState extends Statemachine {
       System.out.println("  - get updates from " + nextPeer);
 
       try (DatagramSocket datagramSocket = new DatagramSocket(0)) {
-
-        datagramSocket.setSoTimeout(3000);
         byte[] buffer = "Update".getBytes();
 
         InetAddress targetAddress = InetAddress.getByName(nextPeer);
         DatagramPacket request = new DatagramPacket(buffer, buffer.length, targetAddress, PORT);
         datagramSocket.send(request);
+        IPResource.getInstance().removeNextPeer();
 
       } catch (SocketException e) {
         //      IPResource.getInstance().removePeer(nextPeer);

@@ -432,7 +432,23 @@ public class IPResourceTest {
     IPResource ipList = IPResource.getInstance();
     ipList.setIdentity("192.168.100.141");
     assertEquals("192.168.100.141", ipList.getIdentity());
+  }
 
+  @Test
+  public void testRemovePeerInEmptyList() {
+    IPResource ipList = IPResource.getInstance();
+    ipList.setIdentity("192.168.100.141");
+    ipList.removeNextPeer();
+    assertEquals("192.168.100.141", ipList.getNextPeer());
+  }
+
+  @Test
+  public void testRemovePeerInNonEmptyList() {
+    IPResource ipList = IPResource.getInstance();
+    ipList.setIdentity("192.168.100.141");
+    ipList.add("192.168.100.42");
+    ipList.removeNextPeer();
+    assertEquals("192.168.100.141", ipList.getNextPeer());
   }
 
 }

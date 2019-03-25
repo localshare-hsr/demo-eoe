@@ -102,6 +102,17 @@ public class IPResource {
     return currentIP;
   }
 
+  public synchronized void removeNextPeer() {
+    if (hasNextPeer()) {
+
+      String nextPeer = getNextPeer();
+
+      if (!nextPeer.equals(getIdentity())) {
+        setOfDiscoveredIPs.remove(nextPeer);
+      }
+    }
+  }
+
   public synchronized void add(final String newIPAddress) {
     setOfDiscoveredIPs.add(newIPAddress);
     if (discoveryController != null) {
