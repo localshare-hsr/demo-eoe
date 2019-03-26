@@ -1,7 +1,7 @@
-package ch.hsr.epj.localshare.demo.network.discovery.statemachine;
+package ch.hsr.epj.localshare.demo.network.statemachine;
 
 
-import ch.hsr.epj.localshare.demo.network.discovery.discovery.DiscoveredIPList;
+import ch.hsr.epj.localshare.demo.network.discovery.DiscoveredIPList;
 
 class IdleState extends NetworkDiscovery {
 

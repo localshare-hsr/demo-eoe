@@ -1,4 +1,4 @@
-package ch.hsr.epj.localshare.demo.network.discovery.statemachine;
+package ch.hsr.epj.localshare.demo.network.statemachine;
 
 public class NetworkDiscovery implements Runnable {
 

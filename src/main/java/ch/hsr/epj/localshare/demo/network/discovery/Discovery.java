@@ -1,6 +1,6 @@
-package ch.hsr.epj.localshare.demo.network.discovery.discovery;
+package ch.hsr.epj.localshare.demo.network.discovery;
 
-import ch.hsr.epj.localshare.demo.network.discovery.statemachine.NetworkDiscovery;
+import ch.hsr.epj.localshare.demo.network.statemachine.NetworkDiscovery;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;

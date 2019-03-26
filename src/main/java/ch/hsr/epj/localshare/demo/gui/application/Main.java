@@ -1,5 +1,6 @@
 package ch.hsr.epj.localshare.demo.gui.application;
 
+import ch.hsr.epj.localshare.demo.network.transfer.LsHttpServer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -17,7 +18,11 @@ public class Main extends Application {
 	     primaryStage.show();
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
+		Thread httpServerThread = new Thread(new LsHttpServer());
+		httpServerThread.setDaemon(true);
+		httpServerThread.start();
 		launch(args);
+		httpServerThread.join();
 	}
 }

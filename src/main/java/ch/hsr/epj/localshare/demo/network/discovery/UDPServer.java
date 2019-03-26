@@ -1,4 +1,4 @@
-package ch.hsr.epj.localshare.demo.network.discovery.discovery;
+package ch.hsr.epj.localshare.demo.network.discovery;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

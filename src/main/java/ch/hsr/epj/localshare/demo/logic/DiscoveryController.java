@@ -1,8 +1,8 @@
 package ch.hsr.epj.localshare.demo.logic;
 
 import ch.hsr.epj.localshare.demo.gui.application.PeerUpdaterIF;
-import ch.hsr.epj.localshare.demo.network.discovery.discovery.DiscoveredIPList;
-import ch.hsr.epj.localshare.demo.network.discovery.discovery.Discovery;
+import ch.hsr.epj.localshare.demo.network.discovery.DiscoveredIPList;
+import ch.hsr.epj.localshare.demo.network.discovery.Discovery;
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
