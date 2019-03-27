@@ -1,5 +1,6 @@
 package ch.hsr.epj.localshare.demo.gui.application;
 
+import ch.hsr.epj.localshare.demo.logic.TransferController;
 import ch.hsr.epj.localshare.demo.network.transfer.LsHttpServer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -18,11 +19,8 @@ public class Main extends Application {
 	     primaryStage.show();
 	}
 
-	public static void main(String[] args) throws InterruptedException {
-		Thread httpServerThread = new Thread(new LsHttpServer());
-		httpServerThread.setDaemon(true);
-		httpServerThread.start();
+	public static void main(String[] args) {
+		TransferController transferController = new TransferController();
 		launch(args);
-		httpServerThread.join();
 	}
 }
