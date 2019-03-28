@@ -24,30 +24,23 @@ public class MainWindowController implements Initializable, PeerUpdaterIF {
 	
 	@FXML
 	private AnchorPane preferencesRootPane;
+
 	@FXML
 	private ListView<Peer> listView;
+
 	@FXML
 	private ObservableList<Peer> peerObservableList;
 
 	@FXML
 	private void handlePreferencesButtonAction(ActionEvent event) throws IOException {
-		//Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-//		Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//		alert.setTitle("Information Dialog");
-//		alert.setHeaderText("Look, an Information Dialog");
-//		alert.setContentText("I have a great message for you!");
-//		alert.showAndWait();
-
-		preferencesRootPane = null;
 		AnchorPane preferencesPane = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/PreferencesView.fxml"));
+		System.out.println(preferencesRootPane);
 		preferencesRootPane.getChildren().setAll(preferencesPane);
 	}
 	
 	public MainWindowController() {
-		
 		peerObservableList = FXCollections.observableArrayList();
 		DiscoveryController discoveryController = new DiscoveryController(this);
-
 	}
 	
 	
@@ -60,7 +53,7 @@ public class MainWindowController implements Initializable, PeerUpdaterIF {
 	@Override
 	public void update(String[] event) {
 		for (String ip : event) {
-      Peer newPeer = new Peer(ip, "LS user");
+      Peer newPeer = new Peer(ip, "LS user", "", "aasd98asdas8d7");
       if (!peerObservableList.contains(newPeer)) {
         peerObservableList.add(newPeer);
       }

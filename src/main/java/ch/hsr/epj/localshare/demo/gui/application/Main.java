@@ -10,7 +10,6 @@ import javafx.scene.Scene;
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		 //Parent root = FXMLLoader.load(getClass().getResource("/views/MainWindowView.fxml"));
 		 Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/MainWindowView.fxml"));
 		 primaryStage.setTitle("GUI Prototype");
 	     primaryStage.setScene(new Scene(root, 800, 600));

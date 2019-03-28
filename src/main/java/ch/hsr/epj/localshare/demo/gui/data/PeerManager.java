@@ -18,7 +18,7 @@ public class PeerManager {
 		String[] ip_array = discovery.getIPAsArray();
 
 		for(String ip : ip_array){
-			Peer p = new Peer(ip, "");
+			Peer p = new Peer(ip, "", "", "0x0adsjk19adj1");
 			addPeer(p);
 		}
 	}

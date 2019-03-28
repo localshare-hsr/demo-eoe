@@ -40,7 +40,7 @@ public class PeerListViewCell extends ListCell<Peer> {
 				}
 			}
 			label1.setText(String.valueOf(peer.getIP()));
-			label2.setText(String.valueOf(peer.getFirendlyName()));
+			label2.setText(String.valueOf(peer.getFriendlyName()));
 		}
 		
 		setText(null);
