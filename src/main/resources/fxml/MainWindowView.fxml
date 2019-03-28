@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="639.0" prefWidth="1033.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.hsr.epj.localshare.demo.gui.application.MainWindowController">
+<TabPane tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.hsr.epj.localshare.demo.gui.application.MainWindowController">
   <tabs>
     <Tab text="Peers">
       <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+        <AnchorPane>
                <children>
-                  <ListView fx:id="listView" layoutX="17.0" layoutY="73.0" prefHeight="474.0" prefWidth="500.0"  />
+                  <ListView fx:id="listView" layoutX="17.0" layoutY="73.0" prefHeight="400.0" prefWidth="324.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="424.0" AnchorPane.topAnchor="75.0" />
                   <Text layoutX="17.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Available Peers" />
+                  <ListView fx:id="listView1" layoutX="40.0" layoutY="85.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="75.0" />
+                  <Text layoutX="400.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Available Downloads" />
                </children></AnchorPane>
       </content>
     </Tab>
