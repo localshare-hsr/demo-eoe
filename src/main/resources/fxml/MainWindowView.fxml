@@ -5,15 +5,21 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="639.0" prefWidth="1033.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.hsr.epj.localshare.demo.gui.application.MainWindowController">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.hsr.epj.localshare.demo.gui.application.MainWindowController">
   <tabs>
-    <Tab text="Peers">
+    <Tab text="Transfers">
       <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="634.0" prefWidth="1131.0">
                <children>
-                  <ListView fx:id="listView" layoutX="17.0" layoutY="73.0" prefHeight="474.0" prefWidth="500.0" />
-                  <Text layoutX="17.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Avaiable Peers" />
-               </children></AnchorPane>
+                   <Label layoutX="17.0" layoutY="14.0" text="Friendly Name:" />
+                   <Label layoutX="17.0" layoutY="45.0" text="IP-Address:" />
+                   <Text layoutX="175.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="160.7392578125" />
+                   <Text layoutX="175.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="160.7392578125" />
+                   <Label layoutX="16.0" layoutY="76.0" text="Fingerprint:" />
+                   <Text layoutX="175.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="160.7392578125" />
+                   <Text layoutX="17.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Avaiable Peers" />
+                   <ListView fx:id="listView" layoutX="17.0" layoutY="160.0" prefHeight="411.0" prefWidth="500.0" />
+                  </children></AnchorPane>
       </content>
     </Tab>
     <Tab text="Settings">
