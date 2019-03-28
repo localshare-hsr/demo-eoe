@@ -12,13 +12,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
 public class MainWindowController implements Initializable, PeerUpdaterIF {
 	
@@ -37,13 +34,29 @@ public class MainWindowController implements Initializable, PeerUpdaterIF {
 		System.out.println(preferencesRootPane);
 		preferencesRootPane.getChildren().setAll(preferencesPane);
 	}
-	
+
+	// double click list item -> trusted on/off + change color
+	@FXML
+	private void onListItemDoubleClick(MouseEvent click){
+		if (click.getClickCount() == 2) {
+			Peer currentItemSelected = listView.getSelectionModel().getSelectedItem();
+			currentItemSelected.setTrustState(true);
+			listView.refresh();
+		}
+	}
+
+	//right click display dialogue box to enter display name
+	@FXML
+	private void onListItemRighClick(MouseEvent click){
+
+
+	}
+
 	public MainWindowController() {
 		peerObservableList = FXCollections.observableArrayList();
 		DiscoveryController discoveryController = new DiscoveryController(this);
 	}
-	
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		listView.setItems(peerObservableList);

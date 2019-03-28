@@ -26,6 +26,7 @@ public class Peer {
 	public String getFingerPrint() { return fingerPrint; }
 	public boolean getTrustState() { return isTrusted; }
 	public void setTrustState(boolean value) { isTrusted = value; }
+	public void setDisplayName(String name) { displayName = name; }
 
 	@Override
 	public int hashCode() {
