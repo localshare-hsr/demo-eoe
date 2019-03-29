@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import ch.hsr.epj.localshare.demo.network.discovery.IPResource;
 import java.lang.reflect.Field;
+import java.util.NoSuchElementException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,11 +21,21 @@ public class IPResourceTest {
   }
 
   @Test
+  public void testAddDoubleEntries() {
+    IPResource ipList = IPResource.getInstance();
+    ipList.setIdentity("192.168.100.141");
+    ipList.add("192.168.100.42");
+    ipList.add("192.168.100.42");
+    String[] expected = {"192.168.100.42"};
+    assertArrayEquals(expected, ipList.getArray());
+  }
+
+  @Test
   public void testInsertOneNewIPBelow() {
     IPResource ipList = IPResource.getInstance();
     ipList.setIdentity("192.168.42.42");
     ipList.add("192.168.42.40");
-    String[] expected = {"192.168.42.40", "192.168.42.42"};
+    String[] expected = {"192.168.42.40"};
     assertArrayEquals(expected, ipList.getArray());
   }
 
@@ -34,7 +45,7 @@ public class IPResourceTest {
     ipList.setIdentity("192.168.42.42");
     ipList.add("192.168.42.40");
     ipList.add("192.168.42.35");
-    String[] expected = {"192.168.42.35", "192.168.42.40", "192.168.42.42"};
+    String[] expected = {"192.168.42.35", "192.168.42.40"};
     assertArrayEquals(expected, ipList.getArray());
   }
 
@@ -44,7 +55,7 @@ public class IPResourceTest {
     ipList.setIdentity("192.168.42.42");
     ipList.add("192.168.42.35");
     ipList.add("192.168.42.40");
-    String[] expected = {"192.168.42.35", "192.168.42.40", "192.168.42.42"};
+    String[] expected = {"192.168.42.35", "192.168.42.40"};
     assertArrayEquals(expected, ipList.getArray());
   }
 
@@ -55,7 +66,7 @@ public class IPResourceTest {
     ipList.add("192.168.42.40");
     ipList.add("192.168.42.35");
     ipList.add("192.168.42.30");
-    String[] expected = {"192.168.42.30", "192.168.42.35", "192.168.42.40", "192.168.42.42"};
+    String[] expected = {"192.168.42.30", "192.168.42.35", "192.168.42.40"};
     assertArrayEquals(expected, ipList.getArray());
   }
 
@@ -66,7 +77,7 @@ public class IPResourceTest {
     ipList.add("192.168.42.30");
     ipList.add("192.168.42.35");
     ipList.add("192.168.42.40");
-    String[] expected = {"192.168.42.30", "192.168.42.35", "192.168.42.40", "192.168.42.42"};
+    String[] expected = {"192.168.42.30", "192.168.42.35", "192.168.42.40"};
     assertArrayEquals(expected, ipList.getArray());
   }
 
@@ -77,7 +88,7 @@ public class IPResourceTest {
     ipList.add("192.168.42.35");
     ipList.add("192.168.42.30");
     ipList.add("192.168.42.40");
-    String[] expected = {"192.168.42.30", "192.168.42.35", "192.168.42.40", "192.168.42.42"};
+    String[] expected = {"192.168.42.30", "192.168.42.35", "192.168.42.40"};
     assertArrayEquals(expected, ipList.getArray());
   }
 
@@ -86,7 +97,7 @@ public class IPResourceTest {
     IPResource ipList = IPResource.getInstance();
     ipList.setIdentity("192.168.42.42");
     ipList.add("192.168.42.45");
-    String[] expected = {"192.168.42.42", "192.168.42.45"};
+    String[] expected = {"192.168.42.45"};
     assertArrayEquals(expected, ipList.getArray());
   }
 
@@ -96,7 +107,7 @@ public class IPResourceTest {
     ipList.setIdentity("192.168.42.42");
     ipList.add("192.168.42.45");
     ipList.add("192.168.42.50");
-    String[] expected = {"192.168.42.42", "192.168.42.45", "192.168.42.50"};
+    String[] expected = {"192.168.42.45", "192.168.42.50"};
     assertArrayEquals(expected, ipList.getArray());
   }
 
@@ -106,7 +117,7 @@ public class IPResourceTest {
     ipList.setIdentity("192.168.42.42");
     ipList.add("192.168.42.50");
     ipList.add("192.168.42.45");
-    String[] expected = {"192.168.42.42", "192.168.42.45", "192.168.42.50"};
+    String[] expected = {"192.168.42.45", "192.168.42.50"};
     assertArrayEquals(expected, ipList.getArray());
   }
 
@@ -117,7 +128,7 @@ public class IPResourceTest {
     ipList.add("192.168.42.45");
     ipList.add("192.168.42.50");
     ipList.add("192.168.42.55");
-    String[] expected = {"192.168.42.42", "192.168.42.45", "192.168.42.50", "192.168.42.55"};
+    String[] expected = {"192.168.42.45", "192.168.42.50", "192.168.42.55"};
     assertArrayEquals(expected, ipList.getArray());
   }
 
@@ -128,7 +139,7 @@ public class IPResourceTest {
     ipList.add("192.168.42.55");
     ipList.add("192.168.42.50");
     ipList.add("192.168.42.45");
-    String[] expected = {"192.168.42.42", "192.168.42.45", "192.168.42.50", "192.168.42.55"};
+    String[] expected = {"192.168.42.45", "192.168.42.50", "192.168.42.55"};
     assertArrayEquals(expected, ipList.getArray());
   }
 
@@ -139,7 +150,7 @@ public class IPResourceTest {
     ipList.add("192.168.42.50");
     ipList.add("192.168.42.55");
     ipList.add("192.168.42.45");
-    String[] expected = {"192.168.42.42", "192.168.42.45", "192.168.42.50", "192.168.42.55"};
+    String[] expected = {"192.168.42.45", "192.168.42.50", "192.168.42.55"};
     assertArrayEquals(expected, ipList.getArray());
   }
 
@@ -155,7 +166,6 @@ public class IPResourceTest {
     String[] expected = {
         "192.168.41.50",
         "192.168.42.5",
-        "192.168.42.42",
         "192.168.42.55",
         "192.168.42.250",
         "192.168.43.45"
@@ -171,7 +181,7 @@ public class IPResourceTest {
     String[] updateData = {"192.168.42.40", "192.168.42.42"};
 
     ipList.updateCompleteIPList(updateData);
-    String[] expected = {"192.168.42.40", "192.168.42.42"};
+    String[] expected = {"192.168.42.40"};
     assertArrayEquals(expected, ipList.getArray());
   }
 
@@ -183,7 +193,7 @@ public class IPResourceTest {
     String[] updateData = {"192.168.42.40"};
 
     ipList.updateCompleteIPList(updateData);
-    String[] expected = {"192.168.42.40", "192.168.42.42"};
+    String[] expected = {"192.168.42.40"};
     assertArrayEquals(expected, ipList.getArray());
   }
 
@@ -210,7 +220,6 @@ public class IPResourceTest {
     String[] expected = {
         "192.168.42.30",
         "192.168.42.36",
-        "192.168.42.42",
         "192.168.42.44",
         "192.168.42.50",
         "192.168.42.67"
@@ -239,7 +248,7 @@ public class IPResourceTest {
     ipList.removeAllEntriesFromTillMyIdentity("192.168.42.50");
 
     String[] expected = {
-        "192.168.42.42", "192.168.42.44", "192.168.42.50",
+        "192.168.42.44", "192.168.42.50",
     };
     assertArrayEquals(expected, ipList.getArray());
   }
@@ -256,8 +265,7 @@ public class IPResourceTest {
 
     ipList.removeAllEntriesFromTillMyIdentity("192.168.42.42");
 
-    String[] expected = {"192.168.42.42"};
-    assertArrayEquals(expected, ipList.getArray());
+    assertFalse(ipList.hasNextPeer());
   }
 
   @Test
@@ -272,7 +280,7 @@ public class IPResourceTest {
 
     ipList.removeAllEntriesFromTillMyIdentity("192.168.100.140");
 
-    String[] expected = {"192.168.100.137", "192.168.100.140"};
+    String[] expected = {"192.168.100.140"};
     assertArrayEquals(expected, ipList.getArray());
   }
 
@@ -314,12 +322,12 @@ public class IPResourceTest {
     assertTrue(ipList.hasNextPeer());
   }
 
-  @Test
+  @Test(expected = NoSuchElementException.class)
   public void testGetNextPeerNo() {
     IPResource ipList = IPResource.getInstance();
     ipList.setIdentity("192.168.100.100");
 
-    assertEquals("192.168.100.100", ipList.getNextPeer());
+    ipList.getNextPeer();
   }
 
   @Test
@@ -434,12 +442,11 @@ public class IPResourceTest {
     assertEquals("192.168.100.141", ipList.getIdentity());
   }
 
-  @Test
+  @Test(expected = NoSuchElementException.class)
   public void testRemovePeerInEmptyList() {
     IPResource ipList = IPResource.getInstance();
     ipList.setIdentity("192.168.100.141");
     ipList.removeNextPeer();
-    assertEquals("192.168.100.141", ipList.getNextPeer());
   }
 
   @Test
@@ -448,7 +455,7 @@ public class IPResourceTest {
     ipList.setIdentity("192.168.100.141");
     ipList.add("192.168.100.42");
     ipList.removeNextPeer();
-    assertEquals("192.168.100.141", ipList.getNextPeer());
+    assertFalse(ipList.hasNextPeer());
   }
 
 }

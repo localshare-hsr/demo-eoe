@@ -40,7 +40,7 @@ class SearchingState extends Statemachine {
 
     Thread.sleep(200); // small delay to start up the listening server first
     DatagramSocket datagramSocket = new DatagramSocket(0);
-    byte[] buffer = "DiscoveryIF".getBytes();
+    byte[] buffer = "D".getBytes();
 
     long startTimer = System.currentTimeMillis();
 

@@ -19,20 +19,51 @@ public class OuroborosUDPServer extends UDPServer {
   public void respond(DatagramSocket socket, DatagramPacket request) throws IOException {
 
     byte[] requestBody = request.getData();
-    IPResource.getInstance().add(request.getAddress().getHostAddress());
+    String ipAddressOfRequester = request.getAddress().getHostAddress();
 
     switch (requestBody[0]) {
       case 'D':
-        sendMyIPAddress(socket, request);
+        addIPAddressOfRequesterToKnownPeersList(ipAddressOfRequester);
+        respondToRequesterMyIPAddress(socket, request);
         break;
       case 'U':
-        IPResource.getInstance()
-            .removeAllEntriesFromTillMyIdentity(request.getAddress().getHostAddress());
-        sendAllIPAddresses(socket, request);
+        //removeAllKnownPeersBetweenMeAndRequester(ipAddressOfRequester);
+        addIPAddressOfRequesterToKnownPeersList(ipAddressOfRequester);
+        respondToRequesterAllKnownPeers(socket, request);
         break;
       default:
-        processUpdateData(requestBody);
+        addIPAddressOfRequesterToKnownPeersList(ipAddressOfRequester);
+        updateMyKnownKnownPeers(requestBody);
     }
+  }
+
+  private void addIPAddressOfRequesterToKnownPeersList(String ipAddressOfRequester) {
+    IPResource.getInstance().add(ipAddressOfRequester);
+  }
+
+  private void respondToRequesterMyIPAddress(DatagramSocket socket, DatagramPacket request) {
+    try {
+      sendMyIPAddress(socket, request);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void respondToRequesterAllKnownPeers(DatagramSocket socket, DatagramPacket request) {
+    try {
+      sendAllIPAddresses(socket, request);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void removeAllKnownPeersBetweenMeAndRequester(String ipAddressOfRequester) {
+    IPResource.getInstance()
+        .removeAllEntriesFromTillMyIdentity(ipAddressOfRequester);
+  }
+
+  private void updateMyKnownKnownPeers(byte[] requestBody) {
+    processUpdateData(requestBody);
   }
 
   private void sendMyIPAddress(final DatagramSocket socket, DatagramPacket request)
