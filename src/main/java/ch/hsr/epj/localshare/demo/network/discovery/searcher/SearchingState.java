@@ -1,13 +1,12 @@
-package ch.hsr.epj.localshare.demo.network.statemachine;
+package ch.hsr.epj.localshare.demo.network.discovery.searcher;
 
-import ch.hsr.epj.localshare.demo.network.discovery.DiscoveredIPList;
-
+import ch.hsr.epj.localshare.demo.network.discovery.IPResource;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-class SearchingState extends NetworkDiscovery {
+class SearchingState extends Statemachine {
 
   private static final String STATE_NAME = "SEARCHING";
   private static final int PORT = 8640;
@@ -28,7 +27,7 @@ class SearchingState extends NetworkDiscovery {
       e.printStackTrace();
     }
 
-    boolean foundOtherPeer = DiscoveredIPList.getInstance().hasNextPeer();
+    boolean foundOtherPeer = IPResource.getInstance().hasNextPeer();
 
     if (foundOtherPeer) {
       state = new UpdateState();
@@ -41,7 +40,9 @@ class SearchingState extends NetworkDiscovery {
 
     Thread.sleep(200); // small delay to start up the listening server first
     DatagramSocket datagramSocket = new DatagramSocket(0);
-    byte[] buffer = "DiscoveryIF".getBytes();
+    byte[] buffer = "D".getBytes();
+
+    long startTimer = System.currentTimeMillis();
 
     for (String s : startIP()) {
 
@@ -50,10 +51,14 @@ class SearchingState extends NetworkDiscovery {
       datagramSocket.send(request);
       Thread.sleep(100);
 
-      if (DiscoveredIPList.getInstance().hasNextPeer()) {
+      if (IPResource.getInstance().hasNextPeer()) {
         return;
       }
     }
+    long endTimer = System.currentTimeMillis();
+
+    System.out.println("IP Ranges scaned in " + (endTimer - startTimer) + "ms");
+
   }
 
   private String[] startIP() {
@@ -62,7 +67,7 @@ class SearchingState extends NetworkDiscovery {
     int positionOfMyAddress = 0;
 
     for (int i = 0; i < listOfIps.length; i++) {
-      if (listOfIps[i].equals(DiscoveredIPList.getInstance().getIdentity())) {
+      if (listOfIps[i].equals(IPResource.getInstance().getIdentity())) {
         positionOfMyAddress = i;
         break;
       }
