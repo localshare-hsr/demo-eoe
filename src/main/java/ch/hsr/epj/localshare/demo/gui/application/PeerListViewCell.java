@@ -21,11 +21,32 @@ public class PeerListViewCell extends ListCell<Peer> {
 
   private FXMLLoader mLLoader;
 
+  public PeerListViewCell() {
+    gridPane = new GridPane();
+    if (mLLoader == null) {
+      mLLoader = new FXMLLoader(getClass().getResource("/fxml/ListCell.fxml"));
+      mLLoader.setController(this);
+
+      try {
+        mLLoader.load();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+  }
+
   @Override
   protected void updateItem(Peer peer, boolean empty) {
     super.updateItem(peer, empty);
 
-    if (empty || peer == null) {
+    if (peer != null && !empty) {
+      label1.setText(peer.getIP());
+      label2.setText(peer.getFirendlyName());
+      setGraphic(gridPane);
+    }
+
+/*    if (empty || peer == null) {
       setText(null);
     } else {
       if (mLLoader == null) {
@@ -43,6 +64,6 @@ public class PeerListViewCell extends ListCell<Peer> {
     }
 
     setText(null);
-    setGraphic(gridPane);
+    setGraphic(gridPane);*/
   }
 }

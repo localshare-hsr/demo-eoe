@@ -36,4 +36,9 @@ public class Peer {
     }
     return this.ip_address.equals(((Peer) obj).ip_address);
   }
+
+  @Override
+  public String toString() {
+    return getIP() + " " + getFirendlyName();
+  }
 }

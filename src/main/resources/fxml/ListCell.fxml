@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.layout.AnchorPane?>
-
-<GridPane fx:id="gridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<GridPane fx:id="gridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+  minWidth="-Infinity" prefHeight="25.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/8"
+  xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
-        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="50.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0"
+        prefWidth="50.0"/>
         <ColumnConstraints hgrow="SOMETIMES" percentWidth="50"/>
-        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="30.0" />
-        <ColumnConstraints hgrow="SOMETIMES" percentWidth="50" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0"
+        prefWidth="30.0"/>
+      <ColumnConstraints hgrow="SOMETIMES" percentWidth="50"/>
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
     </rowConstraints>
-    <children>
-        <Label fx:id="label1" prefHeight="31.0" prefWidth="114.0" text="Label" GridPane.columnIndex="1" />
-        <Label fx:id="label2" prefHeight="31.0" prefWidth="124.0" text="Label" GridPane.columnIndex="3" />
-    </children>
+  <Label fx:id="label1" prefHeight="31.0" prefWidth="114.0" text="Label"
+    GridPane.columnIndex="1"/>
+  <Label fx:id="label2" prefHeight="31.0" prefWidth="124.0" text="Label"
+    GridPane.columnIndex="3"/>
 </GridPane>
