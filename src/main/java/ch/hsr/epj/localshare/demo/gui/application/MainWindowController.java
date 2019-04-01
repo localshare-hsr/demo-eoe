@@ -2,6 +2,7 @@ package ch.hsr.epj.localshare.demo.gui.application;
 
 import ch.hsr.epj.localshare.demo.gui.data.Peer;
 import ch.hsr.epj.localshare.demo.logic.DiscoveryController;
+import ch.hsr.epj.localshare.demo.logic.KeyManager;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -23,6 +24,10 @@ public class MainWindowController implements Initializable {
 		DiscoveryController discoveryController = new DiscoveryController(peerObservableList);
 		discoveryController.startServer();
 		discoveryController.startSearcher();
+
+		KeyManager keyManager = new KeyManager();
+		keyManager.generateNewCertificate("pascal");
+		System.out.println("My Fingerprint is: " + keyManager.getFingerprint());
 
   }
 
