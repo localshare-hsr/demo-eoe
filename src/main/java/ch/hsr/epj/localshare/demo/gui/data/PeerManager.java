@@ -12,9 +12,9 @@ public class PeerManager {
 
 	public void createPeers(){
 		Discovery discovery = new Discovery();
-		String[] ip_array = discovery.getIPAsArray();
+    String[] ipArray = discovery.getIPAsArray();
 
-		for(String ip : ip_array){
+    for (String ip : ipArray) {
 			Peer p = new Peer(ip, "", "", "0x0adsjk19adj1");
 			addPeer(p);
 		}
