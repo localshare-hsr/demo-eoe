@@ -68,15 +68,4 @@ public class MainWindowController implements Initializable {
         listView.setItems(peerObservableList);
         listView.setCellFactory(peerListView -> new PeerListViewCell());
     }
-  /*
-  @Override
-  public void update(String[] event) {
-    for (String ip : event) {
-      Peer newPeer = new Peer(ip, "LS user", "", "");
-      if (!peerObservableList.contains(newPeer)) {
-        peerObservableList.add(newPeer);
-      }
-    }
-  }
-  */
 }
