@@ -24,6 +24,10 @@ public class LsHttpServer implements Runnable {
             HttpServer server = HttpServer.create(myAddress, 0);
             server.createContext("/info", new InfoHandler());
             server.createContext("/get", new GetHandler());
+
+            // FIXME
+            server.createContext("/", new DynamicHandler());
+
             server.setExecutor(null); // create a default executor
             server.start();
             System.out.println("HTTP server started");
@@ -77,5 +81,25 @@ public class LsHttpServer implements Runnable {
       System.out.println("/get was requested");
       os.close();
     }
+  }
+
+  static class DynamicHandler implements HttpHandler {
+        public void handle(HttpExchange t) throws IOException {
+            // TODO
+
+            // serve the file
+            File file = new File("test.pdf");
+            byte[] bytearray = new byte[(int) file.length()];
+            FileInputStream fis = new FileInputStream(file);
+            BufferedInputStream bis = new BufferedInputStream(fis);
+            bis.read(bytearray, 0, bytearray.length);
+
+            // send the response
+            t.sendResponseHeaders(200, file.length());
+            OutputStream os = t.getResponseBody();
+            os.write(bytearray, 0, bytearray.length);
+            System.out.println("/get was requested");
+            os.close();
+        }
   }
 }
