@@ -2,7 +2,7 @@ package ch.hsr.epj.localshare.demo.gui.application;
 
 import ch.hsr.epj.localshare.demo.gui.data.Peer;
 import ch.hsr.epj.localshare.demo.logic.DiscoveryController;
-
+import ch.hsr.epj.localshare.demo.logic.KeyManager;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -12,13 +12,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
-public class MainWindowController implements Initializable, PeerUpdaterIF {
-	
+public class MainWindowController implements Initializable {
+
 	@FXML
 	private AnchorPane preferencesRootPane;
 
@@ -53,23 +52,21 @@ public class MainWindowController implements Initializable, PeerUpdaterIF {
 	}
 
 	public MainWindowController() {
-		peerObservableList = FXCollections.observableArrayList();
-		DiscoveryController discoveryController = new DiscoveryController(this);
-	}
+
+    peerObservableList = FXCollections.observableArrayList();
+    DiscoveryController discoveryController = new DiscoveryController(peerObservableList);
+    discoveryController.startServer();
+    discoveryController.startSearcher();
+
+    KeyManager keyManager = new KeyManager();
+    keyManager.generateNewCertificate("pascal");
+    System.out.println("My Fingerprint is: " + keyManager.getFingerprint());
+
+  }
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		listView.setItems(peerObservableList);
 		listView.setCellFactory(peerListView -> new PeerListViewCell());
-	}
-
-	@Override
-	public void update(String[] event) {
-		for (String ip : event) {
-      Peer newPeer = new Peer(ip, "LS user", "", "aasd98asdas8d7");
-      if (!peerObservableList.contains(newPeer)) {
-        peerObservableList.add(newPeer);
-      }
-		}
 	}
 }
