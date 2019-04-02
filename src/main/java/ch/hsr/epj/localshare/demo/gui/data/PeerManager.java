@@ -5,28 +5,28 @@ import java.util.ArrayList;
 
 public class PeerManager {
 
-  private ArrayList<Peer> peerList;
+    private ArrayList<Peer> peerList;
 
-  public PeerManager() {
-    peerList = new ArrayList<Peer>();
-  }
-
-  public void createPeers() {
-    Discovery discovery = new Discovery();
-    String[] ipArray = discovery.getIPAsArray();
-
-    for (String ip : ipArray) {
-      Peer p = new Peer(ip, "", "", "0x0adsjk19adj1");
-      addPeer(p);
+    public PeerManager() {
+        peerList = new ArrayList<Peer>();
     }
-  }
 
-  public void addPeer(Peer p) {
-    peerList.add(p);
-  }
+    public void createPeers() {
+        Discovery discovery = new Discovery();
+        String[] ipArray = discovery.getIPAsArray();
 
-  public ArrayList<Peer> getList() {
-    return peerList;
-  }
+        for (String ip : ipArray) {
+            Peer p = new Peer(ip, "", "", "0x0adsjk19adj1");
+            addPeer(p);
+        }
+    }
+
+    public void addPeer(Peer p) {
+        peerList.add(p);
+    }
+
+    public ArrayList<Peer> getList() {
+        return peerList;
+    }
 	
 }

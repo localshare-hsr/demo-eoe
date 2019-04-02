@@ -17,7 +17,7 @@ class IdleState extends Statemachine {
 
   private void waitTillDiscoveryByNextPeer() throws InterruptedException {
 
-    while (!IPResource.getInstance().hasNextPeer()) {
+      while (!IPResource.getInstance().hasNextPeer()) {
       Thread.sleep(10000);
     }
 
