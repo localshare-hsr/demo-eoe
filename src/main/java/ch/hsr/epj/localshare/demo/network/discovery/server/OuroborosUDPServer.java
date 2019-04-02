@@ -1,5 +1,6 @@
-package ch.hsr.epj.localshare.demo.network.discovery.discovery;
+package ch.hsr.epj.localshare.demo.network.discovery.server;
 
+import ch.hsr.epj.localshare.demo.network.discovery.IPResource;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -10,7 +11,7 @@ public class OuroborosUDPServer extends UDPServer {
 
   private static final int DEFAULT_PORT = 8640;
 
-  OuroborosUDPServer() {
+  public OuroborosUDPServer() {
     super(DEFAULT_PORT);
   }
 
@@ -18,24 +19,56 @@ public class OuroborosUDPServer extends UDPServer {
   public void respond(DatagramSocket socket, DatagramPacket request) throws IOException {
 
     byte[] requestBody = request.getData();
-    DiscoveredIPList.getInstance().add(request.getAddress().getHostAddress());
+    String ipAddressOfRequester = request.getAddress().getHostAddress();
 
     switch (requestBody[0]) {
       case 'D':
-        sendMyIPAddress(socket, request);
+        addIPAddressOfRequesterToKnownPeersList(ipAddressOfRequester);
+        respondToRequesterMyIPAddress(socket, request);
         break;
       case 'U':
-        // DiscoveredIPList.getInstance().updateRange(request.getAddress().getHostAddress());
-        sendAllIPAddresses(socket, request);
+        //removeAllKnownPeersBetweenMeAndRequester(ipAddressOfRequester);
+        addIPAddressOfRequesterToKnownPeersList(ipAddressOfRequester);
+        respondToRequesterAllKnownPeers(socket, request);
         break;
       default:
-        processUpdateData(requestBody);
+        addIPAddressOfRequesterToKnownPeersList(ipAddressOfRequester);
+        updateMyKnownKnownPeers(requestBody);
     }
+  }
+
+  private void addIPAddressOfRequesterToKnownPeersList(String ipAddressOfRequester) {
+    IPResource.getInstance().add(ipAddressOfRequester);
+  }
+
+  private void respondToRequesterMyIPAddress(DatagramSocket socket, DatagramPacket request) {
+    try {
+      sendMyIPAddress(socket, request);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void respondToRequesterAllKnownPeers(DatagramSocket socket, DatagramPacket request) {
+    try {
+      sendAllIPAddresses(socket, request);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void removeAllKnownPeersBetweenMeAndRequester(String ipAddressOfRequester) {
+    IPResource.getInstance()
+        .removeAllEntriesFromTillMyIdentity(ipAddressOfRequester);
+  }
+
+  private void updateMyKnownKnownPeers(byte[] requestBody) {
+    processUpdateData(requestBody);
   }
 
   private void sendMyIPAddress(final DatagramSocket socket, DatagramPacket request)
       throws IOException {
-    String bodyString = DiscoveredIPList.getInstance().getIdentity() + ";";
+    String bodyString = IPResource.getInstance().getIdentity() + ";";
     byte[] body = bodyString.getBytes();
     DatagramPacket response =
         new DatagramPacket(body, body.length, request.getAddress(), DEFAULT_PORT);
@@ -66,12 +99,12 @@ public class OuroborosUDPServer extends UDPServer {
     }
 
     String[] dataArray = ipData.toArray(new String[0]);
-    DiscoveredIPList.getInstance().updateCompleteIPList(dataArray);
+    IPResource.getInstance().updateCompleteIPList(dataArray);
   }
 
   private String prepareSendingBody() {
     StringBuilder sb = new StringBuilder();
-    for (String s : DiscoveredIPList.getInstance().getArray()) {
+    for (String s : IPResource.getInstance().getArray()) {
       sb.append(s);
       sb.append(";");
     }

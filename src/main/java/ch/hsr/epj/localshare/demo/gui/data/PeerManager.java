@@ -1,10 +1,7 @@
 package ch.hsr.epj.localshare.demo.gui.data;
 
-import java.util.ArrayList;
-
 import ch.hsr.epj.localshare.demo.network.Discovery;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import java.util.ArrayList;
 
 public class PeerManager {
 	private ArrayList<Peer> peerList;
@@ -22,8 +19,8 @@ public class PeerManager {
 			addPeer(p);
 		}
 	}
-	
-	public void addPeer(Peer p) {
+
+  public void addPeer(Peer p) {
 		peerList.add(p);
 	}
 	public ArrayList<Peer> getList(){
