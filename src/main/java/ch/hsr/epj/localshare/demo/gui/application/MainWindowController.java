@@ -3,12 +3,6 @@ package ch.hsr.epj.localshare.demo.gui.application;
 import ch.hsr.epj.localshare.demo.gui.data.Peer;
 import ch.hsr.epj.localshare.demo.logic.DiscoveryController;
 import ch.hsr.epj.localshare.demo.logic.KeyManager;
-
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,11 +10,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class MainWindowController implements Initializable {
 
@@ -33,14 +30,14 @@ public class MainWindowController implements Initializable {
     @FXML
     private Text IpAddress;
 
+
     @FXML
     private ObservableList<Peer> peerObservableList;
 
 
     @FXML
     private void handlePreferencesButtonAction(ActionEvent event) throws IOException {
-        AnchorPane preferencesPane =
-                FXMLLoader.load(getClass().getClassLoader().getResource("fxml/PreferencesView.fxml"));
+        AnchorPane preferencesPane = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/PreferencesView.fxml"));
         System.out.println(preferencesRootPane);
         preferencesRootPane.getChildren().setAll(preferencesPane);
     }
