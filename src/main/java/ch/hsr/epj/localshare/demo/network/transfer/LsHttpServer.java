@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.util.concurrent.CountDownLatch;
 
 public class LsHttpServer implements Runnable {
 
@@ -21,15 +22,12 @@ public class LsHttpServer implements Runnable {
         try {
             InetAddress myIP = getLocalIPAddress();
             InetSocketAddress myAddress = new InetSocketAddress(myIP, 8640);
-            HttpServer server = HttpServer.create(myAddress, 0);
+            server = HttpServer.create(myAddress, 0);
             server.createContext("/info", new InfoHandler());
             server.createContext("/get", new GetHandler());
-
-            // FIXME
-            server.createContext("/", new DynamicHandler());
-
             server.setExecutor(null); // create a default executor
             server.start();
+            startedLatch.countDown();
             System.out.println("HTTP server started");
         } catch (IOException e) {
             e.printStackTrace();
@@ -45,6 +43,24 @@ public class LsHttpServer implements Runnable {
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
+    }
+
+    public void serveFileInChannel(String filePath, String channelName) {
+        // TODO: maybe some checks would be nice?
+        String channel = "/" + channelName;
+
+        // TODO: use only the file name, not the whole path
+        fileName = filePath;
+
+        // wait until the server is started
+        try {
+            startedLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("starting context: " + fileName);
+        server.createContext(channel, new DynamicHandler());
     }
 
   static class InfoHandler implements HttpHandler {
@@ -85,10 +101,14 @@ public class LsHttpServer implements Runnable {
 
   static class DynamicHandler implements HttpHandler {
         public void handle(HttpExchange t) throws IOException {
-            // TODO
+            // add the required response header for a JPG file
+            Headers h = t.getResponseHeaders();
+
+            // TODO: may not be an image in the future, probably use the BYTE type
+            h.add("Content-Type", "image/jpeg");
 
             // serve the file
-            File file = new File("test.pdf");
+            File file = new File(fileName);
             byte[] bytearray = new byte[(int) file.length()];
             FileInputStream fis = new FileInputStream(file);
             BufferedInputStream bis = new BufferedInputStream(fis);
@@ -98,8 +118,13 @@ public class LsHttpServer implements Runnable {
             t.sendResponseHeaders(200, file.length());
             OutputStream os = t.getResponseBody();
             os.write(bytearray, 0, bytearray.length);
-            System.out.println("/get was requested");
+            System.out.println(fileName + " was requested");
             os.close();
         }
   }
+
+  // TODO: please find a better way to do this
+  private static String fileName;
+  private HttpServer server;
+    CountDownLatch startedLatch = new CountDownLatch(1);
 }

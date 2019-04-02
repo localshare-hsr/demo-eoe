@@ -9,8 +9,15 @@ public class TransferController {
   }
 
   private void startHttpServer() {
-    Thread httpServerThread = new Thread(new LsHttpServer());
-    httpServerThread.setDaemon(true);
-    httpServerThread.start();
+    server = new LsHttpServer();
+    Thread serverThread = new Thread(server);
+    serverThread.setDaemon(true);
+    serverThread.start();
   }
+
+  public void serveFileInChannel(String filePath, String channelName) {
+    server.serveFileInChannel(filePath, channelName);
+  }
+
+  private LsHttpServer server;
 }
