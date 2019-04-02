@@ -2,7 +2,7 @@ package ch.hsr.epj.localshare.demo.network.discovery.searcher;
 
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
 
-public class NetworkDiscovery implements Runnable {
+public class NetworkDiscovery {
 
   public NetworkDiscovery() {
   }
@@ -14,13 +14,10 @@ public class NetworkDiscovery implements Runnable {
 
     Statemachine discovery = new Statemachine();
     discovery.addListOfIPsToScan(listOfIPsToProbe);
-    Thread discoveryThread = new Thread(discovery);
+    discovery.run();
+/*    Thread discoveryThread = new Thread(discovery);
     discoveryThread.setDaemon(true);
-    discoveryThread.start();
+    discoveryThread.start();*/
   }
 
-  @Override
-  public void run() {
-    startSearchProcess();
-  }
 }

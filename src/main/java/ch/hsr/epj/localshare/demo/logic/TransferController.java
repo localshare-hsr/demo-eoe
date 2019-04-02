@@ -4,13 +4,13 @@ import ch.hsr.epj.localshare.demo.network.transfer.LsHttpServer;
 
 public class TransferController {
 
-    public TransferController() {
-        startHttpServer();
-    }
+  public TransferController() {
+    startHttpServer();
+  }
 
-    private void startHttpServer() {
-        Thread httpServerThread = new Thread(new LsHttpServer());
-        httpServerThread.setDaemon(true);
-        httpServerThread.start();
-    }
+  private void startHttpServer() {
+    Thread httpServerThread = new Thread(new LsHttpServer());
+    httpServerThread.setDaemon(true);
+    httpServerThread.start();
+  }
 }

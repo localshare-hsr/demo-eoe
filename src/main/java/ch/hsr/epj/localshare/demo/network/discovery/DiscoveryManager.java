@@ -1,7 +1,6 @@
 package ch.hsr.epj.localshare.demo.network.discovery;
 
 import ch.hsr.epj.localshare.demo.network.discovery.searcher.NetworkDiscovery;
-import ch.hsr.epj.localshare.demo.network.discovery.server.OuroborosUDPServer;
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
 
 public class DiscoveryManager {
@@ -16,16 +15,16 @@ public class DiscoveryManager {
   private void startServer() {
     System.out.println("Starting Server");
 
-    Thread serverThread = new Thread(new OuroborosUDPServer());
+/*    Thread serverThread = new Thread(new OuroborosUDPServer());
     serverThread.setDaemon(true);
-    serverThread.start();
+    serverThread.start();*/
   }
 
   public void startSearchingProcess() {
     System.out.println("Starting Searching Process");
-    networkDiscovery = new NetworkDiscovery();
+/*    networkDiscovery = new NetworkDiscovery();
     Thread searchingThread = new Thread(networkDiscovery);
     searchingThread.setDaemon(true);
-    searchingThread.start();
+    searchingThread.start();*/
   }
 }

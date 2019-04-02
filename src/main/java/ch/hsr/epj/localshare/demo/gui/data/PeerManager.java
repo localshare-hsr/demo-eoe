@@ -1,15 +1,24 @@
 package ch.hsr.epj.localshare.demo.gui.data;
 
+import ch.hsr.epj.localshare.demo.network.Discovery;
 import java.util.ArrayList;
 
 public class PeerManager {
 
-  private int id;
   private ArrayList<Peer> peerList;
 
-  public PeerManager(int id) {
-    this.id = id;
+  public PeerManager() {
     peerList = new ArrayList<Peer>();
+  }
+
+  public void createPeers() {
+    Discovery discovery = new Discovery();
+    String[] ipArray = discovery.getIPAsArray();
+
+    for (String ip : ipArray) {
+      Peer p = new Peer(ip, "", "", "0x0adsjk19adj1");
+      addPeer(p);
+    }
   }
 
   public void addPeer(Peer p) {
@@ -19,4 +28,5 @@ public class PeerManager {
   public ArrayList<Peer> getList() {
     return peerList;
   }
+	
 }

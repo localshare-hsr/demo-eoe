@@ -1,21 +1,20 @@
 package ch.hsr.epj.localshare.demo.network.discovery;
 
-import ch.hsr.epj.localshare.demo.logic.DiscoveryController;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Observable;
 import java.util.Scanner;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-public class IPResource {
+public class IPResource extends Observable {
 
   private static IPResource instance;
   private SortedSet<String> setOfDiscoveredIPs;
   private String ipAddressOfThisPeerInstance;
-  private DiscoveryController discoveryController = null;
 
   private IPResource() {
     setOfDiscoveredIPs = new TreeSet<>(Comparator.comparing(this::toNumeric));
@@ -46,9 +45,9 @@ public class IPResource {
   /**
    * Add a discovery controller to update the GUI
    */
-  public void addDiscoveryController(DiscoveryController discoveryController) {
+/*  public void addDiscoveryController(DiscoveryController discoveryController) {
     this.discoveryController = discoveryController;
-  }
+  }*/
 
   /**
    * Update list of discovered ip addresses.
@@ -63,7 +62,8 @@ public class IPResource {
     for (String s : newIPList) {
       addIPResource(s);
     }
-    notifyObservers();
+    setChanged();
+    notifyObservers(getArray());
   }
 
   /**
@@ -76,7 +76,8 @@ public class IPResource {
     addIPResource(newIPAddress);
     Iterator<String> positionOfIP = findPositionOfIP(newIPAddress);
     removeIPRangeFrom(positionOfIP);
-    notifyObservers();
+    setChanged();
+    notifyObservers(getArray());
   }
 
   /**
@@ -125,7 +126,8 @@ public class IPResource {
    */
   public synchronized void add(final String newIPAddress) {
     addIPResource(newIPAddress);
-    notifyObservers();
+    setChanged();
+    notifyObservers(getArray());
   }
 
   /**
@@ -133,7 +135,8 @@ public class IPResource {
    */
   public synchronized void removeNextPeer() {
     removeIPResource(getNextPeer());
-    notifyObservers();
+    setChanged();
+    notifyObservers(getArray());
   }
 
   /**
@@ -142,7 +145,7 @@ public class IPResource {
    * @return Array of strings with all currently discovered ip addresses
    */
   public synchronized String[] getArray() {
-    return arrayOfIPResouces();
+    return arrayOfIPResources();
   }
 
   private Long toNumeric(final String ip) {
@@ -198,7 +201,7 @@ public class IPResource {
     return setOfDiscoveredIPs.size() - 1;
   }
 
-  private String[] arrayOfIPResouces() {
+  private String[] arrayOfIPResources() {
     List<String> allKnownPeers = new LinkedList<>();
 
     for (String s : setOfDiscoveredIPs) {
@@ -210,9 +213,8 @@ public class IPResource {
     return allKnownPeers.toArray(new String[0]);
   }
 
-  private void notifyObservers() {
-    if (discoveryController != null) {
-      discoveryController.notifyObservers(getArray());
-    }
+  @Override
+  public void notifyObservers(Object arg) {
+    super.notifyObservers(arg);
   }
 }

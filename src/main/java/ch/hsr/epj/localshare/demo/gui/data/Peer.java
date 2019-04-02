@@ -2,25 +2,51 @@ package ch.hsr.epj.localshare.demo.gui.data;
 
 public class Peer {
 
-  private String ip_address;
-  private String friendly_name;
+  private String ipAddress;
+  private String friendlyName;
+  private String displayName;
+  private String fingerPrint;
+  private boolean isTrusted;
 
-  public Peer(String ip_address, String friendly_name) {
-    this.ip_address = ip_address;
-    this.friendly_name = friendly_name;
+  public Peer(String ipAddress, String friendlyName, String displayName, String fingerPrint) {
+    this.ipAddress = ipAddress;
+    this.friendlyName = friendlyName;
+    this.displayName = displayName;
+    this.fingerPrint = fingerPrint;
+    isTrusted = false;
   }
 
   public String getIP() {
-    return ip_address;
+    return ipAddress;
   }
 
-  public String getFirendlyName() {
-    return friendly_name;
+  public String getFriendlyName() {
+    return friendlyName;
+  }
+
+  public String getDisplayName() {
+    return displayName;
+  }
+
+  public String getFingerPrint() {
+    return fingerPrint;
+  }
+
+  public boolean getTrustState() {
+    return isTrusted;
+  }
+
+  public void setTrustState(boolean value) {
+    isTrusted = value;
+  }
+
+  public void setDisplayName(String name) {
+    displayName = name;
   }
 
   @Override
   public int hashCode() {
-    return ip_address.hashCode();
+    return ipAddress.hashCode();
   }
 
   @Override
@@ -34,6 +60,11 @@ public class Peer {
     if (obj == this) {
       return true;
     }
-    return this.ip_address.equals(((Peer) obj).ip_address);
+    return this.ipAddress.equals(((Peer) obj).ipAddress);
+  }
+
+  @Override
+  public String toString() {
+    return getIP() + " " + getFriendlyName();
   }
 }
