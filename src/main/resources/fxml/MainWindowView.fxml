@@ -28,7 +28,7 @@
                                 <Label text="Fingerprint:" GridPane.rowIndex="2" />
                                 <Text fx:id="IpAddress" strokeType="OUTSIDE" strokeWidth="0.0" text="172.96.12.88"
                                       wrappingWidth="160.7392578125" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                                <Text fx:id="FingerPrint" strokeType="OUTSIDE" strokeWidth="0.0"
+                                <Text fx:id="FingerPrint" strokeType="OUTSIDE" strokeWidth="0.0" text="ba45bc3234l"
                                       wrappingWidth="160.7392578125" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
                                 <Text fx:id="FriendlyName" strokeType="OUTSIDE" strokeWidth="0.0" text="hansWurst"
                                       wrappingWidth="116.7392578125" GridPane.columnIndex="1"/>
