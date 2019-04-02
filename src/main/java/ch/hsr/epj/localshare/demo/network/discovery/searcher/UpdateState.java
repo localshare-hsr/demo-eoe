@@ -1,13 +1,13 @@
-package ch.hsr.epj.localshare.demo.network.statemachine;
+package ch.hsr.epj.localshare.demo.network.discovery.searcher;
 
-import ch.hsr.epj.localshare.demo.network.discovery.DiscoveredIPList;
+import ch.hsr.epj.localshare.demo.network.discovery.IPResource;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
-class UpdateState extends NetworkDiscovery {
+class UpdateState extends Statemachine {
 
   private static final String STATE_NAME = "UPDATE";
   private static final int PORT = 8640;
@@ -23,21 +23,18 @@ class UpdateState extends NetworkDiscovery {
 
   private void getUpdateFromNextPeer() throws IOException, InterruptedException {
     String nextPeer;
-    while (DiscoveredIPList.getInstance().hasNextPeer()) {
-      nextPeer = DiscoveredIPList.getInstance().getNextPeer();
+      while (IPResource.getInstance().hasNextPeer()) {
+          nextPeer = IPResource.getInstance().getNextPeer();
       System.out.println("  - get updates from " + nextPeer);
 
       try (DatagramSocket datagramSocket = new DatagramSocket(0)) {
-
-        datagramSocket.setSoTimeout(3000);
-        byte[] buffer = "Update".getBytes();
+          byte[] buffer = "U".getBytes();
 
         InetAddress targetAddress = InetAddress.getByName(nextPeer);
         DatagramPacket request = new DatagramPacket(buffer, buffer.length, targetAddress, PORT);
         datagramSocket.send(request);
 
-      } catch (SocketException e) {
-        //      DiscoveredIPList.getInstance().removePeer(nextPeer);
+      } catch (SocketException ignored) {
       }
 
       Thread.sleep(9000);

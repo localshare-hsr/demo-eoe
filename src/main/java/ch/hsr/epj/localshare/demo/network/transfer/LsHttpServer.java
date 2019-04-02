@@ -1,29 +1,25 @@
 package ch.hsr.epj.localshare.demo.network.transfer;
 
+import static ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil.getLocalIPAddress;
+
+import com.sun.net.httpserver.Headers;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpServer;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.InetSocketAddress;
-
 import java.net.InetAddress;
-import java.net.Socket;
-
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpServer;
-import com.sun.net.httpserver.Headers;
+import java.net.InetSocketAddress;
 
 public class LsHttpServer implements Runnable {
 
     @Override
     public void run() {
         try {
-            Socket socket = new Socket();
-            socket.connect(new InetSocketAddress("example.com", 80));
-            InetAddress myIP = InetAddress.getByName(socket.getLocalAddress().getHostAddress());
-            System.out.println(myIP);
+            InetAddress myIP = getLocalIPAddress();
             InetSocketAddress myAddress = new InetSocketAddress(myIP, 8640);
             HttpServer server = HttpServer.create(myAddress, 0);
             server.createContext("/info", new InfoHandler());
@@ -48,6 +44,7 @@ public class LsHttpServer implements Runnable {
     }
 
     static class InfoHandler implements HttpHandler {
+
         public void handle(HttpExchange t) throws IOException {
             String response = "Use /get to download a PDF";
             t.sendResponseHeaders(200, response.length());
@@ -59,6 +56,7 @@ public class LsHttpServer implements Runnable {
     }
 
     static class GetHandler implements HttpHandler {
+
         public void handle(HttpExchange t) throws IOException {
 
             // add the required response header for a PDF file

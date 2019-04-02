@@ -1,8 +1,8 @@
 package ch.hsr.epj.localshare.demo.gui.application;
 
-import java.io.IOException;
-
 import ch.hsr.epj.localshare.demo.gui.data.Peer;
+
+import java.io.IOException;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,23 +16,30 @@ import javafx.scene.layout.GridPane;
 public class PeerListViewCell extends ListCell<Peer> {
 
     @FXML
-    private Label label1;
+    private Label ip;
 
     @FXML
-    private Label label2;
+    private Label fn;
+
+    @FXML
+    private Label finger;
+
+    @FXML
+    private Label dn;
 
     @FXML
     GridPane gridPane;
 
     private FXMLLoader mLLoader;
 
+    private static final String COLOR = "derive(palegreen, 50%)";
+
     @Override
     protected void updateItem(Peer peer, boolean empty) {
         super.updateItem(peer, empty);
 
         if (empty || peer == null) {
-           setText(null);
-
+            setText(null);
         } else {
             if (mLLoader == null) {
                 mLLoader = new FXMLLoader(getClass().getResource("/fxml/ListCell.fxml"));
@@ -44,10 +51,14 @@ public class PeerListViewCell extends ListCell<Peer> {
                     e.printStackTrace();
                 }
             }
-            label1.setText(String.valueOf(peer.getIP()));
-            label2.setText(String.valueOf(peer.getFirendlyName()));
 
-
+            ip.setText(String.valueOf(peer.getIP()));
+            fn.setText(String.valueOf(peer.getFriendlyName()));
+            finger.setText(String.valueOf(peer.getFingerPrint()));
+            dn.setText(String.valueOf(peer.getDisplayName()));
+            if (peer.getTrustState()) {
+                setStyle("-fx-background: " + COLOR + ";");
+            }
         }
 
         gridPane.setOnDragOver(new EventHandler<DragEvent>() {
@@ -70,7 +81,7 @@ public class PeerListViewCell extends ListCell<Peer> {
                 Dragboard db = event.getDragboard();
                 boolean success = false;
                 if (db.hasFiles()) {
-                    System.out.println("Send File: " + db.getFiles().toString() + " To: " + label1.getText());
+                    System.out.println("Send File: " + db.getFiles().toString() + " To: " + fn.getText());
                     success = true;
                 }
                 /* let the source know whether the string was successfully
@@ -80,7 +91,6 @@ public class PeerListViewCell extends ListCell<Peer> {
                 event.consume();
             }
         });
-
 
         setText(null);
         setGraphic(gridPane);

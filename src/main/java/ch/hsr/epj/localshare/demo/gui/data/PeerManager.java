@@ -1,26 +1,32 @@
 package ch.hsr.epj.localshare.demo.gui.data;
 
+import ch.hsr.epj.localshare.demo.network.Discovery;
 import java.util.ArrayList;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
 public class PeerManager {
-	private int id;
-	private ArrayList<Peer> peerList;
-	
 
-	public PeerManager(int id) {
-		this.id = id;
-		peerList = new ArrayList<Peer>();
-	}
-	
-	public void addPeer(Peer p) {
-		peerList.add(p);
-	}
-	
-	public ArrayList<Peer> getList(){
-		return peerList;
-	}
+    private ArrayList<Peer> peerList;
+
+    public PeerManager() {
+        peerList = new ArrayList<Peer>();
+    }
+
+    public void createPeers() {
+        Discovery discovery = new Discovery();
+        String[] ipArray = discovery.getIPAsArray();
+
+        for (String ip : ipArray) {
+            Peer p = new Peer(ip, "", "", "0x0adsjk19adj1");
+            addPeer(p);
+        }
+    }
+
+    public void addPeer(Peer p) {
+        peerList.add(p);
+    }
+
+    public ArrayList<Peer> getList() {
+        return peerList;
+    }
 	
 }
