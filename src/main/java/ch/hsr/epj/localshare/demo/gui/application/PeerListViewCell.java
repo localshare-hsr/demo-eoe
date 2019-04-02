@@ -61,36 +61,36 @@ public class PeerListViewCell extends ListCell<Peer> {
             }
         }
 
-        gridPane.setOnDragOver(new EventHandler<DragEvent>() {
-
-            @Override
-            public void handle(DragEvent event) {
-                if (event.getGestureSource() != gridPane
-                        && event.getDragboard().hasFiles()) {
-                    /* allow for both copying and moving, whatever user chooses */
-                    event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-                }
-                event.consume();
-            }
-        });
-
-        gridPane.setOnDragDropped(new EventHandler<DragEvent>() {
-
-            @Override
-            public void handle(DragEvent event) {
-                Dragboard db = event.getDragboard();
-                boolean success = false;
-                if (db.hasFiles()) {
-                    System.out.println("Send File: " + db.getFiles().toString() + " To: " + fn.getText());
-                    success = true;
-                }
-                /* let the source know whether the string was successfully
-                 * transferred and used */
-                event.setDropCompleted(success);
-
-                event.consume();
-            }
-        });
+//        gridPane.setOnDragOver(new EventHandler<DragEvent>() {
+//
+//            @Override
+//            public void handle(DragEvent event) {
+//                if (event.getGestureSource() != gridPane
+//                        && event.getDragboard().hasFiles()) {
+//                    /* allow for both copying and moving, whatever user chooses */
+//                    event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+//                }
+//                event.consume();
+//            }
+//        });
+//
+//        gridPane.setOnDragDropped(new EventHandler<DragEvent>() {
+//
+//            @Override
+//            public void handle(DragEvent event) {
+//                Dragboard db = event.getDragboard();
+//                boolean success = false;
+//                if (db.hasFiles()) {
+//                    System.out.println("Send File: " + db.getFiles().toString() + " To: " + fn.getText());
+//                    success = true;
+//                }
+//                /* let the source know whether the string was successfully
+//                 * transferred and used */
+//                event.setDropCompleted(success);
+//
+//                event.consume();
+//            }
+//        });
 
         setText(null);
         setGraphic(gridPane);
