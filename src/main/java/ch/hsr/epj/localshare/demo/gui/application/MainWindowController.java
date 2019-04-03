@@ -36,6 +36,8 @@ public class MainWindowController implements Initializable {
     @FXML
     private Text FriendlyName;
 
+    private String FP;
+
     @FXML
     private ObservableList<Peer> peerObservableList;
 
@@ -72,6 +74,7 @@ public class MainWindowController implements Initializable {
         KeyManager keyManager = new KeyManager();
         keyManager.generateNewCertificate("pascal");
         System.out.println("My Fingerprint is: " + keyManager.getFingerprint());
+        FP = keyManager.getFingerprint();
     }
 
     @Override
@@ -79,5 +82,7 @@ public class MainWindowController implements Initializable {
         listView.setItems(peerObservableList);
         listView.setCellFactory(peerListView -> new PeerListViewCell());
         IpAddress.setText(String.valueOf(IPAddressUtil.getLocalIPAddress()));
+        FingerPrint.setText(FP);
+
     }
 }
