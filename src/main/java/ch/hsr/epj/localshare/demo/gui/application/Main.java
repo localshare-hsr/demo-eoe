@@ -9,7 +9,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-
 public class Main extends Application {
 
     @Override
@@ -25,6 +24,8 @@ public class Main extends Application {
 
 	public static void main(String[] args) {
         TransferController transferController = new TransferController();
+        transferController.serveFileInChannel("rocket.jpg", "sky");
+        transferController.serveFileInPrivate("rocket.jpg");
 		launch(args);
 	}
 }
