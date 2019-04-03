@@ -49,7 +49,7 @@ class SearchingState extends Statemachine {
       InetAddress targetAddress = InetAddress.getByName(s);
       DatagramPacket request = new DatagramPacket(buffer, buffer.length, targetAddress, PORT);
       datagramSocket.send(request);
-        Thread.sleep(1000);
+      Thread.sleep(100);
 
         if (IPResource.getInstance().hasNextPeer()) {
         return;
