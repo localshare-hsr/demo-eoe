@@ -3,6 +3,7 @@ package ch.hsr.epj.localshare.demo.gui.application;
 import ch.hsr.epj.localshare.demo.gui.data.Peer;
 import ch.hsr.epj.localshare.demo.logic.DiscoveryController;
 import ch.hsr.epj.localshare.demo.logic.KeyManager;
+import ch.hsr.epj.localshare.demo.logic.HttpServerController;
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -75,6 +76,11 @@ public class MainWindowController implements Initializable {
         keyManager.generateNewCertificate("pascal");
         System.out.println("My Fingerprint is: " + keyManager.getFingerprint());
         FP = keyManager.getFingerprint();
+
+        HttpServerController httpServerController = new HttpServerController();
+        // examples
+        httpServerController.shareChannel("rocket.jpg", "sky");
+        httpServerController.sharePrivate("rocket.jpg");
     }
 
     @Override

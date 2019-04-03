@@ -18,11 +18,9 @@ import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.concurrent.CountDownLatch;
 
-public class LsHttpServer implements Runnable {
+public class LsHttpServer {
 
-    @Override
     public void run() {
         try {
             InetAddress myIP = getLocalIPAddress();
@@ -32,22 +30,10 @@ public class LsHttpServer implements Runnable {
             server.createContext("/get", new GetHandler());
             server.setExecutor(null); // create a default executor
             server.start();
-            startedLatch.countDown();
             System.out.println("HTTP server started");
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-      // let the thread run in the background
-      try {
-        synchronized (this) {
-          while (true) {
-            this.wait();
-          }
-        }
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
     }
 
     public void serveFileInChannel(String filePath, String channelName) {
@@ -56,13 +42,6 @@ public class LsHttpServer implements Runnable {
         String channel = "/" + channelName + "/" + f.getName();
 
         fileName = filePath;
-
-        // wait until the server is started
-        try {
-            startedLatch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         System.out.println("starting context: " + fileName + " in channel " + channel);
         server.createContext(channel, new DynamicHandler());
@@ -145,5 +124,4 @@ public class LsHttpServer implements Runnable {
   // TODO: please find a better way to do this
   private static String fileName;
   private HttpServer server;
-  private CountDownLatch startedLatch = new CountDownLatch(1);
 }
