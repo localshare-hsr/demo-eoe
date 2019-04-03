@@ -19,5 +19,9 @@ public class TransferController {
     server.serveFileInChannel(filePath, channelName);
   }
 
+  public void serveFileInPrivate(String filePath) {
+      server.serveFileInPrivate(filePath);
+  }
+
   private LsHttpServer server;
 }

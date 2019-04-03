@@ -6,6 +6,8 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+
+import javax.xml.bind.DatatypeConverter;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,6 +15,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.nio.file.Files;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.CountDownLatch;
 
 public class LsHttpServer implements Runnable {
@@ -46,10 +51,10 @@ public class LsHttpServer implements Runnable {
     }
 
     public void serveFileInChannel(String filePath, String channelName) {
-        // TODO: maybe some checks would be nice?
-        String channel = "/" + channelName;
+        // TODO: some checks would be nice
+        File f = new File(filePath);
+        String channel = "/" + channelName + "/" + f.getName();
 
-        // TODO: use only the file name, not the whole path
         fileName = filePath;
 
         // wait until the server is started
@@ -59,8 +64,22 @@ public class LsHttpServer implements Runnable {
             e.printStackTrace();
         }
 
-        System.out.println("starting context: " + fileName);
+        System.out.println("starting context: " + fileName + " in channel " + channel);
         server.createContext(channel, new DynamicHandler());
+    }
+
+    public void serveFileInPrivate(String filePath) {
+        try {
+            // generate SHA256 of file and use that as channel name
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            File f = new File(filePath);
+            byte[] digest = md.digest(Files.readAllBytes(f.toPath()));
+            String sha256 = DatatypeConverter.printHexBinary(digest).toLowerCase();
+            System.out.println(sha256);
+            serveFileInChannel(filePath, sha256);
+        } catch (NoSuchAlgorithmException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
   static class InfoHandler implements HttpHandler {
@@ -126,5 +145,5 @@ public class LsHttpServer implements Runnable {
   // TODO: please find a better way to do this
   private static String fileName;
   private HttpServer server;
-    CountDownLatch startedLatch = new CountDownLatch(1);
+  private CountDownLatch startedLatch = new CountDownLatch(1);
 }

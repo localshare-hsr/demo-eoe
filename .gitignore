@@ -27,3 +27,6 @@ hs_err_pid*
 target/
 out/
 *.MF
+
+# generated key files
+keys/

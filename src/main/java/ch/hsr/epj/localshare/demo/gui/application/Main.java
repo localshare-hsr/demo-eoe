@@ -22,8 +22,9 @@ public class Main extends Application {
   }
 
 	public static void main(String[] args) {
-    TransferController transferController = new TransferController();
+        TransferController transferController = new TransferController();
         transferController.serveFileInChannel("rocket.jpg", "sky");
+        transferController.serveFileInPrivate("rocket.jpg");
 		launch(args);
 	}
 }
