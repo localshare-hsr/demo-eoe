@@ -1,18 +1,15 @@
 package ch.hsr.epj.localshare.demo.gui.application;
 
 import ch.hsr.epj.localshare.demo.gui.data.Peer;
-
-import java.io.IOException;
-
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
+
+import java.io.IOException;
 
 public class PeerListViewCell extends ListCell<Peer> {
 
@@ -35,12 +32,14 @@ public class PeerListViewCell extends ListCell<Peer> {
 
     private static final String COLOR = "derive(palegreen, 50%)";
 
+
     @Override
     protected void updateItem(Peer peer, boolean empty) {
         super.updateItem(peer, empty);
 
         if (empty || peer == null) {
             setText(null);
+
         } else {
             if (mLLoader == null) {
                 mLLoader = new FXMLLoader(getClass().getResource("/fxml/ListCell.fxml"));
@@ -60,41 +59,36 @@ public class PeerListViewCell extends ListCell<Peer> {
             if (peer.getTrustState()) {
                 setStyle("-fx-background: " + COLOR + ";");
             }
+
+            gridPane.setOnDragOver(
+                    event -> {
+                        if (event.getGestureSource() != gridPane && event.getDragboard().hasFiles()) {
+                            /* allow for both copying and moving, whatever user chooses */
+                            event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                        }
+                        event.consume();
+                    });
+
+            gridPane.setOnDragDropped(
+                    event -> {
+                        Dragboard db = event.getDragboard();
+                        boolean success = false;
+                        if (db.hasFiles()) {
+                            System.out.println(
+                                    "Send File: " + db.getFiles().toString() + " To: " + fn.getText());
+                            success = true;
+                        }
+                        /* let the source know whether the string was successfully
+                         * transferred and used */
+                        event.setDropCompleted(success);
+
+                        event.consume();
+                    });
+
+            setText(null);
+            setGraphic(gridPane);
         }
-
-        //        gridPane.setOnDragOver(new EventHandler<DragEvent>() {
-        //
-        //            @Override
-        //            public void handle(DragEvent event) {
-        //                if (event.getGestureSource() != gridPane
-        //                        && event.getDragboard().hasFiles()) {
-        //                    /* allow for both copying and moving, whatever user chooses */
-        //                    event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-        //                }
-        //                event.consume();
-        //            }
-        //        });
-        //
-        //        gridPane.setOnDragDropped(new EventHandler<DragEvent>() {
-        //
-        //            @Override
-        //            public void handle(DragEvent event) {
-        //                Dragboard db = event.getDragboard();
-        //                boolean success = false;
-        //                if (db.hasFiles()) {
-        //                    System.out.println("Send File: " + db.getFiles().toString() + " To: " +
-        // fn.getText());
-        //                    success = true;
-        //                }
-        //                /* let the source know whether the string was successfully
-        //                 * transferred and used */
-        //                event.setDropCompleted(success);
-        //
-        //                event.consume();
-        //            }
-        //        });
-
-        setText(null);
-        setGraphic(gridPane);
     }
+
+
 }
