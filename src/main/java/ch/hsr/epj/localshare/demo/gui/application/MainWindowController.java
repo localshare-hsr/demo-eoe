@@ -78,9 +78,8 @@ public class MainWindowController implements Initializable {
         FP = keyManager.getFingerprint();
 
         HttpServerController httpServerController = new HttpServerController();
-        // examples
-        httpServerController.shareChannel("rocket.jpg", "sky");
-        httpServerController.sharePrivate("rocket.jpg");
+        // example
+        httpServerController.shareChannel("rocket.jpg", 0, "sky");
     }
 
     @Override
