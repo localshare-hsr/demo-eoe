@@ -30,14 +30,19 @@ public class MainWindowController implements Initializable {
     @FXML
     private Text IpAddress;
 
+    @FXML
+    private Text FingerPrint;
+
+    @FXML
+    private Text FriendlyName;
 
     @FXML
     private ObservableList<Peer> peerObservableList;
 
-
     @FXML
     private void handlePreferencesButtonAction(ActionEvent event) throws IOException {
-        AnchorPane preferencesPane = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/PreferencesView.fxml"));
+        AnchorPane preferencesPane =
+                FXMLLoader.load(getClass().getClassLoader().getResource("fxml/PreferencesView.fxml"));
         System.out.println(preferencesRootPane);
         preferencesRootPane.getChildren().setAll(preferencesPane);
     }
