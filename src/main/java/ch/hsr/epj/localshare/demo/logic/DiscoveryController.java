@@ -5,9 +5,7 @@ import ch.hsr.epj.localshare.demo.network.discovery.IPResource;
 import ch.hsr.epj.localshare.demo.network.discovery.searcher.NetworkDiscovery;
 import ch.hsr.epj.localshare.demo.network.discovery.server.OuroborosUDPServer;
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -55,23 +53,18 @@ public class DiscoveryController implements Observer {
 
   @Override
   public void update(Observable o, Object arg) {
-    System.out.println("update called: " + Arrays.toString((String[]) arg));
-    List<Peer> newPeerList = new ArrayList<>();
-    String[] event = (String[]) arg;
-    for (String ip : event) {
-      newPeerList.add(new Peer(ip, "LS user", "", "aasd98asdas8d7"));
-    }
-
-    for (Peer p : peerObservableList) {
-      if (!newPeerList.contains(p)) {
-        Platform.runLater(() -> peerObservableList.remove(p));
+    Platform.runLater(() -> {
+      List<Peer> newPeerList = new ArrayList<>();
+      String[] event = (String[]) arg;
+      for (String ip : event) {
+        newPeerList.add(new Peer(ip, "LS user", "", "aasd98asdas8d7"));
       }
-    }
 
-    for (Peer p : newPeerList) {
-      if (!peerObservableList.contains(p)) {
-        Platform.runLater(() -> peerObservableList.add(p));
+      for (Peer p : newPeerList) {
+        if (!peerObservableList.contains(p)) {
+          peerObservableList.add(p);
+        }
       }
-    }
+    });
   }
 }
