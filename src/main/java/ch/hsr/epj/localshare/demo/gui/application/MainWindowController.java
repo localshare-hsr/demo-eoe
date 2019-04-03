@@ -77,10 +77,11 @@ public class MainWindowController implements Initializable {
         System.out.println("My Fingerprint is: " + keyManager.getFingerprint());
         FP = keyManager.getFingerprint();
 
-        HttpServerController httpServerController = new HttpServerController();
         // example
-        httpServerController.shareChannel("rocket.jpg", 0, "sky");
+//        httpServerController.shareChannel("rocket.jpg", 0, "sky");
     }
+
+    public static HttpServerController httpServerController = new HttpServerController();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
