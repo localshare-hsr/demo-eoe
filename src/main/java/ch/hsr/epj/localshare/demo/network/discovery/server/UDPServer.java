@@ -27,7 +27,7 @@ public abstract class UDPServer implements Runnable {
   public void run() {
     byte[] buffer = new byte[bufferSize];
     try {
-      InetAddress myIP = InetAddress.getByName(IPResource.getInstance().getIdentity());
+        InetAddress myIP = InetAddress.getByName(IPResource.getInstance().getIdentity());
       try (DatagramSocket socket = new DatagramSocket(port, myIP)) {
         socket.setSoTimeout(10000);
         System.out.println(
