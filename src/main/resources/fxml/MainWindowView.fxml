@@ -74,9 +74,7 @@
             </content>
         </Tab>
       <Tab text="Channels">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-        </content>
+          <fx:include fx:id="channelPane" source="ChannelView.fxml"/>
       </Tab>
         <Tab text="Settings">
             <content>

@@ -24,6 +24,7 @@ public class MainWindowController implements Initializable {
     @FXML
     private AnchorPane preferencesRootPane;
 
+
     @FXML
     private ListView<Peer> listView;
 
