@@ -16,6 +16,10 @@ public class HttpServerController {
     httpServer = new HTTPServer();
   }
 
+  public void stopHTTPServer() {
+    httpServer.stopHTTPServer();
+  }
+
   public void shareChannel(String filePath, long fileSize, String channelName) {
     //server.serveFileInChannel(filePath, channelName);
   }

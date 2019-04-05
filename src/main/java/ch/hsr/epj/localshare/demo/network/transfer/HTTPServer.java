@@ -31,6 +31,10 @@ public class HTTPServer {
     httpServer.start();
   }
 
+  public void stopHTTPServer() {
+    httpServer.stop(0);
+  }
+
   public void createNewShare(String path, List<File> files) {
     if (path == null || files == null) {
       throw new IllegalArgumentException("Error: Path and files must not be null");
