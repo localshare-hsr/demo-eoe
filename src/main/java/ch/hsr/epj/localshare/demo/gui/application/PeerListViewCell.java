@@ -8,6 +8,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 
 import java.io.IOException;
 
@@ -60,14 +61,19 @@ public class PeerListViewCell extends ListCell<Peer> {
                 setStyle("-fx-background: " + COLOR + ";");
             }
 
-            gridPane.setOnDragOver(
-                    event -> {
-                        if (event.getGestureSource() != gridPane && event.getDragboard().hasFiles()) {
-                            /* allow for both copying and moving, whatever user chooses */
-                            event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-                        }
-                        event.consume();
-                    });
+          gridPane.setOnDragOver(
+              event -> {
+                if (event.getGestureSource() != gridPane && event.getDragboard().hasFiles()) {
+                  /* allow for both copying and moving, whatever user chooses */
+                  event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                  gridPane.setStyle("-fx-background-color: palegreen");
+                }
+                event.consume();
+              });
+
+          gridPane.setOnDragExited(event -> {
+            gridPane.setStyle("-fx-background-color: grey");
+          });
 
             gridPane.setOnDragDropped(
                     event -> {
