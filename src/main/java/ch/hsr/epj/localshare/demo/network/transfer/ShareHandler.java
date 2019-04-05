@@ -75,7 +75,12 @@ public class ShareHandler implements HttpHandler {
 
     byte[] buffer = new byte[1024];
     while (bufferedInputStream.read(buffer) != -1) {
-      bufferedOutputStream.write(buffer);
+      try {
+        bufferedOutputStream.write(buffer);
+      } catch (IOException e) {
+        System.err.println("Error: Problem with output stream occurred");
+        break;
+      }
     }
     bufferedOutputStream.flush();
   }
