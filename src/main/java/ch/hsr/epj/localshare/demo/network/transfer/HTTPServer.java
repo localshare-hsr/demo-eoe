@@ -35,13 +35,14 @@ public class HTTPServer {
     httpServer.stop(0);
   }
 
-  public void createNewShare(String path, List<File> files) {
+  public HTTPProgress createNewShare(String path, List<File> files) {
     if (path == null || files == null) {
       throw new IllegalArgumentException("Error: Path and files must not be null");
     }
 
-    System.out.println("Add new Share " + path);
-    httpServer.createContext(CONTEXT_SHARE + "/" + path, new ShareHandler(files));
+    HTTPProgress httpProgress = new HTTPProgress();
+    httpServer.createContext(CONTEXT_SHARE + "/" + path, new ShareHandler(files, httpProgress));
+    return httpProgress;
   }
 
   private void deleteShare(String path) {
