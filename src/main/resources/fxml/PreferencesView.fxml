@@ -1,16 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
-<AnchorPane fx:controller="ch.hsr.epj.localshare.demo.gui.application.PreferencesViewController"
-            prefHeight="400.0" prefWidth="738.0" xmlns="http://javafx.com/javafx/8"
-            xmlns:fx="http://javafx.com/fxml/1">
-    <Label layoutX="28.0" layoutY="54.0" prefHeight="31.0" prefWidth="277.0"
-           text="Current Download Path:"/>
-    <Text fx:id="path" layoutX="28.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0"
-          text="C:\TEMP\LocalShareDownloads" wrappingWidth="459.13671875"/>
-    <Button layoutX="378.0" layoutY="99.0" mnemonicParsing="false" text="Change Path"
-            onAction="#handleChangeDirectoryButtonAction"/>
+
+<AnchorPane prefHeight="400.0" prefWidth="738.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ch.hsr.epj.localshare.demo.gui.application.PreferencesViewController">
+    <children>
+        <GridPane layoutX="23.0" layoutY="27.0" prefHeight="350.0" prefWidth="679.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="356.0" minWidth="10.0" prefWidth="167.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="459.0" minWidth="10.0" prefWidth="160.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="349.0" minWidth="10.0" prefWidth="349.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <children>
+                <Label prefHeight="31.0" prefWidth="219.0" text="Current Configuration Path:"/>
+                <Button mnemonicParsing="false" onAction="#handleChangeConfigButtonAction" text="Change Path"
+                        GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                <Text fx:id="configPath" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="292.13671875"
+                      GridPane.rowIndex="1"/>
+                <Label prefHeight="31.0" prefWidth="219.0" text="Current Download Path:" GridPane.rowIndex="2"/>
+                <Text fx:id="downloadPath" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="292.13671875"
+                      GridPane.rowIndex="3"/>
+                <Button mnemonicParsing="false" onAction="#handleChangeDownloadButtonAction" text="Change Path"
+                        GridPane.columnIndex="2" GridPane.rowIndex="3"/>
+            </children>
+        </GridPane>
+    </children>
 </AnchorPane>

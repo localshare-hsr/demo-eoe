@@ -45,7 +45,6 @@ public class MainWindowController implements Initializable {
     private void handlePreferencesButtonAction(ActionEvent event) throws IOException {
         AnchorPane preferencesPane =
                 FXMLLoader.load(getClass().getClassLoader().getResource("fxml/PreferencesView.fxml"));
-        System.out.println(preferencesRootPane);
         preferencesRootPane.getChildren().setAll(preferencesPane);
     }
 
@@ -85,4 +84,5 @@ public class MainWindowController implements Initializable {
         FingerPrint.setText(FP);
 
     }
+
 }
