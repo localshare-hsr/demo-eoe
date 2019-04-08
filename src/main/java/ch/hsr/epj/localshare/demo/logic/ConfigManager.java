@@ -6,8 +6,8 @@ public class ConfigManager {
     private ConfigManager() {
     }
 
-    private String downloadPath = "C:\\Program Files\\LocalShare\\download";
-    private String configPath = "C:\\Program Files\\LocalShare\\config";
+    private String downloadPath = "";
+    private String configPath = "";
 
     public static ConfigManager getInstance() {
         if (ConfigManager.instance == null) {
