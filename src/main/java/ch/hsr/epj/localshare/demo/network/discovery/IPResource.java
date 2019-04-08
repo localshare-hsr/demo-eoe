@@ -134,10 +134,11 @@ public class IPResource extends Observable {
   }
 
   private Long toNumeric(final String ip) {
-    Scanner sc = new Scanner(ip).useDelimiter("\\.");
-    long number = (sc.nextLong() << 24) + (sc.nextLong() << 16) + (sc.nextLong() << 8) + (sc.nextLong());
-    sc.close();
-
+    long number;
+    try (Scanner sc = new Scanner(ip).useDelimiter("\\.")) {
+      number =
+          (sc.nextLong() << 24) + (sc.nextLong() << 16) + (sc.nextLong() << 8) + (sc.nextLong());
+    }
     return number;
   }
 
@@ -199,10 +200,5 @@ public class IPResource extends Observable {
     }
 
     return allKnownPeers.toArray(new String[0]);
-  }
-
-  @Override
-  public void notifyObservers(Object arg) {
-    super.notifyObservers(arg);
   }
 }
