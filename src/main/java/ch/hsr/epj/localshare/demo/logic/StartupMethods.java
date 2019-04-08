@@ -40,14 +40,15 @@ public class StartupMethods {
     public static void setDefaultPath() {
         //set path according to OS
         ConfigManager configManager = ConfigManager.getInstance();
+        configManager.setDownloadPath(getHomePath() + "\\LocalShare\\download");
+        configManager.setConfigPath(getHomePath() + "\\LocalShare\\config");
 
-        if (isLinux()) {
-            configManager.setConfigPath("");
-            configManager.setDownloadPath("");
-        }
-        if (isWindows()) {
-            configManager.setDownloadPath("C:\\Program Files\\LocalShare\\download");
-            configManager.setConfigPath("C:\\Program Files\\LocalShare\\config");
-        }
+    }
+
+    public static String getHomePath() {
+        String homePath = "";
+        if (isWindows()) homePath = System.getenv("USERPROFILE");
+        if (isLinux()) homePath = System.getProperty("user.home");
+        return homePath;
     }
 }
