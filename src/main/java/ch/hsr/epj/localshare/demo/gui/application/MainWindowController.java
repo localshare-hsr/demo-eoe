@@ -3,6 +3,7 @@ package ch.hsr.epj.localshare.demo.gui.application;
 import ch.hsr.epj.localshare.demo.gui.data.Peer;
 import ch.hsr.epj.localshare.demo.logic.DiscoveryController;
 import ch.hsr.epj.localshare.demo.logic.KeyManager;
+import ch.hsr.epj.localshare.demo.logic.User;
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -37,6 +38,7 @@ public class MainWindowController implements Initializable {
     private Text FriendlyName;
 
     private String FP;
+    private String friendlyName;
 
     @FXML
     private ObservableList<Peer> peerObservableList;
@@ -70,10 +72,12 @@ public class MainWindowController implements Initializable {
         discoveryController.startServer();
         discoveryController.startSearcher();
 
+        User user = User.getInstance();
         KeyManager keyManager = new KeyManager();
-        keyManager.generateNewCertificate("pascal");
+        keyManager.generateNewCertificate(user.getFriendlyName());
         System.out.println("My Fingerprint is: " + keyManager.getFingerprint());
         FP = keyManager.getFingerprint();
+        friendlyName = user.getFriendlyName();
     }
 
     @Override
@@ -82,7 +86,7 @@ public class MainWindowController implements Initializable {
         listView.setCellFactory(peerListView -> new PeerListViewCell());
         IpAddress.setText(String.valueOf(IPAddressUtil.getLocalIPAddress()));
         FingerPrint.setText(FP);
-
+        FriendlyName.setText(friendlyName);
     }
 
 }

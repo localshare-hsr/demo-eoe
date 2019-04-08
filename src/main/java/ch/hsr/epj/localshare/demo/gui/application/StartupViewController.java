@@ -2,6 +2,7 @@ package ch.hsr.epj.localshare.demo.gui.application;
 
 import ch.hsr.epj.localshare.demo.logic.ConfigManager;
 import ch.hsr.epj.localshare.demo.logic.User;
+import ch.hsr.epj.localshare.demo.persistent.JSONParser;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -53,6 +54,13 @@ public class StartupViewController implements Initializable {
     private void handleFinishButtonClick(ActionEvent event) throws IOException {
 
         // FIRST SAVE CONFIG PERSISTENT
+        // give the json parser the config path, download path and friendly name
+        JSONParser parser = new JSONParser();
+        parser.saveAllToJSON();
+        parser.writeJSONToDisk();
+
+
+
 
 
         // LoadMainScene
