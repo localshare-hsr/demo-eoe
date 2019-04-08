@@ -44,8 +44,7 @@ public class MainWindowController implements Initializable {
     @FXML
     private void handlePreferencesButtonAction(ActionEvent event) throws IOException {
         AnchorPane preferencesPane =
-            FXMLLoader.load(getClass().getClassLoader().getResource("fxml/PreferencesView.fxml"));
-        System.out.println(preferencesRootPane);
+                FXMLLoader.load(getClass().getClassLoader().getResource("fxml/PreferencesView.fxml"));
         preferencesRootPane.getChildren().setAll(preferencesPane);
     }
 
@@ -83,5 +82,6 @@ public class MainWindowController implements Initializable {
         listView.setCellFactory(peerListView -> new PeerListViewCell());
         IpAddress.setText(String.valueOf(IPAddressUtil.getLocalIPAddress()));
         FingerPrint.setText(FP);
+
     }
 }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ch.hsr.epj.localshare.demo.gui.application.StartupViewController">
+    <children>
+        <Label layoutX="35.0" layoutY="56.0" prefHeight="70.0" prefWidth="555.0" text="Hello and welcome to LocalShare">
+            <font>
+                <Font size="36.0"/>
+            </font>
+        </Label>
+        <GridPane layoutX="35.0" layoutY="144.0" prefHeight="208.0" prefWidth="501.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="317.0" minWidth="10.0" prefWidth="194.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="240.0" minWidth="10.0" prefWidth="211.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="240.0" minWidth="10.0" prefWidth="122.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <children>
+                <Label prefHeight="11.0" prefWidth="276.0" text="Please enter a friendlyName:"/>
+                <TextField fx:id="friendlyNameText" text="unknown" GridPane.columnIndex="1"/>
+                <Label text="Set Default Config Path:" GridPane.rowIndex="1"/>
+                <Label text="Set Default Download Folder:" GridPane.rowIndex="2"/>
+                <Label fx:id="defaultConfigLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <Label fx:id="defaultDownloadLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                <Button onAction="#handleChangeConfigButtonClicked" mnemonicParsing="false" text="Change Path"
+                        GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                <Button onAction="#handleChangeDownloadButtonClicked" mnemonicParsing="false" text="Change Directory"
+                        GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+            </children>
+        </GridPane>
+        <Button layoutX="173.0" layoutY="352.0" mnemonicParsing="false" onAction="#handleFinishButtonClick"
+                text="Finish and start Application"/>
+    </children>
+</AnchorPane>
