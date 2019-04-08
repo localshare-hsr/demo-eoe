@@ -1,30 +1,23 @@
 package ch.hsr.epj.localshare.demo.logic;
 
 
+import ch.hsr.epj.localshare.demo.persistent.JSONParser;
+
 import java.io.File;
 
 public class StartupMethods {
-    private static boolean firstLaunch = false;
+    private static boolean firstLaunch = true;
 
     public static boolean startupCheck() {
-
-        //Check if all Files available and everything is Set
-
         //check if config file exists
         ConfigManager configManager = ConfigManager.getInstance();
-
-        File configFile = new File(configManager.getConfigPath());
+        File configFile = new File(configManager.getConfigPath() + "\\config.json");
 
         if (configFile.exists() && !configFile.isDirectory()) {
-            firstLaunch = true;
+            firstLaunch = false;
+            JSONParser parser = new JSONParser();
+            parser.loadData();
         }
-
-        return false;
+        return firstLaunch;
     }
-
-    public static void loadFriendlyName() {
-
-
-    }
-
 }

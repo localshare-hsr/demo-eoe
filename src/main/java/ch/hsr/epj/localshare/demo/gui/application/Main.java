@@ -14,17 +14,15 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        if (!StartupMethods.startupCheck()) {
+        if (StartupMethods.startupCheck()) {
             Parent root = FXMLLoader.load(Objects
                     .requireNonNull(getClass().getClassLoader().getResource("fxml/StartupView.fxml")));
             primaryStage.setTitle("Startup Window");
             primaryStage.setScene(new Scene(root, 800, 600));
             primaryStage.show();
         } else {
-
-            Parent root =
-                    FXMLLoader.load(Objects
-                            .requireNonNull(getClass().getClassLoader().getResource("fxml/MainWindowView.fxml")));
+            Parent root = FXMLLoader.load(Objects
+                    .requireNonNull(getClass().getClassLoader().getResource("fxml/MainWindowView.fxml")));
             primaryStage.setTitle("GUI Prototype");
             primaryStage.setScene(new Scene(root, 800, 600));
             primaryStage.show();

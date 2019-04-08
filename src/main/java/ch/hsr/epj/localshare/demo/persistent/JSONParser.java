@@ -3,9 +3,9 @@ package ch.hsr.epj.localshare.demo.persistent;
 import ch.hsr.epj.localshare.demo.logic.ConfigManager;
 import ch.hsr.epj.localshare.demo.logic.User;
 import org.json.simple.*;
+import org.json.simple.parser.ParseException;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -46,7 +46,6 @@ public class JSONParser {
 
         FileWriter jsonConfig = new FileWriter(savePath);
 
-
         try {
             jsonConfig.write(obj.toJSONString());
             System.out.println(obj);
@@ -55,6 +54,29 @@ public class JSONParser {
         } finally {
             jsonConfig.flush();
             jsonConfig.close();
+        }
+    }
+
+    public void loadData() {
+        org.json.simple.parser.JSONParser parser = new org.json.simple.parser.JSONParser();
+        try {
+            Object obj = parser.parse(new FileReader(manager.getConfigPath() + "\\config.json"));
+            JSONObject jsonObject = (JSONObject) obj;
+
+            String friendlyName = (String) jsonObject.get("friendly_name");
+            String downloadPath = (String) jsonObject.get("download_path");
+
+            user.setFriendlyName(friendlyName);
+            manager.setDownloadPath(downloadPath);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } finally {
+
         }
 
 
