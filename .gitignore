@@ -30,3 +30,7 @@ out/
 
 # generated key files
 keys/
+
+# test sourcefiles
+*.jpg
+*.pdf
