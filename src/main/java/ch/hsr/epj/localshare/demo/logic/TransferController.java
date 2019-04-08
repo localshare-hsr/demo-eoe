@@ -20,7 +20,7 @@ public class TransferController {
   }
 
   public void serveFileInPrivate(String filePath) {
-      server.serveFileInPrivate(filePath);
+    server.serveFileInPrivate(filePath);
   }
 
   private LsHttpServer server;
