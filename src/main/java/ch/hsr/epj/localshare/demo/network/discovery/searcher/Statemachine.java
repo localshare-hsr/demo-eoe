@@ -1,18 +1,15 @@
 package ch.hsr.epj.localshare.demo.network.discovery.searcher;
 
-public class Statemachine {
+class Statemachine {
 
-    Statemachine state;
-    static String[] listOfIps;
+  Statemachine state;
+  String[] listOfIps;
 
-    public Statemachine() {
-    }
+  void addListOfIPsToScan(String[] listOfIps) {
+    this.listOfIps = listOfIps;
+  }
 
-    public void addListOfIPsToScan(String[] listOfIps) {
-        Statemachine.listOfIps = listOfIps;
-    }
-
-    public void run() {
-        state = new SearchingState();
-    }
+  void run() {
+    state = new SearchingState();
+  }
 }

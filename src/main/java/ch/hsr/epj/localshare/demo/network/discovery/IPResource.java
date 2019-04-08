@@ -56,7 +56,7 @@ public class IPResource extends Observable {
   }
 
   /** Remove all entries from the newIPAddress till my identity address. */
-  public synchronized void removeAllEntriesFromTillMyIdentity(final String newIPAddress) {
+  synchronized void removeAllEntriesFromTillMyIdentity(final String newIPAddress) {
     if (newIPAddress.equals(ipAddressOfThisPeerInstance)) {
       return;
     }
@@ -118,7 +118,7 @@ public class IPResource extends Observable {
   }
 
   /** Remove the next peer in the list of all known ip addresses */
-  public synchronized void removeNextPeer() {
+  synchronized void removeNextPeer() {
     removeIPResource(getNextPeer());
     setChanged();
     notifyObservers(getArray());
