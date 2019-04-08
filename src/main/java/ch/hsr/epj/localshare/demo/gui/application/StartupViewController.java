@@ -38,7 +38,6 @@ public class StartupViewController implements Initializable {
 
     ConfigManager configManager = ConfigManager.getInstance();
 
-
     public StartupViewController() {
 
     }
@@ -46,27 +45,16 @@ public class StartupViewController implements Initializable {
     public void changeFriendlyName(String friendlyName) {
         User user = User.getInstance();
         user.setFriendlyName(friendlyName);
-
-        System.out.println(user.getFriendlyName());
     }
 
     @FXML
     private void handleFinishButtonClick(ActionEvent event) throws IOException {
-
-        // FIRST SAVE CONFIG PERSISTENT
-        // give the json parser the config path, download path and friendly name
         JSONParser parser = new JSONParser();
         parser.saveAllToJSON();
         parser.writeJSONToDisk();
 
-
-
-
-
-        // LoadMainScene
-        Parent root =
-                FXMLLoader.load(Objects
-                        .requireNonNull(getClass().getClassLoader().getResource("fxml/MainWindowView.fxml")));
+        Parent root = FXMLLoader.load(Objects
+                .requireNonNull(getClass().getClassLoader().getResource("fxml/MainWindowView.fxml")));
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle("GUI Prototype");
@@ -75,23 +63,7 @@ public class StartupViewController implements Initializable {
     }
 
     @FXML
-    private void handleChangeConfigButtonClicked(ActionEvent event) {
-
-        Node node = (Node) event.getSource();
-        final Stage stage = (Stage) node.getScene().getWindow();
-
-        File dir = directoryChooser.showDialog(stage);
-        if (dir != null) {
-            configManager.setConfigPath(dir.getAbsolutePath());
-            defaultConfigLabel.setText(configManager.getConfigPath());
-        } else {
-            defaultConfigLabel.setText(configManager.getConfigPath());
-        }
-    }
-
-    @FXML
     private void handleChangeDownloadButtonClicked(ActionEvent event) {
-
         Node node = (Node) event.getSource();
         final Stage stage = (Stage) node.getScene().getWindow();
 
@@ -104,10 +76,8 @@ public class StartupViewController implements Initializable {
         }
     }
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         defaultConfigLabel.setText(String.valueOf(configManager.getConfigPath()));
         defaultDownloadLabel.setText(String.valueOf(configManager.getDownloadPath()));
 

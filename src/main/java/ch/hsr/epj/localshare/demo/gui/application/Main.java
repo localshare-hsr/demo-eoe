@@ -32,7 +32,6 @@ public class Main extends Application {
         }
 
         primaryStage.setOnCloseRequest(event -> {
-            System.out.println("Stage is closing");
             JSONParser parser = new JSONParser();
             parser.saveAllToJSON();
             try {

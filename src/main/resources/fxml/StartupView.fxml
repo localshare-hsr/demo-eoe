@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -29,13 +26,11 @@
             <children>
                 <Label prefHeight="11.0" prefWidth="276.0" text="Please enter a friendlyName:"/>
                 <TextField fx:id="friendlyNameText" text="unknown" GridPane.columnIndex="1"/>
-                <Label text="Set Default Config Path:" GridPane.rowIndex="1"/>
+                <Label text="Default Config Path:" GridPane.rowIndex="1"/>
                 <Label text="Set Default Download Folder:" GridPane.rowIndex="2"/>
                 <Label fx:id="defaultConfigLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                 <Label fx:id="defaultDownloadLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                <Button onAction="#handleChangeConfigButtonClicked" mnemonicParsing="false" text="Change Path"
-                        GridPane.columnIndex="2" GridPane.rowIndex="1"/>
-                <Button onAction="#handleChangeDownloadButtonClicked" mnemonicParsing="false" text="Change Directory"
+                <Button mnemonicParsing="false" onAction="#handleChangeDownloadButtonClicked" text="Change Directory"
                         GridPane.columnIndex="2" GridPane.rowIndex="2"/>
             </children>
         </GridPane>
