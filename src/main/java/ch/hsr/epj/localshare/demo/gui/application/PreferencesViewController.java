@@ -34,20 +34,20 @@ public class PreferencesViewController implements Initializable {
     final DirectoryChooser directoryChooser = new DirectoryChooser();
     // configuringDirectoryChooser(directoryChooser);
 
-    @FXML
-    private void handleChangeConfigButtonAction(ActionEvent event) {
-
-        Node node = (Node) event.getSource();
-        final Stage stage = (Stage) node.getScene().getWindow();
-
-        File dir = directoryChooser.showDialog(stage);
-        if (dir != null) {
-            configManager.setConfigPath(dir.getAbsolutePath());
-            configPath.setText(configManager.getConfigPath());
-        } else {
-            configPath.setText(configManager.getConfigPath());
-        }
-    }
+//    @FXML
+//    private void handleChangeConfigButtonAction(ActionEvent event) {
+//
+//        Node node = (Node) event.getSource();
+//        final Stage stage = (Stage) node.getScene().getWindow();
+//
+//        File dir = directoryChooser.showDialog(stage);
+//        if (dir != null) {
+//            configManager.setConfigPath(dir.getAbsolutePath());
+//            configPath.setText(configManager.getConfigPath());
+//        } else {
+//            configPath.setText(configManager.getConfigPath());
+//        }
+//    }
 
     @FXML
     private void handleChangeDownloadButtonAction(ActionEvent event) {

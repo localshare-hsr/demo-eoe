@@ -25,9 +25,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
             </rowConstraints>
             <children>
-                <Label prefHeight="31.0" prefWidth="219.0" text="Current Configuration Path:"/>
-                <Button mnemonicParsing="false" onAction="#handleChangeConfigButtonAction" text="Change Path"
-                        GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                <Label prefHeight="31.0" prefWidth="219.0" text="Configuration Path:"/>
                 <Text fx:id="configPath" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="292.13671875"
                       GridPane.rowIndex="1"/>
                 <Label prefHeight="31.0" prefWidth="219.0" text="Current Download Path:" GridPane.rowIndex="2"/>
