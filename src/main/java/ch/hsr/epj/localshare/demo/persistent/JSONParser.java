@@ -10,6 +10,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class JSONParser {
+    String jsonFriendlyName = "friendly_name";
+    String jsonConfigPath = "config_path";
+    String jsonDownloadPath = "download_path";
+
     private JSONObject obj;
     User user;
     ConfigManager manager;
@@ -21,34 +25,31 @@ public class JSONParser {
     }
 
     public void saveAllToJSON() {
-        obj.put("friendly_name", user.getFriendlyName());
-        obj.put("config_path", manager.getConfigPath());
-        obj.put("download_path", manager.getDownloadPath());
+        obj.put(jsonFriendlyName, user.getFriendlyName());
+        obj.put(jsonConfigPath, manager.getConfigPath());
+        obj.put(jsonDownloadPath, manager.getDownloadPath());
     }
 
     public void saveFriendlyNameIntoJSON(String friendlyName) {
-        obj.put("friendly_name", friendlyName);
+        obj.put(jsonFriendlyName, friendlyName);
     }
 
     public void saveConfigPathIntoJSON(String configPath) {
-        obj.put("config_path", configPath);
+        obj.put(jsonConfigPath, configPath);
     }
 
     public void saveDownloadPathINTOJSON(String downloadPath) {
-        obj.put("download_path", downloadPath);
+        obj.put(jsonDownloadPath, downloadPath);
     }
 
     public void writeJSONToDisk() throws IOException {
         Files.createDirectories(Paths.get(manager.getConfigPath()));
         String savePath = manager.getConfigPath() + "\\config.json";
 
-        System.out.println(savePath);
-
         FileWriter jsonConfig = new FileWriter(savePath);
 
         try {
             jsonConfig.write(obj.toJSONString());
-            System.out.println(obj);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -63,24 +64,14 @@ public class JSONParser {
             Object obj = parser.parse(new FileReader(manager.getConfigPath() + "\\config.json"));
             JSONObject jsonObject = (JSONObject) obj;
 
-            String friendlyName = (String) jsonObject.get("friendly_name");
-            String downloadPath = (String) jsonObject.get("download_path");
+            String friendlyName = (String) jsonObject.get(jsonFriendlyName);
+            String downloadPath = (String) jsonObject.get(jsonDownloadPath);
 
             user.setFriendlyName(friendlyName);
             manager.setDownloadPath(downloadPath);
 
-        } catch (FileNotFoundException e) {
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } finally {
-
         }
-
-
     }
-
-
 }

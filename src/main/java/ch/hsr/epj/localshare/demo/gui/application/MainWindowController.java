@@ -29,15 +29,15 @@ public class MainWindowController implements Initializable {
     private ListView<Peer> listView;
 
     @FXML
-    private Text IpAddress;
+    private Text ipAddressText;
 
     @FXML
-    private Text FingerPrint;
+    private Text fingerPrintText;
 
     @FXML
-    private Text FriendlyName;
+    private Text friendlyNameText;
 
-    private String FP;
+    private String fingerPrint;
     private String friendlyName;
 
     @FXML
@@ -75,8 +75,7 @@ public class MainWindowController implements Initializable {
         User user = User.getInstance();
         KeyManager keyManager = new KeyManager();
         keyManager.generateNewCertificate(user.getFriendlyName());
-        System.out.println("My Fingerprint is: " + keyManager.getFingerprint());
-        FP = keyManager.getFingerprint();
+        fingerPrint = keyManager.getFingerprint();
         friendlyName = user.getFriendlyName();
     }
 
@@ -84,9 +83,9 @@ public class MainWindowController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         listView.setItems(peerObservableList);
         listView.setCellFactory(peerListView -> new PeerListViewCell());
-        IpAddress.setText(String.valueOf(IPAddressUtil.getLocalIPAddress()));
-        FingerPrint.setText(FP);
-        FriendlyName.setText(friendlyName);
+        ipAddressText.setText(String.valueOf(IPAddressUtil.getLocalIPAddress()));
+        fingerPrintText.setText(fingerPrint);
+        friendlyNameText.setText(friendlyName);
     }
 
 }
