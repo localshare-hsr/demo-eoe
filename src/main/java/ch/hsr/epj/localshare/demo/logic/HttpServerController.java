@@ -1,27 +1,40 @@
 package ch.hsr.epj.localshare.demo.logic;
 
-import ch.hsr.epj.localshare.demo.network.transfer.LsHttpServer;
+import ch.hsr.epj.localshare.demo.network.transfer.HTTPProgress;
+import ch.hsr.epj.localshare.demo.network.transfer.HTTPServer;
+import java.io.File;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-import java.net.InetAddress;
+public class HttpServerController implements Observer {
 
-public class HttpServerController {
+  private HTTPServer httpServer;
 
   public HttpServerController() {
     startHttpServer();
   }
 
   private void startHttpServer() {
-    server = new LsHttpServer();
-    server.run();
+    httpServer = new HTTPServer();
+  }
+
+  public void stopHTTPServer() {
+    httpServer.stopHTTPServer();
   }
 
   public void shareChannel(String filePath, long fileSize, String channelName) {
-    server.serveFileInChannel(filePath, channelName);
+    //server.serveFileInChannel(filePath, channelName);
   }
 
-  public void sharePrivate(String filePath, long fileSize, InetAddress peerIP) {
-      server.serveFileInPrivate(filePath);
+  public void sharePrivate(String filePath, List<File> files) {
+    HTTPProgress httpProgress = httpServer.createNewShare(filePath, files);
+    httpProgress.addObserver(this);
   }
 
-  private LsHttpServer server;
+  @Override
+  public void update(Observable o, Object arg) {
+    int percent = (int) arg;
+    System.out.println("Upload completeness = " + percent + "%");
+  }
 }

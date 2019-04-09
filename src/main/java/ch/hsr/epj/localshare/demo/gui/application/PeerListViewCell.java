@@ -1,8 +1,10 @@
 package ch.hsr.epj.localshare.demo.gui.application;
 
 import ch.hsr.epj.localshare.demo.gui.data.Peer;
-import ch.hsr.epj.localshare.demo.gui.application.MainWindowController;
 import ch.hsr.epj.localshare.demo.logic.HttpServerController;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -11,91 +13,100 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 
-import java.io.IOException;
-
-import static ch.hsr.epj.localshare.demo.gui.application.MainWindowController.httpServerController;
-
 public class PeerListViewCell extends ListCell<Peer> {
 
-    @FXML
-    private Label ip;
+  @FXML
+  private Label ip;
 
-    @FXML
-    private Label fn;
+  @FXML
+  private Label fn;
 
-    @FXML
-    private Label finger;
+  @FXML
+  private Label finger;
 
-    @FXML
-    private Label dn;
+  @FXML
+  private Label dn;
 
-    @FXML
-    private GridPane gridPane;
+  @FXML
+  private GridPane gridPane;
 
-    private FXMLLoader mLLoader;
+  private FXMLLoader mLLoader;
 
-    private static final String COLOR = "derive(palegreen, 50%)";
+  private static final String COLOR = "derive(palegreen, 50%)";
 
-    @Override
-    protected void updateItem(Peer peer, boolean empty) {
-        super.updateItem(peer, empty);
+  private HttpServerController httpServerController;
 
-        if (empty || peer == null) {
-            setText(null);
+  public PeerListViewCell(HttpServerController httpServerController) {
+    this.httpServerController = httpServerController;
+  }
 
-        } else {
-            if (mLLoader == null) {
-                mLLoader = new FXMLLoader(getClass().getResource("/fxml/ListCell.fxml"));
-                mLLoader.setController(this);
 
-                try {
-                    mLLoader.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+  @Override
+  protected void updateItem(Peer peer, boolean empty) {
+    super.updateItem(peer, empty);
 
-            ip.setText(String.valueOf(peer.getIP()));
-            fn.setText(String.valueOf(peer.getFriendlyName()));
-            finger.setText(String.valueOf(peer.getFingerPrint()));
-            dn.setText(String.valueOf(peer.getDisplayName()));
-            if (peer.getTrustState()) {
-                setStyle("-fx-background: " + COLOR + ";");
-            }
+    if (empty || peer == null) {
+      setText(null);
 
-            gridPane.setOnDragOver(
-                    event -> {
-                        if (event.getGestureSource() != gridPane && event.getDragboard().hasFiles()) {
-                            /* allow for both copying and moving, whatever user chooses */
-                            event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-                        }
-                        event.consume();
-                    });
+    } else {
+      if (mLLoader == null) {
+        mLLoader = new FXMLLoader(getClass().getResource("/fxml/ListCell.fxml"));
+        mLLoader.setController(this);
 
-            gridPane.setOnDragDropped(
-                    event -> {
-                        Dragboard db = event.getDragboard();
-                        boolean success = false;
-                        if (db.hasFiles()) {
-
-                            db.getFiles()
-                                    .forEach(
-                                            file ->
-                                                    httpServerController.shareChannel(
-                                                            file.getAbsolutePath(), file.length(), "sky"));
-
-                            System.out.println("Send File: " + db.getFiles().toString() + " To: " + fn.getText());
-                            success = true;
-                        }
-                        /* let the source know whether the string was successfully
-                         * transferred and used */
-                        event.setDropCompleted(success);
-
-                        event.consume();
-                    });
-
-            setText(null);
-            setGraphic(gridPane);
+        try {
+          mLLoader.load();
+        } catch (IOException e) {
+          e.printStackTrace();
         }
+      }
+
+      ip.setText(String.valueOf(peer.getIP()));
+      fn.setText(String.valueOf(peer.getFriendlyName()));
+      finger.setText(String.valueOf(peer.getFingerPrint()));
+      dn.setText(String.valueOf(peer.getDisplayName()));
+
+      checkTrustedSate(peer);
+      dragAndDrop();
+
+      setText(null);
+      setGraphic(gridPane);
     }
+  }
+
+  private void checkTrustedSate(Peer peer) {
+    if (peer.getTrustState()) {
+      setStyle("-fx-background: " + COLOR + ";");
+    }
+  }
+
+  private void dragAndDrop() {
+    gridPane.setOnDragOver(
+        event -> {
+          if (event.getGestureSource() != gridPane && event.getDragboard().hasFiles()) {
+            /* allow for both copying and moving, whatever user chooses */
+            event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+          }
+          event.consume();
+        });
+
+    gridPane.setOnDragDropped(
+        event -> {
+          Dragboard db = event.getDragboard();
+          boolean success = false;
+          if (db.hasFiles()) {
+
+            List<File> files = db.getFiles();
+
+            httpServerController.sharePrivate("test", files);
+
+            System.out.println("Send File: " + db.getFiles().toString() + " To: " + fn.getText());
+            success = true;
+          }
+          /* let the source know whether the string was successfully
+           * transferred and used */
+          event.setDropCompleted(success);
+
+          event.consume();
+        });
+  }
 }
