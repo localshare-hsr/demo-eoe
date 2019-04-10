@@ -83,6 +83,7 @@ public class MainWindowController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         listView.setItems(peerObservableList);
         listView.setCellFactory(peerListView -> new PeerListViewCell());
+        listView.refresh();
         ipAddressText.setText(String.valueOf(IPAddressUtil.getLocalIPAddress()));
         fingerPrintText.setText(fingerPrint);
         friendlyNameText.setText(friendlyName);

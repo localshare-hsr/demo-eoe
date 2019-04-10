@@ -65,10 +65,17 @@ public class PeerListViewCell extends ListCell<Peer> {
                 if (event.getGestureSource() != gridPane && event.getDragboard().hasFiles()) {
                   /* allow for both copying and moving, whatever user chooses */
                   event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-                  gridPane.setStyle("-fx-background-color: palegreen");
+                  gridPane.setStyle("-fx-background-color: derive(-fx-focus-color,30%)");
                 }
                 event.consume();
               });
+
+          gridPane.setOnDragExited(
+              event -> {
+                gridPane.setStyle("-fx-background-color: none");
+
+              }
+          );
 
             gridPane.setOnDragDropped(
                     event -> {
