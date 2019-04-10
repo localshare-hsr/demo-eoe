@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
@@ -24,6 +25,9 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private AnchorPane preferencesRootPane;
+
+    @FXML
+    private Tab transferTab;
 
     @FXML
     private ListView<Peer> listView;
@@ -60,6 +64,7 @@ public class MainWindowController implements Initializable {
         }
     }
 
+
     // right click display dialogue box to enter display name
     @FXML
     private void onListItemRighClick(MouseEvent click) {
@@ -84,6 +89,7 @@ public class MainWindowController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         listView.setItems(peerObservableList);
         listView.setCellFactory(peerListView -> new PeerListViewCell());
+        listView.refresh();
         IpAddress.setText(String.valueOf(IPAddressUtil.getLocalIPAddress()));
         FingerPrint.setText(FP);
         FriendlyName.setText(friendlyName);

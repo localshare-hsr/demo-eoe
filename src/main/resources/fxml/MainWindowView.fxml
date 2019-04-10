@@ -6,8 +6,8 @@
 <?import javafx.scene.text.*?>
 <TabPane tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
          fx:controller="ch.hsr.epj.localshare.demo.gui.application.MainWindowController">
-    <Tab text="Transfers">
-        <AnchorPane>
+    <Tab text="Transfers" fx:id="transfersTab">
+        <AnchorPane fx:id="transferView">
             <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                   AnchorPane.topAnchor="0.0">
                 <padding>
