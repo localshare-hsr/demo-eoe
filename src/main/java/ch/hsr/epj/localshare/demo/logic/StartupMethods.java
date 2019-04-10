@@ -7,7 +7,11 @@ import java.io.File;
 
 public class StartupMethods {
     private static boolean firstLaunch = true;
-    private static String OS = null;
+    private static String os = null;
+
+
+    private StartupMethods() {
+    }
 
     public static boolean startupCheck() {
         //check if config file exists
@@ -23,10 +27,10 @@ public class StartupMethods {
     }
 
     public static String getOsName() {
-        if (OS == null) {
-            OS = System.getProperty("os.name");
+        if (os == null) {
+            os = System.getProperty("os.name");
         }
-        return OS;
+        return os;
     }
 
     public static boolean isWindows() {

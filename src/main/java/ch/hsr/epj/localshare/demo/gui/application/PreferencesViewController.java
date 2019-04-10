@@ -29,25 +29,7 @@ public class PreferencesViewController implements Initializable {
         downloadPath.setText(configManager.getDownloadPath());
     }
 
-
-
     final DirectoryChooser directoryChooser = new DirectoryChooser();
-    // configuringDirectoryChooser(directoryChooser);
-
-//    @FXML
-//    private void handleChangeConfigButtonAction(ActionEvent event) {
-//
-//        Node node = (Node) event.getSource();
-//        final Stage stage = (Stage) node.getScene().getWindow();
-//
-//        File dir = directoryChooser.showDialog(stage);
-//        if (dir != null) {
-//            configManager.setConfigPath(dir.getAbsolutePath());
-//            configPath.setText(configManager.getConfigPath());
-//        } else {
-//            configPath.setText(configManager.getConfigPath());
-//        }
-//    }
 
     @FXML
     private void handleChangeDownloadButtonAction(ActionEvent event) {
@@ -63,16 +45,5 @@ public class PreferencesViewController implements Initializable {
             downloadPath.setText(configManager.getDownloadPath());
         }
     }
-
-
-
-    private void configuringDirectoryChooser(DirectoryChooser directoryChooser) {
-        // Set title for DirectoryChooser
-        directoryChooser.setTitle("Select Some Directories");
-        //Set Initial Directory
-        directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-    }
-
-
 }
 

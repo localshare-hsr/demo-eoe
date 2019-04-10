@@ -10,77 +10,68 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class JSONParser {
-  private JSONObject obj;
-  User user;
-  ConfigManager manager;
+    String jsonFriendlyName = "friendly_name";
+    String jsonConfigPath = "config_path";
+    String jsonDownloadPath = "download_path";
 
-  public JSONParser() {
-    obj = new JSONObject();
-    user = User.getInstance();
-    manager = ConfigManager.getInstance();
-  }
+    private JSONObject obj;
+    User user;
+    ConfigManager manager;
 
-  public void saveAllToJSON() {
-    obj.put("friendly_name", user.getFriendlyName());
-    obj.put("config_path", manager.getConfigPath());
-    obj.put("download_path", manager.getDownloadPath());
-  }
-
-  public void saveFriendlyNameIntoJSON(String friendlyName) {
-    obj.put("friendly_name", friendlyName);
-  }
-
-  public void saveConfigPathIntoJSON(String configPath) {
-    obj.put("config_path", configPath);
-  }
-
-  public void saveDownloadPathINTOJSON(String downloadPath) {
-    obj.put("download_path", downloadPath);
-  }
-
-  public void writeJSONToDisk() throws IOException {
-    Files.createDirectories(Paths.get(manager.getConfigPath()));
-    String savePath = manager.getConfigPath() + "\\config.json";
-
-    System.out.println(savePath);
-
-    FileWriter jsonConfig = new FileWriter(savePath);
-
-    try {
-      jsonConfig.write(obj.toJSONString());
-      System.out.println(obj);
-    } catch (Exception e) {
-      e.printStackTrace();
-    } finally {
-      jsonConfig.flush();
-      jsonConfig.close();
-    }
-  }
-
-  public void loadData() {
-    org.json.simple.parser.JSONParser parser = new org.json.simple.parser.JSONParser();
-    try {
-      Object obj = parser.parse(new FileReader(manager.getConfigPath() + "\\config.json"));
-      JSONObject jsonObject = (JSONObject) obj;
-
-      String friendlyName = (String) jsonObject.get("friendly_name");
-      String downloadPath = (String) jsonObject.get("download_path");
-
-      user.setFriendlyName(friendlyName);
-      manager.setDownloadPath(downloadPath);
-
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (ParseException e) {
-      e.printStackTrace();
-    } finally {
-
+    public JSONParser() {
+        obj = new JSONObject();
+        user = User.getInstance();
+        manager = ConfigManager.getInstance();
     }
 
+    public void saveAllToJSON() {
+        obj.put(jsonFriendlyName, user.getFriendlyName());
+        obj.put(jsonConfigPath, manager.getConfigPath());
+        obj.put(jsonDownloadPath, manager.getDownloadPath());
+    }
 
-  }
+    public void saveFriendlyNameIntoJSON(String friendlyName) {
+        obj.put(jsonFriendlyName, friendlyName);
+    }
 
+    public void saveConfigPathIntoJSON(String configPath) {
+        obj.put(jsonConfigPath, configPath);
+    }
 
+    public void saveDownloadPathINTOJSON(String downloadPath) {
+        obj.put(jsonDownloadPath, downloadPath);
+    }
+
+    public void writeJSONToDisk() throws IOException {
+        Files.createDirectories(Paths.get(manager.getConfigPath()));
+        String savePath = manager.getConfigPath() + "\\config.json";
+
+        FileWriter jsonConfig = new FileWriter(savePath);
+
+        try {
+            jsonConfig.write(obj.toJSONString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            jsonConfig.flush();
+            jsonConfig.close();
+        }
+    }
+
+    public void loadData() {
+        org.json.simple.parser.JSONParser parser = new org.json.simple.parser.JSONParser();
+        try {
+            Object obj = parser.parse(new FileReader(manager.getConfigPath() + "\\config.json"));
+            JSONObject jsonObject = (JSONObject) obj;
+
+            String friendlyName = (String) jsonObject.get(jsonFriendlyName);
+            String downloadPath = (String) jsonObject.get(jsonDownloadPath);
+
+            user.setFriendlyName(friendlyName);
+            manager.setDownloadPath(downloadPath);
+
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+    }
 }

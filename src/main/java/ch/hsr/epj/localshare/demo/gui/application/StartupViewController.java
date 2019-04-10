@@ -38,10 +38,6 @@ public class StartupViewController implements Initializable {
 
     ConfigManager configManager = ConfigManager.getInstance();
 
-    public StartupViewController() {
-
-    }
-
     public void changeFriendlyName(String friendlyName) {
         User user = User.getInstance();
         user.setFriendlyName(friendlyName);
