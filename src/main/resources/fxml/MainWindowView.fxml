@@ -6,8 +6,8 @@
 <?import javafx.scene.text.*?>
 <TabPane tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
          fx:controller="ch.hsr.epj.localshare.demo.gui.application.MainWindowController">
-    <Tab text="Transfers" fx:id="transfersTab">
-        <AnchorPane fx:id="transferView">
+    <Tab text="Transfers">
+        <AnchorPane>
             <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                   AnchorPane.topAnchor="0.0">
                 <padding>
@@ -31,13 +31,13 @@
                     <Label text="Friendly Name:"/>
                     <Label text="IP-Address:" GridPane.rowIndex="1"/>
                     <Label text="Fingerprint:" GridPane.rowIndex="2"/>
-                    <Text fx:id="IpAddress" strokeType="OUTSIDE" strokeWidth="0.0"
+                    <Text fx:id="ipAddressText" strokeType="OUTSIDE" strokeWidth="0.0"
                           text="172.96.12.88" wrappingWidth="160.7392578125"
                           GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                    <Text fx:id="FingerPrint" strokeType="OUTSIDE" strokeWidth="0.0" text="1234"
+                    <Text fx:id="fingerPrintText" strokeType="OUTSIDE" strokeWidth="0.0" text="1234"
                           wrappingWidth="457.7392578125" GridPane.columnIndex="1"
                           GridPane.rowIndex="2" GridPane.vgrow="ALWAYS"/>
-                    <Text fx:id="FriendlyName" strokeType="OUTSIDE" strokeWidth="0.0"
+                    <Text fx:id="friendlyNameText" strokeType="OUTSIDE" strokeWidth="0.0"
                           text="hansWurst" wrappingWidth="116.7392578125" GridPane.columnIndex="1"/>
                 </GridPane>
                 <HBox VBox.vgrow="ALWAYS">
