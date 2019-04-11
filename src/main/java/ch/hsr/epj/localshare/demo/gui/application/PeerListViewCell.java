@@ -65,8 +65,7 @@ public class PeerListViewCell extends ListCell<Peer> {
             event.consume();
           });
 
-      gridPane.setOnDragExited(
-          event -> gridPane.setStyle("-fx-background-color: none"));
+      gridPane.setOnDragExited(event -> gridPane.setStyle("-fx-background-color: none"));
 
       gridPane.setOnDragDropped(
           event -> {

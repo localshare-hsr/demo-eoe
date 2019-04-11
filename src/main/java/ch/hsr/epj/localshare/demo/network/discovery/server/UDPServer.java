@@ -1,13 +1,9 @@
 package ch.hsr.epj.localshare.demo.network.discovery.server;
 
 import ch.hsr.epj.localshare.demo.network.discovery.IPResource;
+
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
+import java.net.*;
 
 public abstract class UDPServer implements Runnable {
 
@@ -27,7 +23,7 @@ public abstract class UDPServer implements Runnable {
   public void run() {
     byte[] buffer = new byte[bufferSize];
     try {
-        InetAddress myIP = InetAddress.getByName(IPResource.getInstance().getIdentity());
+      InetAddress myIP = InetAddress.getByName(IPResource.getInstance().getIdentity());
       try (DatagramSocket socket = new DatagramSocket(port, myIP)) {
         socket.setSoTimeout(10000);
         System.out.println(

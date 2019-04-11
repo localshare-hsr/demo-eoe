@@ -1,9 +1,5 @@
 package ch.hsr.epj.localshare.demo.gui.application;
 
-import java.io.File;
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import ch.hsr.epj.localshare.demo.logic.ConfigManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,37 +9,37 @@ import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.net.URL;
+import java.util.ResourceBundle;
+
 public class PreferencesViewController implements Initializable {
 
-    ConfigManager configManager = ConfigManager.getInstance();
+  final DirectoryChooser directoryChooser = new DirectoryChooser();
+  ConfigManager configManager = ConfigManager.getInstance();
+  @FXML
+  private Text configPath;
+  @FXML
+  private Text downloadPath;
 
-    @FXML
-    private Text configPath;
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+    configPath.setText(configManager.getConfigPath());
+    downloadPath.setText(configManager.getDownloadPath());
+  }
 
-    @FXML
-    private Text downloadPath;
+  @FXML
+  private void handleChangeDownloadButtonAction(ActionEvent event) {
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        configPath.setText(configManager.getConfigPath());
-        downloadPath.setText(configManager.getDownloadPath());
+    Node node = (Node) event.getSource();
+    final Stage stage = (Stage) node.getScene().getWindow();
+
+    File dir = directoryChooser.showDialog(stage);
+    if (dir != null) {
+      configManager.setDownloadPath(dir.getAbsolutePath());
+      downloadPath.setText(configManager.getDownloadPath());
+    } else {
+      downloadPath.setText(configManager.getDownloadPath());
     }
-
-    final DirectoryChooser directoryChooser = new DirectoryChooser();
-
-    @FXML
-    private void handleChangeDownloadButtonAction(ActionEvent event) {
-
-        Node node = (Node) event.getSource();
-        final Stage stage = (Stage) node.getScene().getWindow();
-
-        File dir = directoryChooser.showDialog(stage);
-        if (dir != null) {
-            configManager.setDownloadPath(dir.getAbsolutePath());
-            downloadPath.setText(configManager.getDownloadPath());
-        } else {
-            downloadPath.setText(configManager.getDownloadPath());
-        }
-    }
+  }
 }
-

@@ -25,63 +25,65 @@ import java.util.ResourceBundle;
 
 public class StartupViewController implements Initializable {
 
-    @FXML
-    private TextField friendlyNameText;
+  final DirectoryChooser directoryChooser = new DirectoryChooser();
+  ConfigManager configManager = ConfigManager.getInstance();
+  @FXML
+  private TextField friendlyNameText;
+  @FXML
+  private Label defaultConfigLabel;
+  @FXML
+  private Label defaultDownloadLabel;
 
-    @FXML
-    private Label defaultConfigLabel;
+  public void changeFriendlyName(String friendlyName) {
+    User user = User.getInstance();
+    user.setFriendlyName(friendlyName);
+  }
 
-    @FXML
-    private Label defaultDownloadLabel;
+  @FXML
+  private void handleFinishButtonClick(ActionEvent event) throws IOException {
+    JSONParser parser = new JSONParser();
+    parser.saveAllToJSON();
+    parser.writeJSONToDisk();
 
-    final DirectoryChooser directoryChooser = new DirectoryChooser();
+    Parent root =
+        FXMLLoader.load(
+            Objects.requireNonNull(
+                getClass().getClassLoader().getResource("fxml/MainWindowView.fxml")));
 
-    ConfigManager configManager = ConfigManager.getInstance();
+    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+    stage.setTitle("GUI Prototype");
+    stage.setScene(new Scene(root, 800, 600));
+    stage.show();
+  }
 
-    public void changeFriendlyName(String friendlyName) {
-        User user = User.getInstance();
-        user.setFriendlyName(friendlyName);
+  @FXML
+  private void handleChangeDownloadButtonClicked(ActionEvent event) {
+    Node node = (Node) event.getSource();
+    final Stage stage = (Stage) node.getScene().getWindow();
+
+    File dir = directoryChooser.showDialog(stage);
+    if (dir != null) {
+      configManager.setDownloadPath(dir.getAbsolutePath());
+      defaultDownloadLabel.setText(configManager.getDownloadPath());
+    } else {
+      defaultDownloadLabel.setText(configManager.getDownloadPath());
     }
+  }
 
-    @FXML
-    private void handleFinishButtonClick(ActionEvent event) throws IOException {
-        JSONParser parser = new JSONParser();
-        parser.saveAllToJSON();
-        parser.writeJSONToDisk();
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+    defaultConfigLabel.setText(String.valueOf(configManager.getConfigPath()));
+    defaultDownloadLabel.setText(String.valueOf(configManager.getDownloadPath()));
 
-        Parent root = FXMLLoader.load(Objects
-                .requireNonNull(getClass().getClassLoader().getResource("fxml/MainWindowView.fxml")));
-
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setTitle("GUI Prototype");
-        stage.setScene(new Scene(root, 800, 600));
-        stage.show();
-    }
-
-    @FXML
-    private void handleChangeDownloadButtonClicked(ActionEvent event) {
-        Node node = (Node) event.getSource();
-        final Stage stage = (Stage) node.getScene().getWindow();
-
-        File dir = directoryChooser.showDialog(stage);
-        if (dir != null) {
-            configManager.setDownloadPath(dir.getAbsolutePath());
-            defaultDownloadLabel.setText(configManager.getDownloadPath());
-        } else {
-            defaultDownloadLabel.setText(configManager.getDownloadPath());
-        }
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        defaultConfigLabel.setText(String.valueOf(configManager.getConfigPath()));
-        defaultDownloadLabel.setText(String.valueOf(configManager.getDownloadPath()));
-
-        friendlyNameText.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+    friendlyNameText
+        .textProperty()
+        .addListener(
+            new ChangeListener<String>() {
+              @Override
+              public void changed(
+                  ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 changeFriendlyName(newValue);
-            }
-        });
-    }
+              }
+            });
+  }
 }
