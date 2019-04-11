@@ -4,6 +4,7 @@ import ch.hsr.epj.localshare.demo.logic.ConfigManager;
 import ch.hsr.epj.localshare.demo.logic.User;
 import org.json.simple.*;
 import org.json.simple.parser.ParseException;
+import ch.hsr.epj.localshare.demo.logic.StartupMethods;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -44,13 +45,19 @@ public class JSONParser {
 
     public void writeJSONToDisk() throws IOException {
         Files.createDirectories(Paths.get(manager.getConfigPath()));
-        String savePath = manager.getConfigPath() + "\\config.json";
+        String savedFileName;
 
-        FileWriter jsonConfig = new FileWriter(savePath);
+        if (StartupMethods.isWindows()) {
+            savedFileName = manager.getConfigPath() + "\\config.json";
+        } else {
+            savedFileName = manager.getConfigPath() + "/config.json";
+        }
+
+        FileWriter jsonConfig = new FileWriter(savedFileName);
 
         try {
             jsonConfig.write(obj.toJSONString());
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             jsonConfig.flush();

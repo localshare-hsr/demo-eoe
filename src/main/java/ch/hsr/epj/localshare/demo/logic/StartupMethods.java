@@ -14,9 +14,14 @@ public class StartupMethods {
     }
 
     public static boolean startupCheck() {
-        //check if config file exists
         ConfigManager configManager = ConfigManager.getInstance();
-        File configFile = new File(configManager.getConfigPath() + "\\config.json");
+        File configFile;
+
+        if (isWindows()) {
+            configFile = new File(configManager.getConfigPath() + "\\config.json");
+        } else {
+            configFile = new File(configManager.getConfigPath() + "/config.json");
+        }
 
         if (configFile.exists() && !configFile.isDirectory()) {
             firstLaunch = false;
@@ -42,14 +47,18 @@ public class StartupMethods {
     }
 
     public static void setDefaultPath() {
-        //set path according to OS
         ConfigManager configManager = ConfigManager.getInstance();
-        configManager.setDownloadPath(getHomePath() + "\\LocalShare\\download");
-        configManager.setConfigPath(getHomePath() + "\\LocalShare\\config");
 
+        if (isWindows()) {
+            configManager.setDownloadPath(getHomePath() + "\\LocalShare\\download");
+            configManager.setConfigPath(getHomePath() + "\\LocalShare\\config");
+        } else {
+            configManager.setDownloadPath(getHomePath() + "/LocalShare/download");
+            configManager.setConfigPath(getHomePath() + "/LocalShare/config");
+        }
     }
 
-    public static String getHomePath() {
+    private static String getHomePath() {
         String homePath = "";
         if (isWindows()) homePath = System.getenv("USERPROFILE");
         if (isLinux()) homePath = System.getProperty("user.home");
