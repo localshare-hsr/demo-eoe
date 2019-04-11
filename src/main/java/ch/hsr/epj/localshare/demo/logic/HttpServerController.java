@@ -2,6 +2,7 @@ package ch.hsr.epj.localshare.demo.logic;
 
 import ch.hsr.epj.localshare.demo.network.transfer.HTTPProgress;
 import ch.hsr.epj.localshare.demo.network.transfer.HTTPServer;
+
 import java.io.File;
 import java.util.List;
 import java.util.Observable;
