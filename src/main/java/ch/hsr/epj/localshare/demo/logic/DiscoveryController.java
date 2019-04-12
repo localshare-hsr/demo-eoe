@@ -62,7 +62,7 @@ public class DiscoveryController implements Observer {
           List<Peer> newPeerList = new ArrayList<>();
           String[] event = (String[]) arg;
           for (String ip : event) {
-            newPeerList.add(new Peer(ip, "LS user", "", "aasd98asdas8d7"));
+            newPeerList.add(new Peer(ip, "LS user", "", "aasd98asdas8d"));
           }
 
           for (Peer p : newPeerList) {

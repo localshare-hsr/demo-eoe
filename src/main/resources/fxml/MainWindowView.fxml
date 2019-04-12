@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <TabPane xmlns:fx="http://javafx.com/fxml/1" onDragExited="#onWindowDragExit" onDragOver="#onWindowDragEnter"
-         tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.171"
+         tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8"
          fx:controller="ch.hsr.epj.localshare.demo.gui.application.MainWindowController">
     <Tab text="Transfers">
         <AnchorPane>
