@@ -2,11 +2,8 @@ package ch.hsr.epj.localshare.demo.gui.application;
 
 import ch.hsr.epj.localshare.demo.gui.data.Peer;
 import ch.hsr.epj.localshare.demo.logic.DiscoveryController;
-import ch.hsr.epj.localshare.demo.logic.KeyManager;
+import ch.hsr.epj.localshare.demo.logic.keymanager.KeyManager;
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,6 +14,11 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+
+import java.io.IOException;
+import java.net.URL;
+import java.security.KeyStoreException;
+import java.util.ResourceBundle;
 
 public class MainWindowController implements Initializable {
 
@@ -63,10 +65,16 @@ public class MainWindowController implements Initializable {
     discoveryController.startServer();
     discoveryController.startSearcher();
 
+    String userFriendlyName = "Elvis";
     KeyManager keyManager = new KeyManager();
-    keyManager.generateNewCertificate("pascal");
-    System.out.println("My Fingerprint is: " + keyManager.getFingerprint());
-    FP = keyManager.getFingerprint();
+    if (!keyManager.existsKeyingMaterial(userFriendlyName)) {
+      keyManager.generateKeyingMaterial(userFriendlyName);
+    }
+    try {
+      FP = keyManager.getUsersFingerprint();
+    } catch (KeyStoreException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override

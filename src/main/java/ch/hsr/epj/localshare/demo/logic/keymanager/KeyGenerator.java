@@ -83,7 +83,19 @@ class KeyGenerator {
     return keyPairGenerator.generateKeyPair();
   }
 
-  private X509Certificate generateV3Certificate(KeyPair pair, String cn) throws CertificateException, OperatorCreationException {
+  private static X509Certificate signCertificate(
+          final X509v3CertificateBuilder builder, final PrivateKey privateKey)
+          throws CertificateException, OperatorCreationException {
+    ContentSigner signer =
+            new JcaContentSignerBuilder(SIGNATURE_ALGORITHM)
+                    .setProvider(PROVIDER_NAME)
+                    .build(privateKey);
+    return new JcaX509CertificateConverter()
+            .setProvider(PROVIDER_NAME)
+            .getCertificate(builder.build(signer));
+  }
+
+  private X509Certificate generateV3Certificate(final KeyPair pair, final String cn) throws CertificateException, OperatorCreationException {
     X500Name issuerName = new X500Name("CN=" + cn);
 
     BigInteger serial = BigInteger.valueOf(new SecureRandom().nextInt());
@@ -109,17 +121,5 @@ class KeyGenerator {
     }
 
     return signCertificate(builder, pair.getPrivate());
-  }
-
-  private static X509Certificate signCertificate(
-      X509v3CertificateBuilder builder, PrivateKey privateKey)
-      throws CertificateException, OperatorCreationException {
-    ContentSigner signer =
-        new JcaContentSignerBuilder(SIGNATURE_ALGORITHM)
-            .setProvider(PROVIDER_NAME)
-            .build(privateKey);
-    return new JcaX509CertificateConverter()
-        .setProvider(PROVIDER_NAME)
-        .getCertificate(builder.build(signer));
   }
 }

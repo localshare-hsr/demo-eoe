@@ -1,9 +1,6 @@
 package ch.hsr.epj.localshare.demo.logic.keymanager;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -28,7 +25,6 @@ class KeyContainer {
       ks.load(null, getEncodedPassword());
     } catch (IOException | NoSuchAlgorithmException | CertificateException | KeyStoreException e) {
       logger.log(Level.WARNING, "Could not create instance of KeyStore", e);
-      logger.log(Level.WARNING, "Could not load instance of KeyStore", e);
       ks = null;
     }
 
@@ -46,14 +42,15 @@ class KeyContainer {
     }
   }
 
-  static KeyStore loadKeyStoreFromDisk() {
+  static KeyStore loadKeyStoreFromDisk() throws FileNotFoundException {
     KeyStore ks;
     try (FileInputStream fis = new FileInputStream(FULL_PATH)) {
       ks = KeyStore.getInstance(CONTAINER_FORMAT);
       ks.load(fis, getEncodedPassword());
-    } catch (KeyStoreException | IOException | NoSuchAlgorithmException | CertificateException e) {
+    } catch (FileNotFoundException e) {
+      throw e;
+    } catch (IOException | KeyStoreException | NoSuchAlgorithmException | CertificateException e) {
       logger.log(Level.WARNING, "KeyStore failure", e);
-      logger.log(Level.WARNING, "Could not load keystore", e);
       ks = null;
     }
 
@@ -72,11 +69,32 @@ class KeyContainer {
     } catch (KeyStoreException e) {
       logger.log(
           Level.WARNING,
-          String.format("Could not safe new certificate %s", certificate.toString()));
+              String.format("Could not safe new certificate %s", certificate.toString()), e);
     }
+
+    safeKeyStore(keyStore);
   }
 
-  static void safePrivateKeyAndX509CertificateToKeyStore(final KeyStore keyStore, final X509Certificate certificate, final PrivateKey privateKey) {
+  static boolean existsKeyingMaterialFor(final KeyStore keyStore, final String userFriendlyName) {
+    boolean keyExists;
+    try {
+      Key certificate = keyStore.getKey("cn=" + userFriendlyName, getEncodedPassword());
+      if (certificate != null) {
+        keyExists = true;
+        logger.log(Level.INFO, "Key for {0} exists", userFriendlyName);
+      } else {
+        keyExists = false;
+        logger.log(Level.INFO, "Key for {0} does not exists", userFriendlyName);
+      }
+    } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException e) {
+      keyExists = false;
+      logger.log(Level.INFO, String.format("Key for %s does not exists", userFriendlyName));
+    }
+    return keyExists;
+  }
+
+  static void safePrivateKeyAndX509CertificateToKeyStore(
+          final KeyStore keyStore, final X509Certificate certificate, final PrivateKey privateKey) {
 
     String alias = getAlias(certificate);
 
@@ -90,6 +108,11 @@ class KeyContainer {
               Level.WARNING,
               String.format("Could not safe new certificate %s", certificate.toString()));
     }
+    safeKeyStore(keyStore);
+  }
+
+  static X509Certificate getX509CertificateFromKeyStore(final KeyStore keyStore, final String userFriendlyName) throws KeyStoreException {
+    return (X509Certificate) keyStore.getCertificate("cn=" + userFriendlyName);
   }
 
   private static void createFileStructure() {
@@ -109,6 +132,13 @@ class KeyContainer {
 
   private static String getAlias(final X509Certificate certificate) {
     Principal principal = certificate.getSubjectDN();
-    return principal.getName();
+    return getCN(principal);
   }
+
+  private static String getCN(final Principal principal) {
+    int start = principal.getName().indexOf("CN=") + 3;
+    int end = principal.getName().indexOf(',');
+    return principal.getName().substring(start, end).trim();
+  }
+
 }
