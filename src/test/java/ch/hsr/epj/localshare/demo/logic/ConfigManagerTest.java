@@ -1,12 +1,7 @@
 package ch.hsr.epj.localshare.demo.logic;
 
 import org.junit.Test;
-import sun.security.krb5.Config;
-
-import java.rmi.ConnectIOException;
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class ConfigManagerTest {
 

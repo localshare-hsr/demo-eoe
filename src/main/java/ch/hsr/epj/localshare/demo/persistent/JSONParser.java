@@ -34,11 +34,9 @@ public class JSONParser {
     public void saveFriendlyNameIntoJSON(String friendlyName) {
         obj.put(jsonFriendlyName, friendlyName);
     }
-
     public void saveConfigPathIntoJSON(String configPath) {
         obj.put(jsonConfigPath, configPath);
     }
-
     public void saveDownloadPathINTOJSON(String downloadPath) {
         obj.put(jsonDownloadPath, downloadPath);
     }

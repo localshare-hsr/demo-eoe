@@ -39,6 +39,7 @@ public class PeerListViewCell extends ListCell<Peer> {
 
         if (empty || peer == null) {
             setText(null);
+            setGraphic(null);
 
         } else {
             if (mLLoader == null) {
@@ -56,6 +57,7 @@ public class PeerListViewCell extends ListCell<Peer> {
             fn.setText(String.valueOf(peer.getFriendlyName()));
             finger.setText(String.valueOf(peer.getFingerPrint()));
             dn.setText(String.valueOf(peer.getDisplayName()));
+
             if (peer.getTrustState()) {
                 setStyle("-fx-background: " + COLOR + ";");
             }
@@ -85,7 +87,6 @@ public class PeerListViewCell extends ListCell<Peer> {
                         event.consume();
                     });
 
-            setText(null);
             setGraphic(gridPane);
         }
     }

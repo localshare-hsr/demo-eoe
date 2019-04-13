@@ -41,7 +41,6 @@ public class StartupMethods {
     public static boolean isWindows() {
         return getOsName().startsWith("Windows");
     }
-
     public static boolean isLinux() {
         return getOsName().startsWith("Linux");
     }

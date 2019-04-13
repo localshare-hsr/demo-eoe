@@ -65,6 +65,7 @@ public class DiscoveryController implements Observer {
           peerObservableList.add(p);
         }
       }
+
     });
   }
 }
