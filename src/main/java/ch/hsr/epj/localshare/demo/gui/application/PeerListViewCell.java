@@ -13,82 +13,72 @@ import java.io.IOException;
 
 public class PeerListViewCell extends ListCell<Peer> {
 
-    @FXML
-    private Label ip;
+  private static final String COLOR = "derive(palegreen, 50%)";
+  @FXML
+  private Label ip;
+  @FXML
+  private Label fn;
+  @FXML
+  private Label finger;
+  @FXML
+  private Label dn;
+  @FXML
+  private GridPane gridPane;
+  private FXMLLoader mLLoader;
 
-    @FXML
-    private Label fn;
+  @Override
+  protected void updateItem(Peer peer, boolean empty) {
+    super.updateItem(peer, empty);
 
-    @FXML
-    private Label finger;
+    if (empty || peer == null) {
+      setText(null);
+      setGraphic(null);
 
-    @FXML
-    private Label dn;
+    } else {
+      if (mLLoader == null) {
+        mLLoader = new FXMLLoader(getClass().getResource("/fxml/ListCell.fxml"));
+        mLLoader.setController(this);
 
-    @FXML
-    private GridPane gridPane;
-
-    private FXMLLoader mLLoader;
-
-    private static final String COLOR = "derive(palegreen, 50%)";
-
-
-    @Override
-    protected void updateItem(Peer peer, boolean empty) {
-        super.updateItem(peer, empty);
-
-        if (empty || peer == null) {
-            setText(null);
-            setGraphic(null);
-
-        } else {
-            if (mLLoader == null) {
-                mLLoader = new FXMLLoader(getClass().getResource("/fxml/ListCell.fxml"));
-                mLLoader.setController(this);
-
-                try {
-                    mLLoader.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            ip.setText(String.valueOf(peer.getIP()));
-            fn.setText(String.valueOf(peer.getFriendlyName()));
-            finger.setText(String.valueOf(peer.getFingerPrint()));
-            dn.setText(String.valueOf(peer.getDisplayName()));
-            if (peer.getTrustState()) {
-                setStyle("-fx-background: " + COLOR + ";");
-            }
-
-            gridPane.setOnDragOver(
-                    event -> {
-                        if (event.getGestureSource() != gridPane && event.getDragboard().hasFiles()) {
-                            /* allow for both copying and moving, whatever user chooses */
-                            event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-                        }
-                        event.consume();
-                    });
-
-            gridPane.setOnDragDropped(
-                    event -> {
-                        Dragboard db = event.getDragboard();
-                        boolean success = false;
-                        if (db.hasFiles()) {
-                            System.out.println(
-                                    "Send File: " + db.getFiles().toString() + " To: " + fn.getText());
-                            success = true;
-                        }
-                        /* let the source know whether the string was successfully
-                         * transferred and used */
-                        event.setDropCompleted(success);
-
-                        event.consume();
-                    });
-
-            setGraphic(gridPane);
+        try {
+          mLLoader.load();
+        } catch (IOException e) {
+          e.printStackTrace();
         }
+      }
+
+      ip.setText(String.valueOf(peer.getIP()));
+      fn.setText(String.valueOf(peer.getFriendlyName()));
+      finger.setText(String.valueOf(peer.getFingerPrint()));
+      dn.setText(String.valueOf(peer.getDisplayName()));
+      if (peer.getTrustState()) {
+        setStyle("-fx-background: " + COLOR + ";");
+      }
+
+      gridPane.setOnDragOver(
+          event -> {
+            if (event.getGestureSource() != gridPane && event.getDragboard().hasFiles()) {
+              /* allow for both copying and moving, whatever user chooses */
+              event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            }
+            event.consume();
+          });
+
+      gridPane.setOnDragDropped(
+          event -> {
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            if (db.hasFiles()) {
+              System.out.println("Send File: " + db.getFiles().toString() + " To: " + fn.getText());
+              success = true;
+            }
+            /* let the source know whether the string was successfully
+             * transferred and used */
+            event.setDropCompleted(success);
+
+            event.consume();
+          });
+
+      setGraphic(gridPane);
     }
-
-
+  }
 }

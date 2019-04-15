@@ -25,8 +25,8 @@ import java.util.ResourceBundle;
 
 public class StartupViewController implements Initializable {
 
-  final DirectoryChooser directoryChooser = new DirectoryChooser();
-  ConfigManager configManager = ConfigManager.getInstance();
+  private final DirectoryChooser directoryChooser = new DirectoryChooser();
+  private ConfigManager configManager = ConfigManager.getInstance();
   @FXML
   private TextField friendlyNameText;
   @FXML
