@@ -65,9 +65,11 @@
     </Tab>
     <Tab text="Settings">
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-            <SplitPane dividerPositions="0.29797979797979796" layoutX="13.0" layoutY="13.0" prefHeight="563.0"
-                       prefWidth="1006.0">
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="232.0" prefWidth="253.0">
+            <SplitPane dividerPositions="0.39266304347826086" layoutX="13.0" layoutY="13.0"
+                       AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                       AnchorPane.topAnchor="0.0">
+                <AnchorPane maxWidth="-Infinity" minHeight="0.0" minWidth="-Infinity" prefHeight="589.0"
+                            prefWidth="280.0">
                     <Button id="button_prefernces" layoutX="31.0" layoutY="46.0" mnemonicParsing="false"
                             onAction="#handlePreferencesButtonAction" prefHeight="43.0" prefWidth="217.0"
                             text="Preferences"/>
