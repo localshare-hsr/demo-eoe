@@ -14,16 +14,16 @@ import java.io.IOException;
 public class PeerListViewCell extends ListCell<Peer> {
 
   private static final String COLOR = "derive(palegreen, 50%)";
-  @FXML
-  private Label ip;
-  @FXML
-  private Label fn;
-  @FXML
-  private Label finger;
-  @FXML
-  private Label dn;
-  @FXML
-  private GridPane gridPane;
+    @FXML
+    private Label ip;
+    @FXML
+    private Label fn;
+    @FXML
+    private Label finger;
+    @FXML
+    private Label dn;
+    @FXML
+    private GridPane gridPane;
   private FXMLLoader mLLoader;
 
   @Override

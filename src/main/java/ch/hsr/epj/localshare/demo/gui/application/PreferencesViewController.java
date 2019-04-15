@@ -17,10 +17,10 @@ public class PreferencesViewController implements Initializable {
 
   private final DirectoryChooser directoryChooser = new DirectoryChooser();
   private ConfigManager configManager = ConfigManager.getInstance();
-  @FXML
-  private Text configPath;
-  @FXML
-  private Text downloadPath;
+    @FXML
+    private Text configPath;
+    @FXML
+    private Text downloadPath;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {

@@ -27,12 +27,12 @@ public class StartupViewController implements Initializable {
 
   private final DirectoryChooser directoryChooser = new DirectoryChooser();
   private ConfigManager configManager = ConfigManager.getInstance();
-  @FXML
-  private TextField friendlyNameText;
-  @FXML
-  private Label defaultConfigLabel;
-  @FXML
-  private Label defaultDownloadLabel;
+    @FXML
+    private TextField friendlyNameText;
+    @FXML
+    private Label defaultConfigLabel;
+    @FXML
+    private Label defaultDownloadLabel;
 
   public void changeFriendlyName(String friendlyName) {
     User user = User.getInstance();

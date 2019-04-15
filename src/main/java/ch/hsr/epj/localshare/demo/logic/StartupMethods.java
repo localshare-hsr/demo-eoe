@@ -1,6 +1,5 @@
 package ch.hsr.epj.localshare.demo.logic;
 
-
 import ch.hsr.epj.localshare.demo.persistent.JSONParser;
 
 import java.io.File;
@@ -8,7 +7,6 @@ import java.io.File;
 public class StartupMethods {
     private static boolean firstLaunch = true;
     private static String os = null;
-
 
     private StartupMethods() {
     }
@@ -41,6 +39,7 @@ public class StartupMethods {
     public static boolean isWindows() {
         return getOsName().startsWith("Windows");
     }
+
     public static boolean isLinux() {
         return getOsName().startsWith("Linux");
     }

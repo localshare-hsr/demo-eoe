@@ -4,8 +4,8 @@ import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
 
 public class NetworkDiscovery {
 
-  public NetworkDiscovery() {
-  }
+    public NetworkDiscovery() {
+    }
 
   public void startSearchProcess() {
     System.out.println("Starting Network DiscoveryManager");

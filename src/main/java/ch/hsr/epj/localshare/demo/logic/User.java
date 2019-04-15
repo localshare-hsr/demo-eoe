@@ -5,8 +5,8 @@ public class User {
 
   private String friendlyName;
 
-  private User() {
-  }
+    private User() {
+    }
 
   public static User getInstance() {
     if (User.instance == null) {

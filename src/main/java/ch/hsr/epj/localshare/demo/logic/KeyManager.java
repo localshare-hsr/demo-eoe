@@ -96,7 +96,7 @@ public class KeyManager {
 
   private void createAndSafeNewCertificate(final String friendlyName)
       throws KeyStoreException, InvalidKeyException, NoSuchProviderException,
-      NoSuchAlgorithmException, IOException, CertificateException, SignatureException {
+          NoSuchAlgorithmException, IOException, CertificateException, SignatureException {
     CertAndKeyGen certGen = new CertAndKeyGen("EC", "SHA256withECDSA", null);
     certGen.generate(256);
 
@@ -115,7 +115,7 @@ public class KeyManager {
     X509Certificate certificate = (X509Certificate) keyStore.getCertificate(alias);
 
     return DatatypeConverter.printHexBinary(
-        MessageDigest.getInstance("SHA-256").digest(certificate.getEncoded()))
+            MessageDigest.getInstance("SHA-256").digest(certificate.getEncoded()))
         .toLowerCase();
   }
 

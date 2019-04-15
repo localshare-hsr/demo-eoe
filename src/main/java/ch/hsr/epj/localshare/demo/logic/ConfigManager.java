@@ -5,8 +5,8 @@ public class ConfigManager {
   private String downloadPath = "";
   private String configPath = "";
 
-  private ConfigManager() {
-  }
+    private ConfigManager() {
+    }
 
   public static ConfigManager getInstance() {
     if (ConfigManager.instance == null) {

@@ -5,8 +5,8 @@ public class Statemachine {
   static String[] listOfIps;
   Statemachine state;
 
-  public Statemachine() {
-  }
+    public Statemachine() {
+    }
 
   public void addListOfIPsToScan(String[] listOfIps) {
     Statemachine.listOfIps = listOfIps;
