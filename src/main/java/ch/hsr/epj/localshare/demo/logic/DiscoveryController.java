@@ -26,13 +26,13 @@ public class DiscoveryController implements Observer {
   public void startServer() {
     startDaemonTask(
             new Task<Void>() {
-              @Override
-              protected Void call() {
-                IPResource.getInstance()
-                        .setIdentity(IPAddressUtil.getLocalIPAddress().getHostAddress());
-                new OuroborosUDPServer().run();
-                return null;
-              }
+                @Override
+                protected Void call() {
+                    IPResource.getInstance()
+                            .setIdentity(IPAddressUtil.getLocalIPAddress().getHostAddress());
+                    new OuroborosUDPServer().run();
+                    return null;
+                }
             });
   }
 
@@ -40,12 +40,12 @@ public class DiscoveryController implements Observer {
     startDaemonTask(
             new Task<Void>() {
 
-              @Override
-              protected Void call() throws Exception {
-                NetworkDiscovery networkDiscovery = new NetworkDiscovery();
-                networkDiscovery.startSearchProcess();
-                return null;
-              }
+                @Override
+                protected Void call() throws Exception {
+                    NetworkDiscovery networkDiscovery = new NetworkDiscovery();
+                    networkDiscovery.startSearchProcess();
+                    return null;
+                }
             });
   }
 
@@ -59,17 +59,17 @@ public class DiscoveryController implements Observer {
   public void update(Observable o, Object arg) {
     Platform.runLater(
             () -> {
-              List<Peer> newPeerList = new ArrayList<>();
-              String[] event = (String[]) arg;
-              for (String ip : event) {
-                newPeerList.add(new Peer(ip, "LS user", "", "aasd98asdas8d7"));
-              }
-
-              for (Peer p : newPeerList) {
-                if (!peerObservableList.contains(p)) {
-                  peerObservableList.add(p);
+                List<Peer> newPeerList = new ArrayList<>();
+                String[] event = (String[]) arg;
+                for (String ip : event) {
+                    newPeerList.add(new Peer(ip, "LS user", "", "aasd98asdas8d7"));
                 }
-              }
+
+                for (Peer p : newPeerList) {
+                    if (!peerObservableList.contains(p)) {
+                        peerObservableList.add(p);
+                    }
+                }
             });
   }
 }

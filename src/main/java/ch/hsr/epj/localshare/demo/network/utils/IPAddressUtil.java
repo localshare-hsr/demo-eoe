@@ -35,7 +35,7 @@ public class IPAddressUtil {
       }
     }
 
-    System.out.println("netmask is " + subnetmask);
+      System.out.println("netmask is " + Integer.toString(subnetmask));
     return Integer.toString(subnetmask);
   }
 

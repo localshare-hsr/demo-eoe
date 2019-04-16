@@ -69,7 +69,7 @@ public class JSONParser {
   public void loadData() {
     org.json.simple.parser.JSONParser parser = new org.json.simple.parser.JSONParser();
     try {
-      Object obj = parser.parse(new FileReader(manager.getConfigPath() + "\\config.json"));
+      Object obj = parser.parse(new FileReader(manager.getConfigPath() + "/config.json"));
       JSONObject jsonObject = (JSONObject) obj;
 
       String friendlyName = (String) jsonObject.get(jsonFriendlyName);

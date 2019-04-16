@@ -2,8 +2,8 @@ package ch.hsr.epj.localshare.demo.gui.application;
 
 import ch.hsr.epj.localshare.demo.gui.data.Peer;
 import ch.hsr.epj.localshare.demo.logic.DiscoveryController;
-import ch.hsr.epj.localshare.demo.logic.KeyManager;
 import ch.hsr.epj.localshare.demo.logic.User;
+import ch.hsr.epj.localshare.demo.logic.keymanager.KeyManager;
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,6 +21,7 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
+import java.security.KeyStoreException;
 import java.util.ResourceBundle;
 
 public class MainWindowController implements Initializable {
@@ -58,10 +59,16 @@ public class MainWindowController implements Initializable {
     discoveryController.startSearcher();
 
     User user = User.getInstance();
-    KeyManager keyManager = new KeyManager();
-    keyManager.generateNewCertificate(user.getFriendlyName());
-    fingerPrint = keyManager.getFingerprint();
     friendlyName = user.getFriendlyName();
+    KeyManager keyManager = new KeyManager();
+    if (!keyManager.existsKeyingMaterial(friendlyName)) {
+      keyManager.generateKeyingMaterial(friendlyName);
+    }
+    try {
+      fingerPrint = keyManager.getUsersFingerprint();
+    } catch (KeyStoreException e) {
+      e.printStackTrace();
+    }
   }
 
   @FXML
@@ -89,15 +96,14 @@ public class MainWindowController implements Initializable {
     listView.setEffect(null);
   }
 
-  // right click display dialogue box to enter display name
-  @FXML
-  private void onListItemRighClick(MouseEvent click) {
-  }
-
   @FXML
   private void refreshList() {
 
     listView.refresh();
+    peerObservableList = FXCollections.observableArrayList();
+    DiscoveryController discoveryController = new DiscoveryController(peerObservableList);
+    discoveryController.startServer();
+    discoveryController.startSearcher();
 
     for (Peer item : listView.getItems()) {
       System.out.println(item.toString());

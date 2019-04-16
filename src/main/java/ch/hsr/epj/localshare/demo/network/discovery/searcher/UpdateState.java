@@ -6,41 +6,46 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 class UpdateState extends Statemachine {
 
   private static final String STATE_NAME = "UPDATE";
   private static final int PORT = 8640;
+    private static Logger logger = Logger.getLogger(UpdateState.class.getName());
 
   UpdateState() {
-    System.out.println("change state:  ===> " + STATE_NAME);
+      logger.fine("change state:  ===> " + STATE_NAME);
     try {
       getUpdateFromNextPeer();
-    } catch (InterruptedException | IOException e) {
-      e.printStackTrace();
+    } catch (InterruptedException e) {
+        logger.log(Level.WARNING, "This thread is not really sleepy", e);
+        Thread.currentThread().interrupt();
     }
   }
 
-  private void getUpdateFromNextPeer() throws IOException, InterruptedException {
-    String nextPeer;
+    private void getUpdateFromNextPeer() throws InterruptedException {
     while (IPResource.getInstance().hasNextPeer()) {
-      nextPeer = IPResource.getInstance().getNextPeer();
-      System.out.println("  - get updates from " + nextPeer);
 
       try (DatagramSocket datagramSocket = new DatagramSocket(0)) {
-        byte[] buffer = "U".getBytes();
+          sendResponseToNextPeer(datagramSocket);
 
+      } catch (IOException e) {
+          logger.log(Level.WARNING, "Unable to create new DatagramSocket", e);
+      }
+
+        Thread.sleep(9000);
+    }
+
+        state = new IdleState();
+    }
+
+    private void sendResponseToNextPeer(DatagramSocket datagramSocket) throws IOException {
+        String nextPeer = IPResource.getInstance().getNextPeer();
+        byte[] buffer = "U".getBytes();
         InetAddress targetAddress = InetAddress.getByName(nextPeer);
         DatagramPacket request = new DatagramPacket(buffer, buffer.length, targetAddress, PORT);
         datagramSocket.send(request);
-
-      } catch (SocketException ignored) {
-      }
-
-      Thread.sleep(9000);
-    }
-
-    state = new IdleState();
   }
 }

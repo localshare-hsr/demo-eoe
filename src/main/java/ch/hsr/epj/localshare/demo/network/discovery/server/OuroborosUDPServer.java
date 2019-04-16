@@ -7,17 +7,21 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class OuroborosUDPServer extends UDPServer {
 
   private static final int DEFAULT_PORT = 8640;
+
+    private static Logger logger = Logger.getLogger(OuroborosUDPServer.class.getName());
 
   public OuroborosUDPServer() {
     super(DEFAULT_PORT);
   }
 
   @Override
-  public void respond(DatagramSocket socket, DatagramPacket request) throws IOException {
+  public void respond(DatagramSocket socket, DatagramPacket request) {
 
     byte[] requestBody = request.getData();
     String ipAddressOfRequester = request.getAddress().getHostAddress();
@@ -28,7 +32,6 @@ public class OuroborosUDPServer extends UDPServer {
         respondToRequesterMyIPAddress(socket, request);
         break;
       case 'U':
-        // removeAllKnownPeersBetweenMeAndRequester(ipAddressOfRequester);
         addIPAddressOfRequesterToKnownPeersList(ipAddressOfRequester);
         respondToRequesterAllKnownPeers(socket, request);
         break;
@@ -46,7 +49,7 @@ public class OuroborosUDPServer extends UDPServer {
     try {
       sendMyIPAddress(socket, request);
     } catch (IOException e) {
-      e.printStackTrace();
+        logger.log(Level.WARNING, "Unable to send my ip to peer", e);
     }
   }
 
@@ -54,12 +57,8 @@ public class OuroborosUDPServer extends UDPServer {
     try {
       sendAllIPAddresses(socket, request);
     } catch (IOException e) {
-      e.printStackTrace();
+        logger.log(Level.WARNING, "Unable to send all known ip to peer", e);
     }
-  }
-
-  private void removeAllKnownPeersBetweenMeAndRequester(String ipAddressOfRequester) {
-    IPResource.getInstance().removeAllEntriesFromTillMyIdentity(ipAddressOfRequester);
   }
 
   private void updateMyKnownKnownPeers(byte[] requestBody) {
@@ -74,7 +73,7 @@ public class OuroborosUDPServer extends UDPServer {
         new DatagramPacket(body, body.length, request.getAddress(), DEFAULT_PORT);
 
     socket.send(response);
-    System.out.println("Sent my ip to peer " + request.getAddress());
+      logger.log(Level.INFO, "Sent my ip to peer" + request.getAddress());
   }
 
   private void sendAllIPAddresses(final DatagramSocket socket, final DatagramPacket request)
@@ -84,7 +83,7 @@ public class OuroborosUDPServer extends UDPServer {
         new DatagramPacket(body, body.length, request.getAddress(), DEFAULT_PORT);
 
     socket.send(response);
-    System.out.println("Sent all ips to peer " + request.getAddress());
+      logger.log(Level.INFO, "Sent all ip to peer" + request.getAddress());
   }
 
   private void processUpdateData(final byte[] data) {

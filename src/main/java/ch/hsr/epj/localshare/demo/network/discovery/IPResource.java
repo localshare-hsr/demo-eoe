@@ -32,11 +32,6 @@ public class IPResource extends Observable {
     addIPResource(myIPAddress);
   }
 
-  /** Add a discovery controller to update the GUI */
-  /*  public void addDiscoveryController(DiscoveryController discoveryController) {
-    this.discoveryController = discoveryController;
-  }*/
-
   /**
    * Update list of discovered ip addresses.
    *
@@ -54,8 +49,10 @@ public class IPResource extends Observable {
     notifyObservers(getArray());
   }
 
-    /** Remove all entries from the newIPAddress till my identity address. */
-  public synchronized void removeAllEntriesFromTillMyIdentity(final String newIPAddress) {
+    /**
+     * Remove all entries from the newIPAddress till my identity address.
+     */
+    synchronized void removeAllEntriesFromTillMyIdentity(final String newIPAddress) {
     if (newIPAddress.equals(ipAddressOfThisPeerInstance)) {
       return;
     }
@@ -116,8 +113,10 @@ public class IPResource extends Observable {
     notifyObservers(getArray());
   }
 
-    /** Remove the next peer in the list of all known ip addresses */
-  public synchronized void removeNextPeer() {
+    /**
+     * Remove the next peer in the list of all known ip addresses
+     */
+    synchronized void removeNextPeer() {
     removeIPResource(getNextPeer());
     setChanged();
     notifyObservers(getArray());
@@ -133,8 +132,12 @@ public class IPResource extends Observable {
   }
 
   private Long toNumeric(final String ip) {
-    Scanner sc = new Scanner(ip).useDelimiter("\\.");
-    return (sc.nextLong() << 24) + (sc.nextLong() << 16) + (sc.nextLong() << 8) + (sc.nextLong());
+      long number;
+      try (Scanner sc = new Scanner(ip).useDelimiter("\\.")) {
+          number =
+                  (sc.nextLong() << 24) + (sc.nextLong() << 16) + (sc.nextLong() << 8) + (sc.nextLong());
+    }
+    return number;
   }
 
   private Iterator<String> findPositionOfIP(final String IPToFind) {
@@ -195,10 +198,5 @@ public class IPResource extends Observable {
     }
 
     return allKnownPeers.toArray(new String[0]);
-  }
-
-  @Override
-  public void notifyObservers(Object arg) {
-    super.notifyObservers(arg);
   }
 }

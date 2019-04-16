@@ -6,18 +6,22 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 class SearchingState extends Statemachine {
 
   private static final String STATE_NAME = "SEARCHING";
   private static final int PORT = 8640;
+    private static Logger logger = Logger.getLogger(SearchingState.class.getName());
 
   SearchingState() {
-    System.out.println("change state:  ===> " + STATE_NAME);
+      logger.fine("change state:  ===> " + STATE_NAME);
     try {
       searchNetwork();
     } catch (InterruptedException e) {
-      e.printStackTrace();
+        logger.log(Level.WARNING, "This thread is not really sleepy", e);
+        Thread.currentThread().interrupt();
     }
   }
 
@@ -25,7 +29,7 @@ class SearchingState extends Statemachine {
     try {
       startNetworkScan();
     } catch (IOException e) {
-      e.printStackTrace();
+        logger.log(Level.WARNING, "Unable to start network search scan", e);
     }
 
     boolean foundOtherPeer = IPResource.getInstance().hasNextPeer();
@@ -40,25 +44,25 @@ class SearchingState extends Statemachine {
   private void startNetworkScan() throws IOException, InterruptedException {
 
     Thread.sleep(200); // small delay to start up the listening server first
-    DatagramSocket datagramSocket = new DatagramSocket(0);
-    byte[] buffer = "D".getBytes();
-
     long startTimer = System.currentTimeMillis();
+      try (DatagramSocket datagramSocket = new DatagramSocket(0)) {
+          byte[] buffer = "D".getBytes();
 
-    for (String s : startIP()) {
+          for (String s : startIP()) {
 
-      InetAddress targetAddress = InetAddress.getByName(s);
-      DatagramPacket request = new DatagramPacket(buffer, buffer.length, targetAddress, PORT);
-      datagramSocket.send(request);
-      Thread.sleep(5);
+              InetAddress targetAddress = InetAddress.getByName(s);
+              DatagramPacket request = new DatagramPacket(buffer, buffer.length, targetAddress, PORT);
+              datagramSocket.send(request);
+              Thread.sleep(100);
 
-      if (IPResource.getInstance().hasNextPeer()) {
-        return;
+              if (IPResource.getInstance().hasNextPeer()) {
+                  return;
+              }
+          }
       }
-    }
     long endTimer = System.currentTimeMillis();
 
-    System.out.println("IP Ranges scaned in " + (endTimer - startTimer) + "ms");
+      logger.log(Level.INFO, "IP Ranges scaned in {0} ms", (endTimer - startTimer));
   }
 
   private String[] startIP() {
