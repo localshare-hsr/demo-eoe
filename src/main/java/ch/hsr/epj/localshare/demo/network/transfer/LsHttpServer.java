@@ -1,22 +1,30 @@
 package ch.hsr.epj.localshare.demo.network.transfer;
 
+import static ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil.getLocalIPAddress;
+
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
-
-import javax.xml.bind.DatatypeConverter;
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.CountDownLatch;
-
-import static ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil.getLocalIPAddress;
+import javax.xml.bind.DatatypeConverter;
 
 public class LsHttpServer implements Runnable {
+
+  // TODO: please find a better way to do this
+  private static String fileName;
+  private HttpServer server;
+  private CountDownLatch startedLatch = new CountDownLatch(1);
 
   @Override
   public void run() {
@@ -115,6 +123,7 @@ public class LsHttpServer implements Runnable {
   }
 
   static class DynamicHandler implements HttpHandler {
+
     public void handle(HttpExchange t) throws IOException {
       // add the required response header for a JPG file
       Headers h = t.getResponseHeaders();
@@ -137,9 +146,4 @@ public class LsHttpServer implements Runnable {
       os.close();
     }
   }
-
-    // TODO: please find a better way to do this
-    private static String fileName;
-    private HttpServer server;
-    private CountDownLatch startedLatch = new CountDownLatch(1);
 }

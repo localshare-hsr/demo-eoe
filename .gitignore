@@ -31,6 +31,9 @@ out/
 # generated key files
 keys/
 
+#generated plant UML Files
+*.plantuml
+
 # test sourcefiles
 *.jpg
 *.pdf
