@@ -1,12 +1,13 @@
 package ch.hsr.epj.localshare.demo.logic;
 
 public class User {
+
   private static User instance;
 
   private String friendlyName;
 
-    private User() {
-    }
+  private User() {
+  }
 
   public static User getInstance() {
     if (User.instance == null) {

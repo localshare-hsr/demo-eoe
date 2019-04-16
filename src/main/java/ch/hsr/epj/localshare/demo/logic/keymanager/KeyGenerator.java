@@ -1,5 +1,22 @@
 package ch.hsr.epj.localshare.demo.logic.keymanager;
 
+import static org.bouncycastle.jce.provider.BouncyCastleProvider.PROVIDER_NAME;
+
+import java.math.BigInteger;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
+import java.security.SecureRandom;
+import java.security.Security;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.security.spec.ECGenParameterSpec;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.asn1.x509.KeyUsage;
@@ -11,18 +28,8 @@ import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 
-import java.math.BigInteger;
-import java.security.*;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.security.spec.ECGenParameterSpec;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static org.bouncycastle.jce.provider.BouncyCastleProvider.PROVIDER_NAME;
-
 class KeyGenerator {
+
     private static final String SIGNATURE_ALGORITHM = "SHA256WITHECDSA";
     private static final String KEY_GENERATION_ALGORITHM = "ECDH";
 
@@ -95,7 +102,8 @@ class KeyGenerator {
         return keyPairGenerator.generateKeyPair();
     }
 
-    private X509Certificate generateV3Certificate(final KeyPair pair, final String cn) throws CertificateException, OperatorCreationException {
+    private X509Certificate generateV3Certificate(final KeyPair pair, final String cn)
+            throws CertificateException, OperatorCreationException {
         X500Name issuerName = new X500Name("CN=" + cn);
 
         BigInteger serial = BigInteger.valueOf(new SecureRandom().nextInt());

@@ -3,6 +3,11 @@ package ch.hsr.epj.localshare.demo.gui.application;
 import ch.hsr.epj.localshare.demo.logic.ConfigManager;
 import ch.hsr.epj.localshare.demo.logic.User;
 import ch.hsr.epj.localshare.demo.persistent.JSONParser;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Objects;
+import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -17,22 +22,16 @@ import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Objects;
-import java.util.ResourceBundle;
-
 public class StartupViewController implements Initializable {
 
   private final DirectoryChooser directoryChooser = new DirectoryChooser();
   private ConfigManager configManager = ConfigManager.getInstance();
-    @FXML
-    private TextField friendlyNameText;
-    @FXML
-    private Label defaultConfigLabel;
-    @FXML
-    private Label defaultDownloadLabel;
+  @FXML
+  private TextField friendlyNameText;
+  @FXML
+  private Label defaultConfigLabel;
+  @FXML
+  private Label defaultDownloadLabel;
 
   public void changeFriendlyName(String friendlyName) {
     User user = User.getInstance();

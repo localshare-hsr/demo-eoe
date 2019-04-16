@@ -3,16 +3,16 @@ package ch.hsr.epj.localshare.demo.persistent;
 import ch.hsr.epj.localshare.demo.logic.ConfigManager;
 import ch.hsr.epj.localshare.demo.logic.StartupMethods;
 import ch.hsr.epj.localshare.demo.logic.User;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
-
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 
 public class JSONParser {
+
   String jsonFriendlyName = "friendly_name";
   String jsonConfigPath = "config_path";
   String jsonDownloadPath = "download_path";

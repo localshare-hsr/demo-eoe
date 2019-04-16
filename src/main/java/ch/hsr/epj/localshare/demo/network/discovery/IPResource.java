@@ -1,6 +1,14 @@
 package ch.hsr.epj.localshare.demo.network.discovery;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Observable;
+import java.util.Scanner;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class IPResource extends Observable {
 
@@ -19,14 +27,16 @@ public class IPResource extends Observable {
     return instance;
   }
 
-    /**
-     * Get ip address of current instance.
-     */
+  /**
+   * Get ip address of current instance.
+   */
   public synchronized String getIdentity() {
     return this.ipAddressOfThisPeerInstance;
   }
 
-    /** Set ip address of current instance. */
+  /**
+   * Set ip address of current instance.
+   */
   public synchronized void setIdentity(final String myIPAddress) {
     this.ipAddressOfThisPeerInstance = myIPAddress;
     addIPResource(myIPAddress);
@@ -49,10 +59,10 @@ public class IPResource extends Observable {
     notifyObservers(getArray());
   }
 
-    /**
-     * Remove all entries from the newIPAddress till my identity address.
-     */
-    synchronized void removeAllEntriesFromTillMyIdentity(final String newIPAddress) {
+  /**
+   * Remove all entries from the newIPAddress till my identity address.
+   */
+  synchronized void removeAllEntriesFromTillMyIdentity(final String newIPAddress) {
     if (newIPAddress.equals(ipAddressOfThisPeerInstance)) {
       return;
     }
@@ -113,10 +123,10 @@ public class IPResource extends Observable {
     notifyObservers(getArray());
   }
 
-    /**
-     * Remove the next peer in the list of all known ip addresses
-     */
-    synchronized void removeNextPeer() {
+  /**
+   * Remove the next peer in the list of all known ip addresses
+   */
+  synchronized void removeNextPeer() {
     removeIPResource(getNextPeer());
     setChanged();
     notifyObservers(getArray());
@@ -132,10 +142,10 @@ public class IPResource extends Observable {
   }
 
   private Long toNumeric(final String ip) {
-      long number;
-      try (Scanner sc = new Scanner(ip).useDelimiter("\\.")) {
-          number =
-                  (sc.nextLong() << 24) + (sc.nextLong() << 16) + (sc.nextLong() << 8) + (sc.nextLong());
+    long number;
+    try (Scanner sc = new Scanner(ip).useDelimiter("\\.")) {
+      number =
+          (sc.nextLong() << 24) + (sc.nextLong() << 16) + (sc.nextLong() << 8) + (sc.nextLong());
     }
     return number;
   }

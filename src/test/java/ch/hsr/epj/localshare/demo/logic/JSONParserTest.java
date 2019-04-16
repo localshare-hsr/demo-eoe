@@ -4,10 +4,9 @@ import org.junit.Test;
 
 public class JSONParserTest {
 
-    @Test
-    public void testFileAlreadyOpened() {
+  @Test
+  public void testFileAlreadyOpened() {
 
-
-    }
+  }
 
 }

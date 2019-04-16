@@ -1,9 +1,12 @@
 package ch.hsr.epj.localshare.demo.network.discovery.server;
 
 import ch.hsr.epj.localshare.demo.network.discovery.IPResource;
-
 import java.io.IOException;
-import java.net.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,7 +42,7 @@ public abstract class UDPServer implements Runnable {
     try (DatagramSocket socket = new DatagramSocket(port, myIP)) {
       socket.setSoTimeout(10000);
       logger.log(
-              Level.INFO, "Listen on " + socket.getLocalAddress() + " port " + socket.getLocalPort());
+          Level.INFO, "Listen on " + socket.getLocalAddress() + " port " + socket.getLocalPort());
       boolean isRunning = true;
       while (isRunning) {
         DatagramPacket incoming = new DatagramPacket(buffer, buffer.length);

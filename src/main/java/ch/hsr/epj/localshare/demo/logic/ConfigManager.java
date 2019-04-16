@@ -1,12 +1,13 @@
 package ch.hsr.epj.localshare.demo.logic;
 
 public class ConfigManager {
+
   private static ConfigManager instance;
   private String downloadPath = "";
   private String configPath = "";
 
-    private ConfigManager() {
-    }
+  private ConfigManager() {
+  }
 
   public static ConfigManager getInstance() {
     if (ConfigManager.instance == null) {

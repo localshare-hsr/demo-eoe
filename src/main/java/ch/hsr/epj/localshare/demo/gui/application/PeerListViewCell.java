@@ -1,6 +1,7 @@
 package ch.hsr.epj.localshare.demo.gui.application;
 
 import ch.hsr.epj.localshare.demo.gui.data.Peer;
+import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -9,21 +10,19 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 
-import java.io.IOException;
-
 public class PeerListViewCell extends ListCell<Peer> {
 
   private static final String COLOR = "derive(palegreen, 50%)";
-    @FXML
-    private Label ip;
-    @FXML
-    private Label fn;
-    @FXML
-    private Label finger;
-    @FXML
-    private Label dn;
-    @FXML
-    private GridPane gridPane;
+  @FXML
+  private Label ip;
+  @FXML
+  private Label fn;
+  @FXML
+  private Label finger;
+  @FXML
+  private Label dn;
+  @FXML
+  private GridPane gridPane;
   private FXMLLoader mLLoader;
 
   @Override

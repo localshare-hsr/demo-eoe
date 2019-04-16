@@ -1,7 +1,6 @@
 package ch.hsr.epj.localshare.demo.network.discovery.server;
 
 import ch.hsr.epj.localshare.demo.network.discovery.IPResource;
-
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -14,7 +13,7 @@ public class OuroborosUDPServer extends UDPServer {
 
   private static final int DEFAULT_PORT = 8640;
 
-    private static Logger logger = Logger.getLogger(OuroborosUDPServer.class.getName());
+  private static Logger logger = Logger.getLogger(OuroborosUDPServer.class.getName());
 
   public OuroborosUDPServer() {
     super(DEFAULT_PORT);
@@ -49,7 +48,7 @@ public class OuroborosUDPServer extends UDPServer {
     try {
       sendMyIPAddress(socket, request);
     } catch (IOException e) {
-        logger.log(Level.WARNING, "Unable to send my ip to peer", e);
+      logger.log(Level.WARNING, "Unable to send my ip to peer", e);
     }
   }
 
@@ -57,7 +56,7 @@ public class OuroborosUDPServer extends UDPServer {
     try {
       sendAllIPAddresses(socket, request);
     } catch (IOException e) {
-        logger.log(Level.WARNING, "Unable to send all known ip to peer", e);
+      logger.log(Level.WARNING, "Unable to send all known ip to peer", e);
     }
   }
 
@@ -73,7 +72,7 @@ public class OuroborosUDPServer extends UDPServer {
         new DatagramPacket(body, body.length, request.getAddress(), DEFAULT_PORT);
 
     socket.send(response);
-      logger.log(Level.INFO, "Sent my ip to peer" + request.getAddress());
+    logger.log(Level.INFO, "Sent my ip to peer" + request.getAddress());
   }
 
   private void sendAllIPAddresses(final DatagramSocket socket, final DatagramPacket request)
@@ -83,7 +82,7 @@ public class OuroborosUDPServer extends UDPServer {
         new DatagramPacket(body, body.length, request.getAddress(), DEFAULT_PORT);
 
     socket.send(response);
-      logger.log(Level.INFO, "Sent all ip to peer" + request.getAddress());
+    logger.log(Level.INFO, "Sent all ip to peer" + request.getAddress());
   }
 
   private void processUpdateData(final byte[] data) {

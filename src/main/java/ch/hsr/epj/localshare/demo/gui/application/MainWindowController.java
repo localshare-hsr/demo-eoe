@@ -5,6 +5,10 @@ import ch.hsr.epj.localshare.demo.logic.DiscoveryController;
 import ch.hsr.epj.localshare.demo.logic.User;
 import ch.hsr.epj.localshare.demo.logic.keymanager.KeyManager;
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
+import java.io.IOException;
+import java.net.URL;
+import java.security.KeyStoreException;
+import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,11 +22,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-
-import java.io.IOException;
-import java.net.URL;
-import java.security.KeyStoreException;
-import java.util.ResourceBundle;
 
 public class MainWindowController implements Initializable {
 

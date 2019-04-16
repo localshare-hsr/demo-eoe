@@ -1,9 +1,14 @@
 package ch.hsr.epj.localshare.demo.network.utils;
 
-import org.apache.commons.net.util.SubnetUtils;
-
 import java.io.IOException;
-import java.net.*;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.InterfaceAddress;
+import java.net.NetworkInterface;
+import java.net.Socket;
+import java.net.SocketException;
+import org.apache.commons.net.util.SubnetUtils;
 
 public class IPAddressUtil {
 
@@ -35,7 +40,7 @@ public class IPAddressUtil {
       }
     }
 
-      System.out.println("netmask is " + Integer.toString(subnetmask));
+    System.out.println("netmask is " + Integer.toString(subnetmask));
     return Integer.toString(subnetmask);
   }
 

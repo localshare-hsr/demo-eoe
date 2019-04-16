@@ -3,13 +3,12 @@ package ch.hsr.epj.localshare.demo.gui.application;
 import ch.hsr.epj.localshare.demo.logic.StartupMethods;
 import ch.hsr.epj.localshare.demo.logic.TransferController;
 import ch.hsr.epj.localshare.demo.persistent.JSONParser;
+import java.util.Objects;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.util.Objects;
 
 public class Main extends Application {
 
