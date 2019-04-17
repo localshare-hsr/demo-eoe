@@ -5,12 +5,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 <AnchorPane fx:controller="ch.hsr.epj.localshare.demo.gui.application.PreferencesViewController"
-            prefHeight="400.0" prefWidth="738.0" xmlns="http://javafx.com/javafx/8"
-            xmlns:fx="http://javafx.com/fxml/1">
-    <Label layoutX="28.0" layoutY="54.0" prefHeight="31.0" prefWidth="277.0"
-           text="Current Download Path:"/>
-    <Text fx:id="path" layoutX="28.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0"
-          text="C:\TEMP\LocalShareDownloads" wrappingWidth="459.13671875"/>
-    <Button layoutX="378.0" layoutY="99.0" mnemonicParsing="false" text="Change Path"
-            onAction="#handleChangeDirectoryButtonAction"/>
+  prefHeight="400.0" prefWidth="738.0" xmlns="http://javafx.com/javafx/8"
+  xmlns:fx="http://javafx.com/fxml/1">
+  <Label layoutX="28.0" layoutY="54.0" prefHeight="31.0" prefWidth="277.0"
+    text="Current Download Path:"/>
+  <Text fx:id="path" layoutX="28.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0"
+    text="C:\TEMP\LocalShareDownloads" wrappingWidth="459.13671875"/>
+  <Button layoutX="378.0" layoutY="99.0" mnemonicParsing="false" text="Change Path"
+    onAction="#handleChangeDirectoryButtonAction"/>
 </AnchorPane>

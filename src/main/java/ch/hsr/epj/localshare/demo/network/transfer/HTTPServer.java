@@ -2,7 +2,6 @@ package ch.hsr.epj.localshare.demo.network.transfer;
 
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
 import com.sun.net.httpserver.HttpServer;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;

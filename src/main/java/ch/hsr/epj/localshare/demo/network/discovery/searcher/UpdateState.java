@@ -23,12 +23,12 @@ class UpdateState extends Statemachine {
 
   private void getUpdateFromNextPeer() throws IOException, InterruptedException {
     String nextPeer;
-      while (IPResource.getInstance().hasNextPeer()) {
-          nextPeer = IPResource.getInstance().getNextPeer();
+    while (IPResource.getInstance().hasNextPeer()) {
+      nextPeer = IPResource.getInstance().getNextPeer();
       System.out.println("  - get updates from " + nextPeer);
 
       try (DatagramSocket datagramSocket = new DatagramSocket(0)) {
-          byte[] buffer = "U".getBytes();
+        byte[] buffer = "U".getBytes();
 
         InetAddress targetAddress = InetAddress.getByName(nextPeer);
         DatagramPacket request = new DatagramPacket(buffer, buffer.length, targetAddress, PORT);

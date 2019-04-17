@@ -3,7 +3,6 @@ package ch.hsr.epj.localshare.demo.network.transfer;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -17,6 +16,7 @@ import java.nio.file.Files;
 import java.util.List;
 
 public class ShareHandler implements HttpHandler {
+
   private static final int BUFFER_SIZE = 1024;
   private static final int EOF = -1;
   private static final int EMPTY_RESPONSE_BODY = 0;

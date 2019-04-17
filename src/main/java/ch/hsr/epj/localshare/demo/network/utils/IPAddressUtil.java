@@ -8,7 +8,6 @@ import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.Socket;
 import java.net.SocketException;
-
 import org.apache.commons.net.util.SubnetUtils;
 
 public class IPAddressUtil {
