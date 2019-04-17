@@ -16,25 +16,37 @@
   <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
     AnchorPane.topAnchor="0.0"
     alignment="CENTER">
-    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
-      onAction="#handleFinishButtonClick" text="Finish and start Application">
-      <VBox.margin>
-        <Insets top="50.0"/>
-      </VBox.margin>
-    </Button>
+    <Label prefHeight="70.0" prefWidth="555.0" text="Hello and Welcome to LocalShare">
+      <font>
+        <Font size="36.0"/>
+      </font>
+    </Label>
     <GridPane alignment="CENTER" prefHeight="111.0" prefWidth="580.0">
-      <Button GridPane.columnIndex="1" GridPane.halignment="RIGHT"
-        GridPane.rowIndex="2" mnemonicParsing="false" onAction="#handleChangeDownloadButtonClicked"
-        text="Change Directory">
-        <GridPane.margin>
-          <Insets left="10.0" right="10.0"/>
-        </GridPane.margin>
-      </Button>
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="30.0"/>
+        <ColumnConstraints hgrow="SOMETIMES"/>
+      </columnConstraints>
+      <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+      </rowConstraints>
+      <VBox.margin>
+        <Insets left="10.0" right="10.0" top="30.0"/>
+      </VBox.margin>
+      <padding>
+        <Insets left="50.0" right="50.0"/>
+      </padding>
       <Label prefHeight="11.0" prefWidth="276.0" text="Please enter a friendlyName:">
         <padding>
           <Insets bottom="5.0" right="5.0" top="5.0"/>
         </padding>
       </Label>
+      <TextField GridPane.columnIndex="1" text="unknown" fx:id="friendlyNameText">
+        <GridPane.margin>
+          <Insets left="20.0" right="10.0"/>
+        </GridPane.margin>
+      </TextField>
       <Label GridPane.rowIndex="1" text="Default Config Path:">
         <GridPane.margin>
           <Insets bottom="10.0" top="10.0"/>
@@ -56,31 +68,19 @@
           <Insets left="30.0"/>
         </GridPane.margin>
       </Label>
-      <TextField GridPane.columnIndex="1" text="unknown" fx:id="friendlyNameText">
+      <Button GridPane.columnIndex="1" GridPane.halignment="RIGHT"
+        GridPane.rowIndex="2" mnemonicParsing="false" onAction="#handleChangeDownloadButtonClicked"
+        text="Change Directory">
         <GridPane.margin>
-          <Insets left="20.0" right="10.0"/>
+          <Insets left="10.0" right="10.0"/>
         </GridPane.margin>
-      </TextField>
-      <VBox.margin>
-        <Insets left="10.0" right="10.0" top="30.0"/>
-      </VBox.margin>
-      <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" percentWidth="30.0"/>
-        <ColumnConstraints hgrow="SOMETIMES"/>
-      </columnConstraints>
-      <padding>
-        <Insets left="50.0" right="50.0"/>
-      </padding>
-      <rowConstraints>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-      </rowConstraints>
+      </Button>
     </GridPane>
-    <Label prefHeight="70.0" prefWidth="555.0" text="Hello and Welcome to LocalShare">
-      <font>
-        <Font size="36.0"/>
-      </font>
-    </Label>
+    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+      onAction="#handleFinishButtonClick" text="Finish and start Application">
+      <VBox.margin>
+        <Insets top="50.0"/>
+      </VBox.margin>
+    </Button>
   </VBox>
 </AnchorPane>
