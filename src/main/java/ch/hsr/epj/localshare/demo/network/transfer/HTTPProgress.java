@@ -3,6 +3,7 @@ package ch.hsr.epj.localshare.demo.network.transfer;
 import java.util.Observable;
 
 public class HTTPProgress extends Observable {
+
   private long totalByteLength;
   private long currentBytes;
 

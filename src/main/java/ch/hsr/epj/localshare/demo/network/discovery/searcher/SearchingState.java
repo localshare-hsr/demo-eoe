@@ -27,7 +27,7 @@ class SearchingState extends Statemachine {
       e.printStackTrace();
     }
 
-      boolean foundOtherPeer = IPResource.getInstance().hasNextPeer();
+    boolean foundOtherPeer = IPResource.getInstance().hasNextPeer();
 
     if (foundOtherPeer) {
       state = new UpdateState();
@@ -40,9 +40,9 @@ class SearchingState extends Statemachine {
 
     Thread.sleep(200); // small delay to start up the listening server first
     DatagramSocket datagramSocket = new DatagramSocket(0);
-      byte[] buffer = "D".getBytes();
+    byte[] buffer = "D".getBytes();
 
-      long startTimer = System.currentTimeMillis();
+    long startTimer = System.currentTimeMillis();
 
     for (String s : startIP()) {
 
@@ -51,13 +51,13 @@ class SearchingState extends Statemachine {
       datagramSocket.send(request);
       Thread.sleep(100);
 
-        if (IPResource.getInstance().hasNextPeer()) {
+      if (IPResource.getInstance().hasNextPeer()) {
         return;
       }
     }
-      long endTimer = System.currentTimeMillis();
+    long endTimer = System.currentTimeMillis();
 
-      System.out.println("IP Ranges scaned in " + (endTimer - startTimer) + "ms");
+    System.out.println("IP Ranges scaned in " + (endTimer - startTimer) + "ms");
 
   }
 
@@ -67,7 +67,7 @@ class SearchingState extends Statemachine {
     int positionOfMyAddress = 0;
 
     for (int i = 0; i < listOfIps.length; i++) {
-        if (listOfIps[i].equals(IPResource.getInstance().getIdentity())) {
+      if (listOfIps[i].equals(IPResource.getInstance().getIdentity())) {
         positionOfMyAddress = i;
         break;
       }

@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.util.List;
 
 public class ShareHandler implements HttpHandler {
+
   private static final int BUFFER_SIZE = 1024;
   private static final int EOF = -1;
   private static final int EMPTY_RESPONSE_BODY = 0;
