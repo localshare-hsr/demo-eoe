@@ -6,12 +6,9 @@ import ch.hsr.epj.localshare.demo.logic.HttpServerController;
 import ch.hsr.epj.localshare.demo.logic.User;
 import ch.hsr.epj.localshare.demo.logic.keymanager.KeyManager;
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.security.KeyStoreException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -126,11 +123,5 @@ public class MainWindowController implements Initializable {
 
   private void startHttpServer() {
     httpServerController = new HttpServerController();
-
-    // FIXME: hack to get a file to share without a peer
-    List<File> files = new ArrayList<>();
-    File file = new File("C:\\Users\\marco\\rocket.jpg");
-    files.add(file);
-    httpServerController.sharePrivate("test", files);
   }
 }
