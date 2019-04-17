@@ -4,6 +4,8 @@ import ch.hsr.epj.localshare.demo.network.transfer.LsHttpServer;
 
 public class TransferController {
 
+  private LsHttpServer server;
+
   public TransferController() {
     startHttpServer();
   }
@@ -20,8 +22,6 @@ public class TransferController {
   }
 
   public void serveFileInPrivate(String filePath) {
-      server.serveFileInPrivate(filePath);
+    server.serveFileInPrivate(filePath);
   }
-
-  private LsHttpServer server;
 }
