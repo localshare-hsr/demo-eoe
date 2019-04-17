@@ -3,10 +3,10 @@ package ch.hsr.epj.localshare.demo.network.discovery.searcher;
 class Statemachine {
 
   Statemachine state;
-  String[] listOfIps;
+  static String[] listOfIps;
 
-  void addListOfIPsToScan(String[] listOfIps) {
-    this.listOfIps = listOfIps;
+  static void addListOfIPsToScan(String[] listOfIps) {
+    Statemachine.listOfIps = listOfIps;
   }
 
   void run() {
