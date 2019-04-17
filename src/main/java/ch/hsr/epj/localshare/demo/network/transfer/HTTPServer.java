@@ -16,7 +16,6 @@ public class HTTPServer {
   private static final String CONTEXT_NOTIFY = "/notify";
   private HttpServer httpServer;
 
-
   public HTTPServer() {
     System.out.println("Start HTTP Web Server on Port 8640");
     InetAddress myIPAddress = IPAddressUtil.getLocalIPAddress();
@@ -52,6 +51,4 @@ public class HTTPServer {
 
     httpServer.removeContext(CONTEXT_SHARE + "/" + path);
   }
-
-
 }

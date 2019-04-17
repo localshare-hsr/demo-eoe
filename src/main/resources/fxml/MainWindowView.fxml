@@ -14,101 +14,90 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
-<TabPane tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8"
-  xmlns:fx="http://javafx.com/fxml/1"
+<TabPane xmlns:fx="http://javafx.com/fxml/1" onDragExited="#onWindowDragExit"
+  onDragOver="#onWindowDragEnter"
+  tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8"
   fx:controller="ch.hsr.epj.localshare.demo.gui.application.MainWindowController">
-  <tabs>
-    <Tab text="Transfers">
-      <content>
-        <AnchorPane>
-          <children>
-            <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-              AnchorPane.rightAnchor="0.0"
-              AnchorPane.topAnchor="0.0">
-              <children>
-                <GridPane VBox.vgrow="ALWAYS">
-                  <columnConstraints>
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="206.0" minWidth="10.0"
-                      prefWidth="127.0"/>
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="358.0" minWidth="10.0"
-                      prefWidth="358.0"/>
-                  </columnConstraints>
-                  <rowConstraints>
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                  </rowConstraints>
-                  <children>
-                    <Label text="Friendly Name:"/>
-                    <Label text="IP-Address:" GridPane.rowIndex="1"/>
-                    <Label text="Fingerprint:" GridPane.rowIndex="2"/>
-                    <Text fx:id="IpAddress" strokeType="OUTSIDE" strokeWidth="0.0"
-                      text="172.96.12.88" wrappingWidth="160.7392578125"
-                      GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                    <Text fx:id="FingerPrint" strokeType="OUTSIDE" strokeWidth="0.0" text=""
-                      wrappingWidth="457.7392578125" GridPane.columnIndex="1"
-                      GridPane.rowIndex="2" GridPane.vgrow="ALWAYS"/>
-                    <Text fx:id="FriendlyName" strokeType="OUTSIDE" strokeWidth="0.0"
-                      text="hansWurst" wrappingWidth="116.7392578125" GridPane.columnIndex="1"/>
-                  </children>
-                  <padding>
-                    <Insets bottom="20.0"/>
-                  </padding>
-                </GridPane>
-                <HBox VBox.vgrow="ALWAYS">
-                  <children>
-                    <VBox HBox.hgrow="ALWAYS">
-                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Available Peers"
-                          VBox.vgrow="ALWAYS"/>
-                        <ListView fx:id="listView" onMouseClicked="#onListItemDoubleClick"
-                          VBox.vgrow="ALWAYS"/>
-                      </children>
-                      <padding>
-                        <Insets right="10.0"/>
-                      </padding>
-                    </VBox>
-                    <VBox HBox.hgrow="ALWAYS">
-                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Available Downloads"
-                          VBox.vgrow="ALWAYS"/>
-                        <ListView onMouseClicked="#onListItemDoubleClick" VBox.vgrow="ALWAYS"/>
-                      </children>
-                    </VBox>
-                  </children>
-                </HBox>
-              </children>
-              <padding>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-              </padding>
-            </VBox>
-          </children>
+  <Tab text="Transfers">
+    <AnchorPane>
+      <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+        AnchorPane.topAnchor="0.0">
+        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+          onAction="#refreshList"
+          text="Refresh">
+          <VBox.margin>
+            <Insets top="10.0"/>
+          </VBox.margin>
+        </Button>
+        <GridPane VBox.vgrow="ALWAYS">
+          <Label text="Friendly Name:"/>
+          <Label GridPane.rowIndex="1" text="IP-Address:"/>
+          <Label GridPane.rowIndex="2" text="Fingerprint:"/>
+          <Text GridPane.columnIndex="1" GridPane.rowIndex="1" strokeType="OUTSIDE"
+            strokeWidth="0.0"
+            text="172.96.12.88" wrappingWidth="160.7392578125" fx:id="ipAddressText"/>
+          <Text GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2"
+            GridPane.vgrow="ALWAYS"
+            strokeType="OUTSIDE" strokeWidth="0.0" text="1234"
+            wrappingWidth="581.7392578125" fx:id="fingerPrintText"/>
+          <Text GridPane.columnIndex="1" strokeType="OUTSIDE" strokeWidth="0.0" text="hansWurst"
+            wrappingWidth="116.7392578125" fx:id="friendlyNameText"/>
+          <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="206.0" minWidth="10.0"
+              prefWidth="127.0"/>
+            <ColumnConstraints hgrow="SOMETIMES"/>
+          </columnConstraints>
+          <padding>
+            <Insets bottom="20.0"/>
+          </padding>
+          <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0"/>
+          </rowConstraints>
+        </GridPane>
+        <HBox VBox.vgrow="ALWAYS">
+          <VBox HBox.hgrow="ALWAYS" id="testRefresh">
+            <ListView VBox.vgrow="ALWAYS" onMouseClicked="#onListItemDoubleClick" fx:id="listView"/>
+            <Text VBox.vgrow="ALWAYS" strokeType="OUTSIDE" strokeWidth="0.0"
+              text="Available Peers"/>
+            <padding>
+              <Insets right="10.0"/>
+            </padding>
+          </VBox>
+          <VBox HBox.hgrow="ALWAYS">
+            <ListView VBox.vgrow="ALWAYS" onMouseClicked="#onListItemDoubleClick"/>
+            <Text VBox.vgrow="ALWAYS" strokeType="OUTSIDE" strokeWidth="0.0"
+              text="Available Downloads"/>
+          </VBox>
+        </HBox>
+        <padding>
+          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+        </padding>
+      </VBox>
+    </AnchorPane>
+  </Tab>
+  <Tab text="Channels">
+    <fx:include source="ChannelView.fxml"/>
+  </Tab>
+  <Tab text="Settings">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+      <SplitPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+        AnchorPane.rightAnchor="0.0"
+        AnchorPane.topAnchor="0.0" dividerPositions="0.39266304347826086" layoutX="13.0"
+        layoutY="13.0">
+        <AnchorPane maxWidth="-Infinity" minHeight="0.0" minWidth="-Infinity" prefHeight="589.0"
+          prefWidth="280.0">
+          <Button id="button_prefernces" layoutX="31.0" layoutY="46.0" mnemonicParsing="false"
+            onAction="#handlePreferencesButtonAction" prefHeight="43.0" prefWidth="217.0"
+            text="Preferences"/>
+          <Button layoutX="31.0" layoutY="117.0" mnemonicParsing="false" prefHeight="43.0"
+            prefWidth="217.0"
+            text="Button"/>
         </AnchorPane>
-      </content>
-    </Tab>
-    <Tab text="Settings">
-      <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-          <children>
-            <SplitPane dividerPositions="0.29797979797979796" layoutX="13.0" layoutY="13.0"
-              prefHeight="563.0" prefWidth="1006.0">
-              <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="232.0" prefWidth="253.0">
-                  <children>
-                    <Button id="button_prefernces" layoutX="31.0" layoutY="46.0"
-                      mnemonicParsing="false" onAction="#handlePreferencesButtonAction"
-                      prefHeight="43.0" prefWidth="217.0" text="Preferences"/>
-                    <Button layoutX="31.0" layoutY="117.0" mnemonicParsing="false" prefHeight="43.0"
-                      prefWidth="217.0" text="Button"/>
-                  </children>
-                </AnchorPane>
-                <AnchorPane fx:id="preferencesRootPane" minHeight="0.0" minWidth="0.0"
-                  prefHeight="561.0" prefWidth="415.0"/>
-              </items>
-            </SplitPane>
-          </children>
-        </AnchorPane>
-      </content>
-    </Tab>
-  </tabs>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="561.0" prefWidth="415.0"
+          fx:id="preferencesRootPane"/>
+      </SplitPane>
+    </AnchorPane>
+  </Tab>
 </TabPane>

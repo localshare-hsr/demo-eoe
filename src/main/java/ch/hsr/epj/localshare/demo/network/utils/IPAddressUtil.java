@@ -40,7 +40,7 @@ public class IPAddressUtil {
       }
     }
 
-    System.out.println("netmask is " + Integer.toString(subnetmask));
+    System.out.println("netmask is " + subnetmask);
     return Integer.toString(subnetmask);
   }
 
