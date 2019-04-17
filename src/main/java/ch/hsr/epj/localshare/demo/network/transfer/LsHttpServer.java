@@ -21,6 +21,11 @@ import javax.xml.bind.DatatypeConverter;
 
 public class LsHttpServer implements Runnable {
 
+  // TODO: please find a better way to do this
+  private static String fileName;
+  private HttpServer server;
+  private CountDownLatch startedLatch = new CountDownLatch(1);
+
   @Override
   public void run() {
     try {
@@ -118,6 +123,7 @@ public class LsHttpServer implements Runnable {
   }
 
   static class DynamicHandler implements HttpHandler {
+
     public void handle(HttpExchange t) throws IOException {
       // add the required response header for a JPG file
       Headers h = t.getResponseHeaders();
@@ -140,9 +146,4 @@ public class LsHttpServer implements Runnable {
       os.close();
     }
   }
-
-  // TODO: please find a better way to do this
-  private static String fileName;
-  private HttpServer server;
-  private CountDownLatch startedLatch = new CountDownLatch(1);
 }

@@ -27,15 +27,19 @@ public class IPResource extends Observable {
     return instance;
   }
 
-  /** Set ip address of current instance. */
+  /**
+   * Get ip address of current instance.
+   */
+  public synchronized String getIdentity() {
+    return this.ipAddressOfThisPeerInstance;
+  }
+
+  /**
+   * Set ip address of current instance.
+   */
   public synchronized void setIdentity(final String myIPAddress) {
     this.ipAddressOfThisPeerInstance = myIPAddress;
     addIPResource(myIPAddress);
-  }
-
-  /** Get ip address of current instance. */
-  public synchronized String getIdentity() {
-    return this.ipAddressOfThisPeerInstance;
   }
 
   /**
@@ -55,7 +59,9 @@ public class IPResource extends Observable {
     notifyObservers(getArray());
   }
 
-  /** Remove all entries from the newIPAddress till my identity address. */
+  /**
+   * Remove all entries from the newIPAddress till my identity address.
+   */
   synchronized void removeAllEntriesFromTillMyIdentity(final String newIPAddress) {
     if (newIPAddress.equals(ipAddressOfThisPeerInstance)) {
       return;
@@ -117,7 +123,9 @@ public class IPResource extends Observable {
     notifyObservers(getArray());
   }
 
-  /** Remove the next peer in the list of all known ip addresses */
+  /**
+   * Remove the next peer in the list of all known ip addresses
+   */
   synchronized void removeNextPeer() {
     removeIPResource(getNextPeer());
     setChanged();

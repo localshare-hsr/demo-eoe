@@ -12,19 +12,18 @@ import javafx.scene.layout.GridPane;
 
 public class PeerListViewCell extends ListCell<Peer> {
 
-  @FXML private Label ip;
-
-  @FXML private Label fn;
-
-  @FXML private Label finger;
-
-  @FXML private Label dn;
-
-  @FXML private GridPane gridPane;
-
-  private FXMLLoader mLLoader;
-
   private static final String COLOR = "derive(palegreen, 50%)";
+  @FXML
+  private Label ip;
+  @FXML
+  private Label fn;
+  @FXML
+  private Label finger;
+  @FXML
+  private Label dn;
+  @FXML
+  private GridPane gridPane;
+  private FXMLLoader mLLoader;
 
   @Override
   protected void updateItem(Peer peer, boolean empty) {
@@ -32,6 +31,7 @@ public class PeerListViewCell extends ListCell<Peer> {
 
     if (empty || peer == null) {
       setText(null);
+      setGraphic(null);
 
     } else {
       if (mLLoader == null) {
@@ -58,8 +58,14 @@ public class PeerListViewCell extends ListCell<Peer> {
             if (event.getGestureSource() != gridPane && event.getDragboard().hasFiles()) {
               /* allow for both copying and moving, whatever user chooses */
               event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+              gridPane.setStyle("-fx-background-color: PALEGREEN");
             }
             event.consume();
+          });
+
+      gridPane.setOnDragExited(
+          event -> {
+            gridPane.setStyle("-fx-background-color: none");
           });
 
       gridPane.setOnDragDropped(
@@ -77,7 +83,6 @@ public class PeerListViewCell extends ListCell<Peer> {
             event.consume();
           });
 
-      setText(null);
       setGraphic(gridPane);
     }
   }
