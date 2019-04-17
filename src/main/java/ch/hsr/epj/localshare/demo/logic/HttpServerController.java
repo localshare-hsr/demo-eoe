@@ -30,10 +30,10 @@ public class HttpServerController implements Observer {
   }
 
   public void sharePrivate(String filePath, List<File> files) {
-    SecureRandom random = new SecureRandom();
-    byte bytes[] = new byte[16];
-    random.nextBytes(bytes);
-    String privatePath = new String(Base64.getUrlEncoder().encode(bytes));
+    SecureRandom secureRandom = new SecureRandom();
+    byte key[] = new byte[16];
+    secureRandom.nextBytes(key);
+    String privatePath = new String(Base64.getUrlEncoder().encode(key));
     System.out.println("private path for share is: " + privatePath);
     HTTPProgress httpProgress = httpServer.createNewShare(privatePath, files);
     httpProgress.addObserver(this);
