@@ -3,6 +3,8 @@ package ch.hsr.epj.localshare.demo.logic;
 import ch.hsr.epj.localshare.demo.network.transfer.HTTPProgress;
 import ch.hsr.epj.localshare.demo.network.transfer.HTTPServer;
 import java.io.File;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -28,7 +30,12 @@ public class HttpServerController implements Observer {
   }
 
   public void sharePrivate(String filePath, List<File> files) {
-    HTTPProgress httpProgress = httpServer.createNewShare(filePath, files);
+    SecureRandom random = new SecureRandom();
+    byte bytes[] = new byte[16];
+    random.nextBytes(bytes);
+    String privatePath = new String(Base64.getUrlEncoder().encode(bytes));
+    System.out.println("private path for share is: " + privatePath);
+    HTTPProgress httpProgress = httpServer.createNewShare(privatePath, files);
     httpProgress.addObserver(this);
   }
 
