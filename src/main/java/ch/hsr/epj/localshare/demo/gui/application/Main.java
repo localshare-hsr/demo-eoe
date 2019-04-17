@@ -1,7 +1,6 @@
 package ch.hsr.epj.localshare.demo.gui.application;
 
 import ch.hsr.epj.localshare.demo.logic.StartupMethods;
-import ch.hsr.epj.localshare.demo.logic.TransferController;
 import ch.hsr.epj.localshare.demo.persistent.JSONParser;
 import java.util.Objects;
 import javafx.application.Application;
@@ -13,9 +12,6 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
   public static void main(String[] args) {
-    TransferController transferController = new TransferController();
-    transferController.serveFileInChannel("rocket.jpg", "sky");
-    transferController.serveFileInPrivate("rocket.jpg");
     launch(args);
   }
 
