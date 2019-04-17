@@ -83,6 +83,7 @@ public class PeerListViewCell extends ListCell<Peer> {
             boolean success = false;
             if (db.hasFiles()) {
               System.out.println("Send File: " + db.getFiles().toString() + " To: " + fn.getText());
+              httpServerController.sharePrivate("someone", db.getFiles());
               success = true;
             }
             /* let the source know whether the string was successfully
