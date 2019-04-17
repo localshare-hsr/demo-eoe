@@ -24,7 +24,7 @@ public class HttpServerController implements Observer {
   }
 
   public void shareChannel(String filePath, long fileSize, String channelName) {
-    //server.serveFileInChannel(filePath, channelName);
+    // server.serveFileInChannel(filePath, channelName);
   }
 
   public void sharePrivate(String filePath, List<File> files) {

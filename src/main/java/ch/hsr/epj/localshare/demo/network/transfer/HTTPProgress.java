@@ -24,5 +24,4 @@ public class HTTPProgress extends Observable {
   public void reset() {
     this.currentBytes = 0;
   }
-
 }

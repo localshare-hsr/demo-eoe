@@ -1,11 +1,10 @@
-package ch.hsr.epj.localshare.demo.network.discovery.server;
+package ch.hsr.epj.localshare.demo.network.discovery;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import ch.hsr.epj.localshare.demo.network.discovery.IPResource;
 import java.lang.reflect.Field;
 import java.util.NoSuchElementException;
 import org.junit.Before;
@@ -164,11 +163,7 @@ public class IPResourceTest {
     ipList.add("192.168.42.55");
     ipList.add("192.168.43.45");
     String[] expected = {
-        "192.168.41.50",
-        "192.168.42.5",
-        "192.168.42.55",
-        "192.168.42.250",
-        "192.168.43.45"
+        "192.168.41.50", "192.168.42.5", "192.168.42.55", "192.168.42.250", "192.168.43.45"
     };
     assertArrayEquals(expected, ipList.getArray());
   }
@@ -218,11 +213,7 @@ public class IPResourceTest {
     ipList.removeAllEntriesFromTillMyIdentity("192.168.42.36");
 
     String[] expected = {
-        "192.168.42.30",
-        "192.168.42.36",
-        "192.168.42.44",
-        "192.168.42.50",
-        "192.168.42.67"
+        "192.168.42.30", "192.168.42.36", "192.168.42.44", "192.168.42.50", "192.168.42.67"
     };
     assertArrayEquals(expected, ipList.getArray());
   }
@@ -457,5 +448,4 @@ public class IPResourceTest {
     ipList.removeNextPeer();
     assertFalse(ipList.hasNextPeer());
   }
-
 }

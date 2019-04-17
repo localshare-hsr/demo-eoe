@@ -28,6 +28,10 @@ public class Peer {
     return displayName;
   }
 
+    public void setDisplayName(String name) {
+        displayName = name;
+    }
+
   public String getFingerPrint() {
     return fingerPrint;
   }
@@ -38,10 +42,6 @@ public class Peer {
 
   public void setTrustState(boolean value) {
     isTrusted = value;
-  }
-
-  public void setDisplayName(String name) {
-    displayName = name;
   }
 
   @Override
