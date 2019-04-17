@@ -51,7 +51,6 @@ public class MainWindowController implements Initializable {
   @FXML
   private ObservableList<Peer> peerObservableList;
 
-  // double click list item -> trusted on/off + change color
   public MainWindowController() {
 
     peerObservableList = FXCollections.observableArrayList();

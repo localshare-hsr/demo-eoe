@@ -1,5 +1,6 @@
 package ch.hsr.epj.localshare.demo.logic.keymanager;
 
+import ch.hsr.epj.localshare.demo.logic.ConfigManager;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -19,9 +20,9 @@ import java.util.logging.Logger;
 
 class KeyContainer {
 
-  private static final String PATH = "keys/";
-  private static final String KEYSTORE_FILE = "/keystore.p12";
-  private static final File FULL_PATH = new File(PATH + KEYSTORE_FILE);
+  private static final String KEYSTORE_FILE = "keystore.p12";
+  private static final File FULL_PATH = new File(
+      ConfigManager.getInstance().getConfigPath() + KEYSTORE_FILE);
   private static final String CONTAINER_FORMAT = "pkcs12";
   private static final Logger logger = Logger.getLogger(KeyContainer.class.getName());
 
@@ -29,7 +30,7 @@ class KeyContainer {
   }
 
   static KeyStore createNewKeyStoreOnDisk() {
-    createFileStructure();
+    //createFileStructure();
 
     KeyStore ks;
     try {
@@ -129,7 +130,7 @@ class KeyContainer {
     return (X509Certificate) keyStore.getCertificate(userFriendlyName);
   }
 
-  private static void createFileStructure() {
+/*  private static void createFileStructure() {
     File filePath = new File(PATH);
     if (!filePath.exists()) {
       boolean isCreated = filePath.mkdir();
@@ -137,7 +138,7 @@ class KeyContainer {
         logger.info("New folder created");
       }
     }
-  }
+  }*/
 
   private static char[] getEncodedPassword() {
     String encoded = "" + 0x66 + 0x6F + 0x6F + 0x62 + 0x61 + 0x72;
