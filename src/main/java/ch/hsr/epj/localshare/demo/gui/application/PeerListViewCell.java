@@ -1,6 +1,7 @@
 package ch.hsr.epj.localshare.demo.gui.application;
 
 import ch.hsr.epj.localshare.demo.gui.data.Peer;
+import ch.hsr.epj.localshare.demo.logic.HttpServerController;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +25,14 @@ public class PeerListViewCell extends ListCell<Peer> {
   @FXML
   private GridPane gridPane;
   private FXMLLoader mLLoader;
+
+
+  private HttpServerController httpServerController;
+
+  public PeerListViewCell(HttpServerController httpServerController) {
+    this.httpServerController = httpServerController;
+  }
+
 
   @Override
   protected void updateItem(Peer peer, boolean empty) {
