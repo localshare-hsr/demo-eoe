@@ -3,6 +3,8 @@ package ch.hsr.epj.localshare.demo.gui.application;
 import ch.hsr.epj.localshare.demo.gui.data.Peer;
 import ch.hsr.epj.localshare.demo.logic.HttpServerController;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -83,7 +85,13 @@ public class PeerListViewCell extends ListCell<Peer> {
             boolean success = false;
             if (db.hasFiles()) {
               System.out.println("Send File: " + db.getFiles().toString() + " To: " + fn.getText());
-              httpServerController.sharePrivate("someone", db.getFiles());
+              try {
+                httpServerController
+                    .sharePrivate(InetAddress.getByName(peer.getIP()), db.getFiles());
+              } catch (UnknownHostException e) {
+                e.printStackTrace();
+              }
+
               success = true;
             }
             /* let the source know whether the string was successfully
