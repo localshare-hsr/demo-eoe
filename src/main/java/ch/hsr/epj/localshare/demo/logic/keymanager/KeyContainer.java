@@ -30,8 +30,6 @@ class KeyContainer {
   }
 
   static KeyStore createNewKeyStoreOnDisk() {
-    //createFileStructure();
-
     KeyStore ks;
     try {
       ks = KeyStore.getInstance(CONTAINER_FORMAT);
@@ -92,7 +90,7 @@ class KeyContainer {
   static boolean existsKeyingMaterialFor(final KeyStore keyStore, final String userFriendlyName) {
     boolean keyExists;
     try {
-      Key certificate = keyStore.getKey("cn=" + userFriendlyName, getEncodedPassword());
+      Key certificate = keyStore.getKey(userFriendlyName, getEncodedPassword());
       if (certificate != null) {
         keyExists = true;
         logger.log(Level.INFO, "Key for {0} exists", userFriendlyName);
@@ -129,16 +127,6 @@ class KeyContainer {
       final KeyStore keyStore, final String userFriendlyName) throws KeyStoreException {
     return (X509Certificate) keyStore.getCertificate(userFriendlyName);
   }
-
-/*  private static void createFileStructure() {
-    File filePath = new File(PATH);
-    if (!filePath.exists()) {
-      boolean isCreated = filePath.mkdir();
-      if (isCreated) {
-        logger.info("New folder created");
-      }
-    }
-  }*/
 
   private static char[] getEncodedPassword() {
     String encoded = "" + 0x66 + 0x6F + 0x6F + 0x62 + 0x61 + 0x72;
