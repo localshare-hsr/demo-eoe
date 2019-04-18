@@ -48,11 +48,11 @@ public class StartupMethods {
     ConfigManager configManager = ConfigManager.getInstance();
 
     if (isWindows()) {
-      configManager.setDownloadPath(getHomePath() + "\\LocalShare\\download");
-      configManager.setConfigPath(getHomePath() + "\\LocalShare\\config");
+      configManager.setDownloadPath(getHomePath() + "\\LocalShare\\download\\");
+      configManager.setConfigPath(getHomePath() + "\\LocalShare\\config\\");
     } else {
-      configManager.setDownloadPath(getHomePath() + "/LocalShare/download");
-      configManager.setConfigPath(getHomePath() + "/LocalShare/config");
+      configManager.setDownloadPath(getHomePath() + "/LocalShare/download/");
+      configManager.setConfigPath(getHomePath() + "/LocalShare/config/");
     }
   }
 
