@@ -116,7 +116,7 @@ public class MainWindowController implements Initializable {
     listView.setItems(peerObservableList);
     startHttpServer();
     listView.setCellFactory(peerListView -> new PeerListViewCell(httpServerController));
-    ipAddressText.setText(String.valueOf(IPAddressUtil.getLocalIPAddress()));
+    ipAddressText.setText(String.valueOf(IPAddressUtil.getLocalIPAddress().getHostAddress()));
     fingerPrintText.setText(fingerPrint);
     friendlyNameText.setText(friendlyName);
   }
