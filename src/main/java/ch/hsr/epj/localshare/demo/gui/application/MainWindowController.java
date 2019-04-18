@@ -1,6 +1,7 @@
 package ch.hsr.epj.localshare.demo.gui.application;
 
 import ch.hsr.epj.localshare.demo.gui.data.Peer;
+import ch.hsr.epj.localshare.demo.gui.data.Transfer;
 import ch.hsr.epj.localshare.demo.logic.DiscoveryController;
 import ch.hsr.epj.localshare.demo.logic.HttpServerController;
 import ch.hsr.epj.localshare.demo.logic.User;
@@ -33,6 +34,9 @@ public class MainWindowController implements Initializable {
   private ListView<Peer> listView;
 
   @FXML
+  private ListView<Transfer> listViewTransfer;
+
+  @FXML
   private Text ipAddressText;
 
   @FXML
@@ -51,12 +55,18 @@ public class MainWindowController implements Initializable {
   @FXML
   private ObservableList<Peer> peerObservableList;
 
+  @FXML
+  private ObservableList<Transfer> transferObservableList;
+
   public MainWindowController() {
 
     peerObservableList = FXCollections.observableArrayList();
+    transferObservableList = FXCollections.observableArrayList();
+
     DiscoveryController discoveryController = new DiscoveryController(peerObservableList);
     discoveryController.startServer();
     discoveryController.startSearcher();
+
 
     User user = User.getInstance();
     friendlyName = user.getFriendlyName();
@@ -114,8 +124,15 @@ public class MainWindowController implements Initializable {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     listView.setItems(peerObservableList);
+
+    transferObservableList.addAll(new Transfer(1024, "Test.pdf"), new Transfer(35, "config.txt"));
+
+    listViewTransfer.setItems(transferObservableList);
+
     startHttpServer();
     listView.setCellFactory(peerListView -> new PeerListViewCell(httpServerController));
+    listViewTransfer.setCellFactory(transferListView -> new TransferListViewCell());
+
     ipAddressText.setText(String.valueOf(IPAddressUtil.getLocalIPAddress()));
     fingerPrintText.setText(fingerPrint);
     friendlyNameText.setText(friendlyName);
