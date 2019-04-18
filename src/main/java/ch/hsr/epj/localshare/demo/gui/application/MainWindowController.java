@@ -122,6 +122,6 @@ public class MainWindowController implements Initializable {
   }
 
   private void startHttpServer() {
-    this.httpServerController = new HttpServerController();
+    httpServerController = new HttpServerController();
   }
 }
