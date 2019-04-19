@@ -8,10 +8,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 public class JSONParser {
+
+  private static final Logger logger = Logger.getLogger(JSONParser.class.getName());
 
   String jsonFriendlyName = "friendly_name";
   String jsonConfigPath = "config_path";
@@ -54,28 +58,24 @@ public class JSONParser {
       savedFileName = manager.getConfigPath() + "/config.json";
     }
 
-    FileWriter jsonConfig = new FileWriter(savedFileName);
-
-    try {
+    try (FileWriter jsonConfig = new FileWriter(savedFileName)) {
       jsonConfig.write(obj.toJSONString());
     } catch (IOException e) {
-      e.printStackTrace();
-    } finally {
-      jsonConfig.flush();
-      jsonConfig.close();
+      logger.log(Level.WARNING, "Unable to write JSON file", e);
     }
   }
 
   public void loadData() {
     org.json.simple.parser.JSONParser parser = new org.json.simple.parser.JSONParser();
     try {
-      Object obj;
+      JSONObject jsonObject;
       if (StartupMethods.isWindows()) {
-        obj = parser.parse(new FileReader(manager.getConfigPath() + "\\config.json"));
+        jsonObject = (JSONObject) parser
+            .parse(new FileReader(manager.getConfigPath() + "\\config.json"));
       } else {
-        obj = parser.parse(new FileReader(manager.getConfigPath() + "/config.json"));
+        jsonObject = (JSONObject) parser
+            .parse(new FileReader(manager.getConfigPath() + "/config.json"));
       }
-      JSONObject jsonObject = (JSONObject) obj;
 
       String friendlyName = (String) jsonObject.get(jsonFriendlyName);
       String downloadPath = (String) jsonObject.get(jsonDownloadPath);
@@ -84,7 +84,7 @@ public class JSONParser {
       manager.setDownloadPath(downloadPath);
 
     } catch (IOException | ParseException e) {
-      e.printStackTrace();
+      logger.log(Level.WARNING, "Unable to load JSON file", e);
     }
   }
 }
