@@ -1,5 +1,6 @@
 package ch.hsr.epj.localshare.demo.logic.keymanager;
 
+import ch.hsr.epj.localshare.demo.logic.ConfigManager;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -19,9 +20,9 @@ import java.util.logging.Logger;
 
 class KeyContainer {
 
-  private static final String PATH = "keys/";
-  private static final String KEYSTORE_FILE = "/keystore.p12";
-  private static final File FULL_PATH = new File(PATH + KEYSTORE_FILE);
+  private static final String KEYSTORE_FILE = "keystore.p12";
+  private static final File FULL_PATH = new File(
+      ConfigManager.getInstance().getConfigPath() + KEYSTORE_FILE);
   private static final String CONTAINER_FORMAT = "pkcs12";
   private static final Logger logger = Logger.getLogger(KeyContainer.class.getName());
 
@@ -29,8 +30,6 @@ class KeyContainer {
   }
 
   static KeyStore createNewKeyStoreOnDisk() {
-    createFileStructure();
-
     KeyStore ks;
     try {
       ks = KeyStore.getInstance(CONTAINER_FORMAT);
@@ -81,7 +80,8 @@ class KeyContainer {
     } catch (KeyStoreException e) {
       logger.log(
           Level.WARNING,
-          String.format("Could not safe new certificate %s", certificate.toString()), e);
+          String.format("Could not safe new certificate %s", certificate.toString()),
+          e);
     }
 
     safeKeyStore(keyStore);
@@ -90,7 +90,7 @@ class KeyContainer {
   static boolean existsKeyingMaterialFor(final KeyStore keyStore, final String userFriendlyName) {
     boolean keyExists;
     try {
-      Key certificate = keyStore.getKey("cn=" + userFriendlyName, getEncodedPassword());
+      Key certificate = keyStore.getKey(userFriendlyName, getEncodedPassword());
       if (certificate != null) {
         keyExists = true;
         logger.log(Level.INFO, "Key for {0} exists", userFriendlyName);
@@ -123,19 +123,9 @@ class KeyContainer {
     safeKeyStore(keyStore);
   }
 
-  static X509Certificate getX509CertificateFromKeyStore(final KeyStore keyStore,
-      final String userFriendlyName) throws KeyStoreException {
+  static X509Certificate getX509CertificateFromKeyStore(
+      final KeyStore keyStore, final String userFriendlyName) throws KeyStoreException {
     return (X509Certificate) keyStore.getCertificate(userFriendlyName);
-  }
-
-  private static void createFileStructure() {
-    File filePath = new File(PATH);
-    if (!filePath.exists()) {
-      boolean isCreated = filePath.mkdir();
-      if (isCreated) {
-        logger.info("New folder created");
-      }
-    }
   }
 
   private static char[] getEncodedPassword() {
@@ -156,5 +146,4 @@ class KeyContainer {
     }
     return principal.getName().substring(start, end).trim();
   }
-
 }

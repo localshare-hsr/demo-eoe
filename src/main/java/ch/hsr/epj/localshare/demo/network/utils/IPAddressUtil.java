@@ -8,24 +8,40 @@ import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.net.util.SubnetUtils;
 
 public class IPAddressUtil {
 
+  private static final Logger logger = Logger.getLogger(IPAddressUtil.class.getName());
+
+  private IPAddressUtil() {
+  }
+
   public static InetAddress getLocalIPAddress() {
     InetAddress myIP = null;
-    Socket socket = new Socket();
-    try {
+    try (Socket socket = new Socket()) {
       socket.connect(new InetSocketAddress("www.hsr.ch", 80));
       myIP = InetAddress.getByName(socket.getLocalAddress().getHostAddress());
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.log(Level.INFO, "No Internet connection available");
     }
-    System.out.println("ip is " + myIP.getHostAddress());
     return myIP;
   }
 
-  public static String getLocalNetmask(InetAddress myIPAddress) throws SocketException {
+  public static String[] generateIPsInNetmask(InetAddress myIPAddress) {
+    String netmask = "";
+    try {
+      netmask = getLocalNetmask(myIPAddress);
+    } catch (SocketException e) {
+      logger.log(Level.INFO, "Unable to calculate netmask", e);
+    }
+    SubnetUtils utils = new SubnetUtils(myIPAddress.getHostAddress() + "/" + netmask);
+    return utils.getInfo().getAllAddresses();
+  }
+
+  private static String getLocalNetmask(InetAddress myIPAddress) throws SocketException {
     NetworkInterface networkInterface = NetworkInterface.getByInetAddress(myIPAddress);
 
     short subnetmask = 32;
@@ -40,18 +56,7 @@ public class IPAddressUtil {
       }
     }
 
-    System.out.println("netmask is " + Integer.toString(subnetmask));
     return Integer.toString(subnetmask);
   }
 
-  public static String[] generateIPsInNetmask(InetAddress myIPAddress) {
-    String netmask = "";
-    try {
-      netmask = getLocalNetmask(myIPAddress);
-    } catch (SocketException e) {
-      e.printStackTrace();
-    }
-    SubnetUtils utils = new SubnetUtils(myIPAddress.getHostAddress() + "/" + netmask);
-    return utils.getInfo().getAllAddresses();
-  }
 }

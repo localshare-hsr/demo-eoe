@@ -47,7 +47,9 @@ class SearchingState extends Statemachine {
     try (DatagramSocket datagramSocket = new DatagramSocket(0)) {
       byte[] buffer = "D".getBytes();
 
-      for (String s : startIP()) {
+      String[] sortedIPs = startIP();
+
+      for (String s : sortedIPs) {
 
         InetAddress targetAddress = InetAddress.getByName(s);
         DatagramPacket request = new DatagramPacket(buffer, buffer.length, targetAddress, PORT);

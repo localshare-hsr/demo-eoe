@@ -9,17 +9,8 @@
 <?import javafx.scene.text.Text?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8"
   fx:controller="ch.hsr.epj.localshare.demo.gui.application.PreferencesViewController">
+
   <GridPane layoutX="23.0" layoutY="27.0" prefHeight="350.0" prefWidth="679.0">
-    <Button GridPane.columnIndex="2" GridPane.rowIndex="3" mnemonicParsing="false"
-      onAction="#handleChangeDownloadButtonAction" text="Change Path"/>
-    <Label GridPane.rowIndex="2" prefHeight="31.0" prefWidth="219.0" text="Current Download Path:"/>
-    <Label prefHeight="31.0" prefWidth="219.0" text="Configuration Path:"/>
-    <Text GridPane.rowIndex="3" strokeType="OUTSIDE" strokeWidth="0.0" text=""
-      wrappingWidth="292.13671875"
-      fx:id="downloadPath"/>
-    <Text GridPane.rowIndex="1" strokeType="OUTSIDE" strokeWidth="0.0" text=""
-      wrappingWidth="292.13671875"
-      fx:id="configPath"/>
     <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="356.0" minWidth="10.0" prefWidth="167.0"/>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="459.0" minWidth="10.0" prefWidth="160.0"/>
@@ -31,5 +22,17 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
     </rowConstraints>
+    <Button GridPane.columnIndex="2" GridPane.rowIndex="3" mnemonicParsing="false"
+      onAction="#handleChangeDownloadButtonAction" text="Change Path"/>
+    <Label GridPane.rowIndex="2" prefHeight="31.0" prefWidth="219.0"
+      text="Current Download Path:"/>
+    <Label prefHeight="31.0" prefWidth="219.0" text="Configuration Path:"/>
+    <Text GridPane.rowIndex="3" strokeType="OUTSIDE" strokeWidth="0.0" text=""
+      wrappingWidth="292.13671875"
+      fx:id="downloadPath"/>
+    <Text GridPane.rowIndex="1" strokeType="OUTSIDE" strokeWidth="0.0" text=""
+      wrappingWidth="292.13671875"
+      fx:id="configPath"/>
   </GridPane>
+
 </AnchorPane>

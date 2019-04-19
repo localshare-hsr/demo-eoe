@@ -12,9 +12,9 @@ import java.util.logging.Logger;
 
 public abstract class UDPServer implements Runnable {
 
+  private static Logger logger = Logger.getLogger(UDPServer.class.getName());
   private final int bufferSize;
   private final int port;
-  private static Logger logger = Logger.getLogger(UDPServer.class.getName());
 
   private UDPServer(int port, int bufferSize) {
     this.bufferSize = bufferSize;
@@ -40,7 +40,6 @@ public abstract class UDPServer implements Runnable {
   private void startUDPServer(InetAddress myIP) {
     byte[] buffer = new byte[bufferSize];
     try (DatagramSocket socket = new DatagramSocket(port, myIP)) {
-      socket.setSoTimeout(10000);
       logger.log(
           Level.INFO, "Listen on " + socket.getLocalAddress() + " port " + socket.getLocalPort());
       boolean isRunning = true;

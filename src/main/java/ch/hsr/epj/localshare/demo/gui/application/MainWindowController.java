@@ -2,6 +2,7 @@ package ch.hsr.epj.localshare.demo.gui.application;
 
 import ch.hsr.epj.localshare.demo.gui.data.Peer;
 import ch.hsr.epj.localshare.demo.logic.DiscoveryController;
+import ch.hsr.epj.localshare.demo.logic.HttpServerController;
 import ch.hsr.epj.localshare.demo.logic.User;
 import ch.hsr.epj.localshare.demo.logic.keymanager.KeyManager;
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
@@ -45,11 +46,11 @@ public class MainWindowController implements Initializable {
 
   private String fingerPrint;
   private String friendlyName;
+  private HttpServerController httpServerController;
 
   @FXML
   private ObservableList<Peer> peerObservableList;
 
-  // double click list item -> trusted on/off + change color
   public MainWindowController() {
 
     peerObservableList = FXCollections.observableArrayList();
@@ -68,6 +69,7 @@ public class MainWindowController implements Initializable {
     } catch (KeyStoreException e) {
       e.printStackTrace();
     }
+
   }
 
   @FXML
@@ -112,9 +114,14 @@ public class MainWindowController implements Initializable {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     listView.setItems(peerObservableList);
-    listView.setCellFactory(peerListView -> new PeerListViewCell());
-    ipAddressText.setText(String.valueOf(IPAddressUtil.getLocalIPAddress()));
+    startHttpServer();
+    listView.setCellFactory(peerListView -> new PeerListViewCell(httpServerController));
+    ipAddressText.setText(String.valueOf(IPAddressUtil.getLocalIPAddress().getHostAddress()));
     fingerPrintText.setText(fingerPrint);
     friendlyNameText.setText(friendlyName);
+  }
+
+  private void startHttpServer() {
+    httpServerController = new HttpServerController();
   }
 }

@@ -30,18 +30,6 @@
           </VBox.margin>
         </Button>
         <GridPane VBox.vgrow="ALWAYS">
-          <Label text="Friendly Name:"/>
-          <Label GridPane.rowIndex="1" text="IP-Address:"/>
-          <Label GridPane.rowIndex="2" text="Fingerprint:"/>
-          <Text GridPane.columnIndex="1" GridPane.rowIndex="1" strokeType="OUTSIDE"
-            strokeWidth="0.0"
-            text="172.96.12.88" wrappingWidth="160.7392578125" fx:id="ipAddressText"/>
-          <Text GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2"
-            GridPane.vgrow="ALWAYS"
-            strokeType="OUTSIDE" strokeWidth="0.0" text="1234"
-            wrappingWidth="581.7392578125" fx:id="fingerPrintText"/>
-          <Text GridPane.columnIndex="1" strokeType="OUTSIDE" strokeWidth="0.0" text="hansWurst"
-            wrappingWidth="116.7392578125" fx:id="friendlyNameText"/>
           <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="206.0" minWidth="10.0"
               prefWidth="127.0"/>
@@ -55,20 +43,32 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
             <RowConstraints minHeight="10.0" prefHeight="30.0"/>
           </rowConstraints>
+          <Label text="Friendly Name:"/>
+          <Label GridPane.rowIndex="1" text="IP-Address:"/>
+          <Label GridPane.rowIndex="2" text="Fingerprint:"/>
+          <Text GridPane.columnIndex="1" GridPane.rowIndex="1" strokeType="OUTSIDE"
+            strokeWidth="0.0"
+            text="172.96.12.88" wrappingWidth="160.7392578125" fx:id="ipAddressText"/>
+          <Text GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2"
+            GridPane.vgrow="ALWAYS"
+            strokeType="OUTSIDE" strokeWidth="0.0" text="1234"
+            wrappingWidth="581.7392578125" fx:id="fingerPrintText"/>
+          <Text GridPane.columnIndex="1" strokeType="OUTSIDE" strokeWidth="0.0" text="hansWurst"
+            wrappingWidth="116.7392578125" fx:id="friendlyNameText"/>
         </GridPane>
         <HBox VBox.vgrow="ALWAYS">
           <VBox HBox.hgrow="ALWAYS" id="testRefresh">
-            <ListView VBox.vgrow="ALWAYS" onMouseClicked="#onListItemDoubleClick" fx:id="listView"/>
-            <Text VBox.vgrow="ALWAYS" strokeType="OUTSIDE" strokeWidth="0.0"
-              text="Available Peers"/>
             <padding>
               <Insets right="10.0"/>
             </padding>
+            <ListView VBox.vgrow="ALWAYS" onMouseClicked="#onListItemDoubleClick" fx:id="listView"/>
+            <Text VBox.vgrow="ALWAYS" strokeType="OUTSIDE" strokeWidth="0.0"
+              text="Available Peers"/>
           </VBox>
           <VBox HBox.hgrow="ALWAYS">
-            <ListView VBox.vgrow="ALWAYS" onMouseClicked="#onListItemDoubleClick"/>
             <Text VBox.vgrow="ALWAYS" strokeType="OUTSIDE" strokeWidth="0.0"
               text="Available Downloads"/>
+            <ListView VBox.vgrow="ALWAYS" onMouseClicked="#onListItemDoubleClick"/>
           </VBox>
         </HBox>
         <padding>

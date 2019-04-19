@@ -1,6 +1,7 @@
 package ch.hsr.epj.localshare.demo.gui.application;
 
 import ch.hsr.epj.localshare.demo.gui.data.Peer;
+import ch.hsr.epj.localshare.demo.logic.HttpServerController;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +25,14 @@ public class PeerListViewCell extends ListCell<Peer> {
   @FXML
   private GridPane gridPane;
   private FXMLLoader mLLoader;
+
+
+  private HttpServerController httpServerController;
+
+  public PeerListViewCell(HttpServerController httpServerController) {
+    this.httpServerController = httpServerController;
+  }
+
 
   @Override
   protected void updateItem(Peer peer, boolean empty) {
@@ -58,8 +67,14 @@ public class PeerListViewCell extends ListCell<Peer> {
             if (event.getGestureSource() != gridPane && event.getDragboard().hasFiles()) {
               /* allow for both copying and moving, whatever user chooses */
               event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+              gridPane.setStyle("-fx-background-color: PALEGREEN");
             }
             event.consume();
+          });
+
+      gridPane.setOnDragExited(
+          event -> {
+            gridPane.setStyle("-fx-background-color: none");
           });
 
       gridPane.setOnDragDropped(
@@ -68,6 +83,7 @@ public class PeerListViewCell extends ListCell<Peer> {
             boolean success = false;
             if (db.hasFiles()) {
               System.out.println("Send File: " + db.getFiles().toString() + " To: " + fn.getText());
+              httpServerController.sharePrivate("someone", db.getFiles());
               success = true;
             }
             /* let the source know whether the string was successfully

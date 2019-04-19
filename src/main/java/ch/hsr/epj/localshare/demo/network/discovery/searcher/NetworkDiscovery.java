@@ -9,7 +9,7 @@ public class NetworkDiscovery {
         IPAddressUtil.generateIPsInNetmask(IPAddressUtil.getLocalIPAddress());
 
     Statemachine discovery = new Statemachine();
-    discovery.addListOfIPsToScan(listOfIPsToProbe);
+    Statemachine.addListOfIPsToScan(listOfIPsToProbe);
     discovery.run();
   }
 }
