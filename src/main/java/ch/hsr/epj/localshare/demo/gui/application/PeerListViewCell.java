@@ -3,6 +3,8 @@ package ch.hsr.epj.localshare.demo.gui.application;
 import ch.hsr.epj.localshare.demo.gui.data.Peer;
 import ch.hsr.epj.localshare.demo.logic.HttpServerController;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -12,6 +14,8 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 
 public class PeerListViewCell extends ListCell<Peer> {
+
+  private static final Logger logger = Logger.getLogger(PeerListViewCell.class.getName());
 
   private static final String COLOR = "derive(palegreen, 50%)";
   @FXML
@@ -50,7 +54,7 @@ public class PeerListViewCell extends ListCell<Peer> {
         try {
           mLLoader.load();
         } catch (IOException e) {
-          e.printStackTrace();
+          logger.log(Level.WARNING, "Unable to load ListCell file", e);
         }
       }
 
@@ -73,16 +77,15 @@ public class PeerListViewCell extends ListCell<Peer> {
           });
 
       gridPane.setOnDragExited(
-          event -> {
-            gridPane.setStyle("-fx-background-color: none");
-          });
+          event -> gridPane.setStyle("-fx-background-color: none"));
 
       gridPane.setOnDragDropped(
           event -> {
             Dragboard db = event.getDragboard();
             boolean success = false;
             if (db.hasFiles()) {
-              System.out.println("Send File: " + db.getFiles().toString() + " To: " + fn.getText());
+              logger.log(Level.INFO,
+                  String.format("Send File: {0} To: {0}", db.getFiles().toString(), fn.getText()));
               httpServerController.sharePrivate("someone", db.getFiles());
               success = true;
             }
