@@ -4,7 +4,6 @@ import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
 import java.security.KeyStoreException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -66,13 +65,11 @@ public class KeyManagerTest {
   private X509Certificate testCertificate1;
 
   @Before
-  public void loadTestCertificate() throws CertificateException, FileNotFoundException {
+  public void loadTestCertificate() throws CertificateException {
     CertificateFactory factory = CertificateFactory.getInstance("X.509");
 
-    //File file2 = new File(HSR_CERTIFICATE);
     testCertificate1 = (X509Certificate) factory
         .generateCertificate(new ByteArrayInputStream(HSR_CERTIFICATE.getBytes()));
-    //testCertificate1 = (X509Certificate) factory.generateCertificate(new FileInputStream(file2));
   }
 
   @Test
