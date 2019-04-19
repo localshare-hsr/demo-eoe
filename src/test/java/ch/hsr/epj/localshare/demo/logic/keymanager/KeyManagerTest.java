@@ -4,10 +4,12 @@ import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.security.KeyStoreException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -70,6 +72,12 @@ public class KeyManagerTest {
 
     testCertificate1 = (X509Certificate) factory
         .generateCertificate(new ByteArrayInputStream(HSR_CERTIFICATE.getBytes()));
+  }
+
+  @After
+  public void removeTestKeyStore() {
+    File testKeyStoreFile = new File("keystore.p12");
+    testKeyStoreFile.delete();
   }
 
   @Test
