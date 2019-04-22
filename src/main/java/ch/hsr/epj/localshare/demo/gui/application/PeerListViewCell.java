@@ -83,11 +83,6 @@ public class PeerListViewCell extends ListCell<Peer> {
       this.setContextMenu(contextMenu);
 
 
-
-
-
-
-
       ip.setText(String.valueOf(peer.getIP()));
       fn.setText(String.valueOf(peer.getFriendlyName()));
       finger.setText(String.valueOf(peer.getFingerPrint()));
