@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<GridPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" minHeight="-Infinity"
-  minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" fx:id="gridPaneTransfer">
+<GridPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8"
+  fx:id="gridPaneTransfer">
   <columnConstraints>
     <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" percentWidth="20.0"/>
     <ColumnConstraints hgrow="ALWAYS" percentWidth="35.0"/>
-    <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" percentWidth="10.0"/>
     <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" percentWidth="35.0"/>
   </columnConstraints>
   <rowConstraints>
@@ -32,5 +33,13 @@
     </Label>
     <Label GridPane.rowIndex="1" text="Size"/>
     <Label GridPane.rowIndex="2" text="Filename"/>
+    <Button GridPane.columnIndex="2" GridPane.rowIndex="1" mnemonicParsing="false" text="Accept"
+      fx:id="buttonAccept"/>
+    <Button GridPane.columnIndex="2" GridPane.rowIndex="2" mnemonicParsing="false" text="Decline"
+      fx:id="buttonDecline"/>
+    <ProgressBar GridPane.columnIndex="2" GridPane.rowIndex="2" prefWidth="200.0" progress="0.0"
+      visible="false" fx:id="transferProgressBar"/>
+    <Button GridPane.columnIndex="2" GridPane.rowIndex="1" disable="true" mnemonicParsing="false"
+      text="Cancel Download" visible="false" fx:id="buttonCancelTransfer"/>
   </children>
 </GridPane>
