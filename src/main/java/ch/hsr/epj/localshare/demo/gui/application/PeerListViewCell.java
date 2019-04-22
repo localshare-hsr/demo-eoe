@@ -5,8 +5,11 @@ import ch.hsr.epj.localshare.demo.logic.HttpServerController;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
@@ -53,6 +56,37 @@ public class PeerListViewCell extends ListCell<Peer> {
           e.printStackTrace();
         }
       }
+
+      ContextMenu contextMenu = new ContextMenu();
+      MenuItem editDisplayName = new MenuItem("Edit Displayname");
+      MenuItem editTrustState = new MenuItem("Change Trust State");
+
+      editDisplayName.setOnAction(event -> {
+        Peer item = this.getItem();
+        TextInputDialog textInputDialog = new TextInputDialog("hanswurst");
+        textInputDialog.setHeaderText("Enter Displayname");
+        textInputDialog.showAndWait();
+        peer.setDisplayName(textInputDialog.getEditor().getText());
+
+        // refresh ListView
+
+      });
+
+      editTrustState.setOnAction(event -> {
+        Peer item = this.getItem();
+        item.setTrustState(!item.getTrustState());
+      });
+
+      contextMenu.getItems().add(editDisplayName);
+      contextMenu.getItems().add(editTrustState);
+
+      this.setContextMenu(contextMenu);
+
+
+
+
+
+
 
       ip.setText(String.valueOf(peer.getIP()));
       fn.setText(String.valueOf(peer.getFriendlyName()));

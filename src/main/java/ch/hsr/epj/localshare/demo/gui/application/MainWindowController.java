@@ -123,6 +123,9 @@ public class MainWindowController implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
+
+    peerObservableList.add(new Peer("10.0.0.0", "dummy", "dummy", ""));
+
     listView.setItems(peerObservableList);
 
     transferObservableList.addAll(new Transfer(1024, "Test.pdf"), new Transfer(35, "config.txt"));
