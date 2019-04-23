@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import javafx.application.Platform;
+import javafx.scene.control.ProgressBar;
 
 public class HTTPDownloader implements Runnable {
 
@@ -14,20 +16,25 @@ public class HTTPDownloader implements Runnable {
 
   private URL url;
   private BufferedOutputStream bufferedOutputStream;
+  private ProgressBar progressBar;
+  private long totalFileLength;
 
-  public HTTPDownloader(URL url, BufferedOutputStream bufferedOutputStream) {
+
+  public HTTPDownloader(URL url, BufferedOutputStream bufferedOutputStream,
+      ProgressBar progressBar) {
     this.url = url;
     this.bufferedOutputStream = bufferedOutputStream;
+    this.progressBar = progressBar;
   }
 
-  public void startDownload() throws IOException {
+  void startDownload() throws IOException {
     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
     connection.setRequestMethod("GET");
     connection.setDoOutput(true);
     connection.connect();
     int status = connection.getResponseCode();
 
-    long contentlength = Long.parseLong(connection.getHeaderField("Content-Length"));
+    totalFileLength = Long.parseLong(connection.getHeaderField("Content-Length"));
     InputStream inputStream = connection.getInputStream();
     BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
 
@@ -38,7 +45,7 @@ public class HTTPDownloader implements Runnable {
       try {
         bufferedOutputStream.write(buffer);
         totalbyteread += byteRead;
-        System.out.println(totalbyteread);
+        updateProgress(totalbyteread);
 
       } catch (IOException e) {
         System.err.println("Error: Problem with output stream occurred");
@@ -49,6 +56,16 @@ public class HTTPDownloader implements Runnable {
     bufferedInputStream.close();
     bufferedOutputStream.close();
     connection.disconnect();
+  }
+
+  private void updateProgress(long progress) {
+    Platform.runLater(
+        () -> {
+          double progressPercent = (double) 1 / totalFileLength * progress;
+          progressBar.setProgress(progressPercent);
+        }
+    );
+
   }
 
   @Override

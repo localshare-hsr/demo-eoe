@@ -28,7 +28,7 @@ public class HTTPDownloaderTest {
 
     URL url = new URL("https://www.example.com");
 
-    HTTPDownloader testdownload = new HTTPDownloader(url, bufferedOutputStream);
+    HTTPDownloader testdownload = new HTTPDownloader(url, bufferedOutputStream, null);
 
     testdownload.startDownload();
 
