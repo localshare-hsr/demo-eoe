@@ -29,7 +29,7 @@ public class StartupMethods {
     return firstLaunch;
   }
 
-  public static String getOsName() {
+  private static String getOsName() {
     if (os == null) {
       os = System.getProperty("os.name");
     }
@@ -40,7 +40,7 @@ public class StartupMethods {
     return getOsName().startsWith("Windows");
   }
 
-  public static boolean isLinux() {
+  private static boolean isLinux() {
     return getOsName().startsWith("Linux");
   }
 
@@ -48,11 +48,11 @@ public class StartupMethods {
     ConfigManager configManager = ConfigManager.getInstance();
 
     if (isWindows()) {
-      configManager.setDownloadPath(getHomePath() + "\\LocalShare\\download");
-      configManager.setConfigPath(getHomePath() + "\\LocalShare\\config");
+      configManager.setDownloadPath(getHomePath() + "\\LocalShare\\download\\");
+      configManager.setConfigPath(getHomePath() + "\\LocalShare\\config\\");
     } else {
-      configManager.setDownloadPath(getHomePath() + "/LocalShare/download");
-      configManager.setConfigPath(getHomePath() + "/LocalShare/config");
+      configManager.setDownloadPath(getHomePath() + "/LocalShare/download/");
+      configManager.setConfigPath(getHomePath() + "/LocalShare/config/");
     }
   }
 

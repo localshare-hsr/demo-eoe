@@ -40,7 +40,7 @@ public class DiscoveryController implements Observer {
         new Task<Void>() {
 
           @Override
-          protected Void call() throws Exception {
+          protected Void call() {
             NetworkDiscovery networkDiscovery = new NetworkDiscovery();
             networkDiscovery.startSearchProcess();
             return null;
