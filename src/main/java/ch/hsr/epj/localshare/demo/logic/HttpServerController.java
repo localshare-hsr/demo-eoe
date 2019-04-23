@@ -1,7 +1,7 @@
 package ch.hsr.epj.localshare.demo.logic;
 
 import ch.hsr.epj.localshare.demo.network.transfer.HTTPProgress;
-import ch.hsr.epj.localshare.demo.network.transfer.HTTPServer;
+import ch.hsr.epj.localshare.demo.network.transfer.server.HTTPServer;
 import java.io.File;
 import java.security.SecureRandom;
 import java.util.Base64;
