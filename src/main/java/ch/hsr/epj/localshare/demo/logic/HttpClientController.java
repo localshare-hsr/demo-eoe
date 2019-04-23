@@ -24,7 +24,8 @@ public class HttpClientController {
     OutputStream outputStream = new FileOutputStream(file);
 
     BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
-    downloadManager.addDownload(new HTTPDownloader(transfer.getPath(), bufferedOutputStream));
+    downloadManager.addDownload(
+        new HTTPDownloader(transfer.getPath(), bufferedOutputStream, transfer.getProgress()));
 
 
   }
