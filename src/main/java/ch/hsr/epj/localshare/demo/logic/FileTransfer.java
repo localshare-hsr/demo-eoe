@@ -4,21 +4,29 @@ import ch.hsr.epj.localshare.demo.gui.data.Peer;
 import java.net.URL;
 import javafx.scene.control.ProgressBar;
 
-public class Transfer {
+public class FileTransfer {
 
   private Peer peer;
   private URL path;
   private ProgressBar progress;
 
-  public Transfer(Peer peer, URL path, ProgressBar progress) {
+  public FileTransfer(Peer peer, URL path, ProgressBar progress) {
     this.peer = peer;
     this.path = path;
     this.progress = progress;
   }
 
 
-  public URL getURL() {
+  public Peer getPeer() {
+    return peer;
+  }
+
+  public URL getPath() {
     return path;
+  }
+
+  public ProgressBar getProgress() {
+    return progress;
   }
 
 

@@ -34,7 +34,6 @@ public class HTTPDownloaderTest {
 
     assertTrue(tempfile.length() > 0);
 
-
   }
 
 }

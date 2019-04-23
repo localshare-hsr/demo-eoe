@@ -2,7 +2,9 @@ package ch.hsr.epj.localshare.demo.gui.application;
 
 import ch.hsr.epj.localshare.demo.gui.data.Peer;
 import ch.hsr.epj.localshare.demo.gui.data.Transfer;
+import ch.hsr.epj.localshare.demo.logic.ConfigManager;
 import ch.hsr.epj.localshare.demo.logic.DiscoveryController;
+import ch.hsr.epj.localshare.demo.logic.HttpClientController;
 import ch.hsr.epj.localshare.demo.logic.HttpServerController;
 import ch.hsr.epj.localshare.demo.logic.User;
 import ch.hsr.epj.localshare.demo.logic.keymanager.KeyManager;
@@ -58,6 +60,8 @@ public class MainWindowController implements Initializable {
   @FXML
   private ObservableList<Transfer> transferObservableList;
 
+  HttpClientController httpClientController;
+
   public MainWindowController() {
 
     peerObservableList = FXCollections.observableArrayList();
@@ -66,6 +70,8 @@ public class MainWindowController implements Initializable {
     DiscoveryController discoveryController = new DiscoveryController(peerObservableList);
     discoveryController.startServer();
     discoveryController.startSearcher();
+
+    httpClientController = new HttpClientController(ConfigManager.getInstance().getDownloadPath());
 
 
     User user = User.getInstance();
@@ -134,7 +140,8 @@ public class MainWindowController implements Initializable {
 
     startHttpServer();
     listView.setCellFactory(peerListView -> new PeerListViewCell(httpServerController));
-    listViewTransfer.setCellFactory(transferListView -> new TransferListViewCell());
+    listViewTransfer
+        .setCellFactory(transferListView -> new TransferListViewCell(httpClientController));
 
     ipAddressText.setText(String.valueOf(IPAddressUtil.getLocalIPAddress()));
     fingerPrintText.setText(fingerPrint);
