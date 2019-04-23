@@ -110,7 +110,7 @@ public class TransferListViewCell extends ListCell<Transfer> {
       );
 
       size.setText(String.valueOf(transfer.getSize()));
-      filename.setText(String.valueOf(transfer.getName()));
+      filename.setText(String.valueOf(transfer.getFileName()));
       setGraphic(gridPaneTransfer);
 
     }

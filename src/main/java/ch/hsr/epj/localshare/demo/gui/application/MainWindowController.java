@@ -134,7 +134,8 @@ public class MainWindowController implements Initializable {
 
     listView.setItems(peerObservableList);
 
-    transferObservableList.addAll(new Transfer(1024, "Test.pdf"), new Transfer(35, "config.txt"));
+    transferObservableList.addAll(new Transfer("Elvis", 12345, "Test.pdf", null),
+        new Transfer("Elvis", 35, "config.txt", null));
 
     listViewTransfer.setItems(transferObservableList);
 

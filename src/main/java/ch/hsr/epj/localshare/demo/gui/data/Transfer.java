@@ -1,15 +1,21 @@
 package ch.hsr.epj.localshare.demo.gui.data;
 
+import java.net.URL;
+
 public class Transfer {
 
-  private double size;
-  private String name;
+  private String friendlyName;
+  private long size;
+  private String fileName;
+  private URL url;
   private boolean accepted;
 
 
-  public Transfer(double size, String name) {
+  public Transfer(String friendlyName, long size, String fileName, URL url) {
+    this.friendlyName = friendlyName;
     this.size = size;
-    this.name = name;
+    this.fileName = fileName;
+    this.url = url;
     accepted = false;
   }
 
@@ -17,23 +23,19 @@ public class Transfer {
     return accepted;
   }
 
-  public void setAccepted(boolean accepted) {
-    this.accepted = accepted;
-  }
-
   public double getSize() {
     return size;
   }
 
-  public void setSize(double size) {
-    this.size = size;
+  public String getFileName() {
+    return fileName;
   }
 
-  public String getName() {
-    return name;
+  public String getFriendlyName() {
+    return friendlyName;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public URL getUrl() {
+    return url;
   }
 }
