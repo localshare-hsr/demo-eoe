@@ -43,7 +43,8 @@ public class HTTPDownloader implements Runnable {
     long totalbyteread = 0;
     while ((byteRead = bufferedInputStream.read(buffer)) != EOF) {
       try {
-        bufferedOutputStream.write(buffer);
+        bufferedOutputStream.write(buffer, 0, byteRead);
+        bufferedOutputStream.flush();
         totalbyteread += byteRead;
         updateProgress(totalbyteread);
 
@@ -52,7 +53,6 @@ public class HTTPDownloader implements Runnable {
         break;
       }
     }
-    bufferedOutputStream.flush();
     bufferedInputStream.close();
     bufferedOutputStream.close();
     connection.disconnect();
