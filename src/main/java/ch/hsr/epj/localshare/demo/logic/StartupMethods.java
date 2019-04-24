@@ -24,9 +24,16 @@ public class StartupMethods {
     }
 
     File downloadFolder = new File(String.valueOf(configManager.getDownloadPath()));
-    if (!downloadFolder.exists()) {
-      downloadFolder.mkdir();
+    File localShareFolder = null;
+    if (isWindows()) {
+      localShareFolder = new File(String.valueOf(getHomePath() + "\\LocalShare"));
     }
+    if (isLinux()) {
+      localShareFolder = new File(String.valueOf(getHomePath() + "/LocalShare"));
+    }
+
+    localShareFolder.mkdir();
+    downloadFolder.mkdir();
 
     configFile = new File(configManager.getConfigPath() + "config.json");
 
