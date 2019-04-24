@@ -1,4 +1,4 @@
-package ch.hsr.epj.localshare.demo.logic;
+package ch.hsr.epj.localshare.demo.logic.networkcontroller;
 
 import ch.hsr.epj.localshare.demo.network.transfer.HTTPProgress;
 import ch.hsr.epj.localshare.demo.network.transfer.server.HTTPServer;

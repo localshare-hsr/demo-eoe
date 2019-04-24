@@ -1,8 +1,8 @@
 package ch.hsr.epj.localshare.demo.gui.application;
 
-import ch.hsr.epj.localshare.demo.logic.ConfigManager;
-import ch.hsr.epj.localshare.demo.logic.StartupMethods;
-import ch.hsr.epj.localshare.demo.persistent.JSONParser;
+import ch.hsr.epj.localshare.demo.logic.environment.ConfigManager;
+import ch.hsr.epj.localshare.demo.logic.environment.StartupMethods;
+import ch.hsr.epj.localshare.demo.persistence.JSONParser;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;

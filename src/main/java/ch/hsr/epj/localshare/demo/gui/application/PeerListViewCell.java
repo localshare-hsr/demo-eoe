@@ -1,7 +1,7 @@
 package ch.hsr.epj.localshare.demo.gui.application;
 
-import ch.hsr.epj.localshare.demo.gui.data.Peer;
-import ch.hsr.epj.localshare.demo.logic.HttpServerController;
+import ch.hsr.epj.localshare.demo.gui.presentation.Peer;
+import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpServerController;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;

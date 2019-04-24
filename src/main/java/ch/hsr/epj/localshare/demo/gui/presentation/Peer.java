@@ -1,4 +1,4 @@
-package ch.hsr.epj.localshare.demo.gui.data;
+package ch.hsr.epj.localshare.demo.gui.presentation;
 
 public class Peer {
 

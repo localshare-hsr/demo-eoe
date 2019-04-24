@@ -2,6 +2,7 @@ package ch.hsr.epj.localshare.demo.logic;
 
 import static org.junit.Assert.assertEquals;
 
+import ch.hsr.epj.localshare.demo.logic.environment.ConfigManager;
 import org.junit.Test;
 
 public class ConfigManagerTest {

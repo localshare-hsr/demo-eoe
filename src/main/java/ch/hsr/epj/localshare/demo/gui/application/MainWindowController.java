@@ -1,13 +1,13 @@
 package ch.hsr.epj.localshare.demo.gui.application;
 
-import ch.hsr.epj.localshare.demo.gui.data.Peer;
-import ch.hsr.epj.localshare.demo.gui.data.Transfer;
-import ch.hsr.epj.localshare.demo.logic.ConfigManager;
-import ch.hsr.epj.localshare.demo.logic.DiscoveryController;
-import ch.hsr.epj.localshare.demo.logic.HttpClientController;
-import ch.hsr.epj.localshare.demo.logic.HttpServerController;
-import ch.hsr.epj.localshare.demo.logic.User;
+import ch.hsr.epj.localshare.demo.gui.presentation.Peer;
+import ch.hsr.epj.localshare.demo.gui.presentation.Transfer;
+import ch.hsr.epj.localshare.demo.logic.environment.ConfigManager;
+import ch.hsr.epj.localshare.demo.logic.environment.User;
 import ch.hsr.epj.localshare.demo.logic.keymanager.KeyManager;
+import ch.hsr.epj.localshare.demo.logic.networkcontroller.DiscoveryController;
+import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpClientController;
+import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpServerController;
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
 import java.io.IOException;
 import java.net.URL;

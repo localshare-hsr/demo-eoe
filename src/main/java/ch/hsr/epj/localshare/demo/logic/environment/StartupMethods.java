@@ -1,6 +1,6 @@
-package ch.hsr.epj.localshare.demo.logic;
+package ch.hsr.epj.localshare.demo.logic.environment;
 
-import ch.hsr.epj.localshare.demo.persistent.JSONParser;
+import ch.hsr.epj.localshare.demo.persistence.JSONParser;
 import java.io.File;
 
 public class StartupMethods {
@@ -24,9 +24,16 @@ public class StartupMethods {
     }
 
     File downloadFolder = new File(String.valueOf(configManager.getDownloadPath()));
-    if (!downloadFolder.exists()) {
-      downloadFolder.mkdir();
+    File localShareFolder = null;
+    if (isWindows()) {
+      localShareFolder = new File(String.valueOf(getHomePath() + "\\LocalShare"));
     }
+    if (isLinux()) {
+      localShareFolder = new File(String.valueOf(getHomePath() + "/LocalShare"));
+    }
+
+    localShareFolder.mkdir();
+    downloadFolder.mkdir();
 
     configFile = new File(configManager.getConfigPath() + "config.json");
 
