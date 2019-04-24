@@ -1,7 +1,7 @@
 package ch.hsr.epj.localshare.demo.network.transfer.server;
 
 import ch.hsr.epj.localshare.demo.network.transfer.HTTPProgress;
-import com.google.gson.Gson;
+import ch.hsr.epj.localshare.demo.network.transfer.utils.MetaParser;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -10,12 +10,12 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.nio.file.Files;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ShareHandler implements HttpHandler {
@@ -34,10 +34,12 @@ public class ShareHandler implements HttpHandler {
 
   private List<File> filePool;
   private HTTPProgress httpProgress;
+  private List<DownloadFile> downloadableFiles;
 
   ShareHandler(List<File> filePool, HTTPProgress httpProgress) {
     this.filePool = filePool;
     this.httpProgress = httpProgress;
+    downloadableFiles = generateFileContext(filePool);
   }
 
   @Override
@@ -60,19 +62,23 @@ public class ShareHandler implements HttpHandler {
     }
   }
 
+  private List<DownloadFile> generateFileContext(final List<File> filePool) {
+    List<DownloadFile> list = new LinkedList<>();
+    for (File f : filePool) {
+      list.add(generateDownloadFile(f));
+    }
+    return list;
+  }
+
+  private DownloadFile generateDownloadFile(final File file) {
+    return new DownloadFile("ownerTODO", file.getName(), file.length(), "urlTODO");
+  }
+
   private File requestDispatcher(URI uri) throws IOException {
     String uriPath = uri.getPath();
 
     if (uriPath.endsWith(INDEX_FOLDER)) {
-      Gson gson = new Gson();
-      System.out.println("go json, yeah!");
-      String json = gson.toJson((filePool));
-      System.out.println(json);
-      File jsonFile = new File(INDEX_FILE);
-      try (FileWriter fWriter = new FileWriter(jsonFile)) {
-        fWriter.write(json);
-      }
-      return jsonFile;
+      return MetaParser.generateMeta(downloadableFiles);
     } else {
       return getFileFromPool(uriPath);
     }
