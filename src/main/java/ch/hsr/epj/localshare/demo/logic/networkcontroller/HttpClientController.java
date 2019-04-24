@@ -1,5 +1,6 @@
 package ch.hsr.epj.localshare.demo.logic.networkcontroller;
 
+import ch.hsr.epj.localshare.demo.gui.presentation.Download;
 import ch.hsr.epj.localshare.demo.logic.Transfer;
 import ch.hsr.epj.localshare.demo.logic.environment.ConfigManager;
 import ch.hsr.epj.localshare.demo.network.transfer.client.DownloadManager;
@@ -49,7 +50,7 @@ public class HttpClientController {
   public void getMetadataFromPeer(Transfer transfer) {
     // TODO Transfer what?
     //
-    List<Transfer> transferList = null;
+    List<Download> transferList = null;
     URL url = null;
     try {
       url = UrlFactory.generateMetaDataUrl(transfer);

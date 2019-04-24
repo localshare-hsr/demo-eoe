@@ -1,6 +1,6 @@
 package ch.hsr.epj.localshare.demo.network.transfer.client;
 
-import ch.hsr.epj.localshare.demo.gui.presentation.Transfer;
+import ch.hsr.epj.localshare.demo.gui.presentation.Download;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -20,7 +20,7 @@ public class HTTPMetaDownloader implements Runnable {
   private URL metaUrl;
   private long totalFileLength;
 
-  public HTTPMetaDownloader(URL url, List<Transfer> transferList) {
+  public HTTPMetaDownloader(URL url, List<Download> downloadList) {
     this.metaUrl = url;
   }
 

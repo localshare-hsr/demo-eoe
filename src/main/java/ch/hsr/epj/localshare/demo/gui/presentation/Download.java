@@ -2,7 +2,7 @@ package ch.hsr.epj.localshare.demo.gui.presentation;
 
 import java.net.URL;
 
-public class Transfer {
+public class Download {
 
   private String friendlyName;
   private long size;
@@ -11,7 +11,7 @@ public class Transfer {
   private boolean accepted;
 
 
-  public Transfer(String friendlyName, long size, String fileName, URL url) {
+  public Download(String friendlyName, long size, String fileName, URL url) {
     this.friendlyName = friendlyName;
     this.size = size;
     this.fileName = fileName;

@@ -1,7 +1,7 @@
 package ch.hsr.epj.localshare.demo.gui.application;
 
+import ch.hsr.epj.localshare.demo.gui.presentation.Download;
 import ch.hsr.epj.localshare.demo.gui.presentation.Peer;
-import ch.hsr.epj.localshare.demo.gui.presentation.Transfer;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.FileTransfer;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpClientController;
 import java.io.FileNotFoundException;
@@ -16,7 +16,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.GridPane;
 
-public class TransferListViewCell extends ListCell<Transfer> {
+public class DownloadListViewCell extends ListCell<Download> {
 
   @FXML
   GridPane gridPaneTransfer;
@@ -43,15 +43,15 @@ public class TransferListViewCell extends ListCell<Transfer> {
 
   private HttpClientController httpClientController;
 
-  public TransferListViewCell(HttpClientController httpClientController) {
+  public DownloadListViewCell(HttpClientController httpClientController) {
     this.httpClientController = httpClientController;
   }
 
   @Override
-  protected void updateItem(Transfer transfer, boolean empty) {
-    super.updateItem(transfer, empty);
+  protected void updateItem(Download download, boolean empty) {
+    super.updateItem(download, empty);
 
-    if (empty || transfer == null) {
+    if (empty || download == null) {
       setText(null);
       setGraphic(null);
 
@@ -109,8 +109,8 @@ public class TransferListViewCell extends ListCell<Transfer> {
           }
       );
 
-      size.setText(String.valueOf(transfer.getSize()));
-      filename.setText(String.valueOf(transfer.getFileName()));
+      size.setText(String.valueOf(download.getSize()));
+      filename.setText(String.valueOf(download.getFileName()));
       setGraphic(gridPaneTransfer);
 
     }
