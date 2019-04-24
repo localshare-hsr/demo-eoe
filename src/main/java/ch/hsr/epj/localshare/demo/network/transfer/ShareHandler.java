@@ -59,21 +59,19 @@ public class ShareHandler implements HttpHandler {
     }
   }
 
-  private File requestDispatcher(URI uri) throws FileNotFoundException, IOException {
+  private File requestDispatcher(URI uri) throws IOException {
     String uriPath = uri.getPath();
 
     if (uriPath.endsWith(INDEX_FOLDER)) {
-      //return getFileFromPool(INDEX_FILE);
       Gson gson = new Gson();
       System.out.println("go json, yeah!");
       String json = gson.toJson((filePool));
       System.out.println(json);
-      //return new File(gson.toJson(filePool));
-      File tmpFile = new File("index.json");
-      FileWriter fwriter = new FileWriter(tmpFile);
-      fwriter.write(json);
-      fwriter.close();
-      return tmpFile;
+      File jsonFile = new File(INDEX_FILE);
+      try (FileWriter fWriter = new FileWriter(jsonFile)) {
+        fWriter.write(json);
+      }
+      return jsonFile;
     } else {
       return getFileFromPool(uriPath);
     }
@@ -110,7 +108,8 @@ public class ShareHandler implements HttpHandler {
     int byteRead;
     while ((byteRead = bufferedInputStream.read(buffer)) != EOF) {
       try {
-        bufferedOutputStream.write(buffer);
+        bufferedOutputStream.write(buffer, 0, byteRead);
+        bufferedOutputStream.flush();
         httpProgress.addBytesToCurrent(byteRead);
       } catch (IOException e) {
         System.err.println("Error: Problem with output stream occurred");
@@ -118,6 +117,8 @@ public class ShareHandler implements HttpHandler {
         break;
       }
     }
-    bufferedOutputStream.flush();
+    bufferedInputStream.close();
+    bufferedOutputStream.close();
+    httpExchange.close();
   }
 }
