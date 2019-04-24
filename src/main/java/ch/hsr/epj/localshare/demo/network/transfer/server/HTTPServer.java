@@ -45,7 +45,8 @@ public class HTTPServer {
     }
 
     HTTPProgress httpProgress = new HTTPProgress();
-    httpServer.createContext(CONTEXT_SHARE + "/" + path, new ShareHandler(files, httpProgress));
+    httpServer
+        .createContext(CONTEXT_SHARE + "/" + path, new ShareHandler(files, httpProgress, path));
     return httpProgress;
   }
 

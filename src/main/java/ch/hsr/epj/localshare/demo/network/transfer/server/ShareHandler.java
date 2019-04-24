@@ -1,7 +1,9 @@
 package ch.hsr.epj.localshare.demo.network.transfer.server;
 
+import ch.hsr.epj.localshare.demo.logic.environment.User;
 import ch.hsr.epj.localshare.demo.network.transfer.HTTPProgress;
 import ch.hsr.epj.localshare.demo.network.transfer.utils.MetaParser;
+import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -38,11 +40,13 @@ public class ShareHandler implements HttpHandler {
   private List<File> filePool;
   private HTTPProgress httpProgress;
   private List<DownloadFile> downloadableFiles;
+  private String path;
 
-  ShareHandler(List<File> filePool, HTTPProgress httpProgress) {
+  ShareHandler(List<File> filePool, HTTPProgress httpProgress, String path) {
     this.filePool = filePool;
     this.httpProgress = httpProgress;
     downloadableFiles = generateFileContext(filePool);
+    this.path = path;
   }
 
   @Override
@@ -74,7 +78,10 @@ public class ShareHandler implements HttpHandler {
   }
 
   private DownloadFile generateDownloadFile(final File file) {
-    return new DownloadFile("ownerTODO", file.getName(), file.length(), "urlTODO");
+    String ownerFriendlyName = User.getInstance().getFriendlyName();
+    String url =
+        "http://" + IPAddressUtil.getLocalIPAddress() + ":/share/" + path + "/" + file.getName();
+    return new DownloadFile(ownerFriendlyName, file.getName(), file.length(), url);
   }
 
   private File requestDispatcher(URI uri) throws IOException {
