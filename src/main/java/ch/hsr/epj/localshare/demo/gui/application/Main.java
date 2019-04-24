@@ -17,7 +17,6 @@ public class Main extends Application {
 
   @Override
   public void start(Stage primaryStage) throws Exception {
-    StartupMethods.setDefaultPath();
     if (StartupMethods.startupCheck()) {
       Parent root =
           FXMLLoader.load(
@@ -27,6 +26,7 @@ public class Main extends Application {
       primaryStage.setScene(new Scene(root, 800, 600));
       primaryStage.show();
     } else {
+      StartupMethods.loadConfig();
       Parent root =
           FXMLLoader.load(
               Objects.requireNonNull(

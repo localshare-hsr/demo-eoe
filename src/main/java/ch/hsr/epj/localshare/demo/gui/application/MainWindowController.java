@@ -71,8 +71,8 @@ public class MainWindowController implements Initializable {
     discoveryController.startServer();
     discoveryController.startSearcher();
 
-    httpClientController = new HttpClientController(ConfigManager.getInstance().getDownloadPath());
-
+    httpClientController = new HttpClientController();
+    System.out.println(ConfigManager.getInstance().getDownloadPath());
 
     User user = User.getInstance();
     friendlyName = user.getFriendlyName();

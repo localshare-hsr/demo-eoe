@@ -1,7 +1,10 @@
 package ch.hsr.epj.localshare.demo.gui.application;
 
 import ch.hsr.epj.localshare.demo.logic.ConfigManager;
+import ch.hsr.epj.localshare.demo.logic.StartupMethods;
+import ch.hsr.epj.localshare.demo.persistent.JSONParser;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -35,7 +38,21 @@ public class PreferencesViewController implements Initializable {
 
     File dir = directoryChooser.showDialog(stage);
     if (dir != null) {
-      configManager.setDownloadPath(dir.getAbsolutePath());
+      if (StartupMethods.isWindows()) {
+        configManager.setDownloadPath(dir.getAbsolutePath() + "\\");
+      }
+      if (!StartupMethods.isWindows()) {
+        configManager.setDownloadPath(dir.getAbsolutePath() + "/");
+      }
+
+      JSONParser parser = new JSONParser();
+      parser.saveAllToJSON();
+      try {
+        parser.writeJSONToDisk();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+
       downloadPath.setText(configManager.getDownloadPath());
     } else {
       downloadPath.setText(configManager.getDownloadPath());

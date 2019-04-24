@@ -10,16 +10,14 @@ import java.io.OutputStream;
 
 public class HttpClientController {
 
-  private String downldoadPath;
   private DownloadManager downloadManager;
 
-  public HttpClientController(String downloadPath) {
-    this.downldoadPath = downloadPath;
+  public HttpClientController() {
     this.downloadManager = new DownloadManager();
   }
 
   public void downloadFileFromPeer(FileTransfer transfer) throws FileNotFoundException {
-    File file = new File(downldoadPath + "test.pdf");
+    File file = new File(ConfigManager.getInstance().getDownloadPath() + "test.pdf");
 
     OutputStream outputStream = new FileOutputStream(file);
 
