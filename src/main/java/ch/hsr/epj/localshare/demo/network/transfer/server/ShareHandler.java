@@ -17,8 +17,12 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ShareHandler implements HttpHandler {
+
+  private static final Logger logger = Logger.getLogger(ShareHandler.class.getName());
 
   private static final int BUFFER_SIZE = 1024;
   private static final int EOF = -1;
@@ -30,7 +34,6 @@ public class ShareHandler implements HttpHandler {
   private static final String HEADER_CONTENT_TYPE = "Content-Type";
 
   private static final String INDEX_FOLDER = "/";
-  private static final String INDEX_FILE = "index.json";
 
   private List<File> filePool;
   private HTTPProgress httpProgress;
@@ -51,12 +54,12 @@ public class ShareHandler implements HttpHandler {
       try {
         headers.add(HEADER_CONTENT_TYPE, getMIMEType(fileToSend));
       } catch (IOException e) {
-        System.err.println("Error: Unable to set MIME Type for file " + fileToSend.getName());
+        logger.log(Level.WARNING, "Unable to set MIME Type for file", e);
       }
       deliverFileToClient(httpExchange, fileToSend);
     } catch (FileNotFoundException e) {
       httpExchange.sendResponseHeaders(HTTP_NOT_FOUND, EMPTY_RESPONSE_BODY);
-      e.printStackTrace();
+      logger.log(Level.WARNING, "File does not exist", e);
     } finally {
       httpExchange.close();
     }
@@ -86,7 +89,6 @@ public class ShareHandler implements HttpHandler {
 
   private File getFileFromPool(String fileName) throws FileNotFoundException {
     for (File f : filePool) {
-      System.out.println("f = " + f.getName());
       if (fileName.endsWith(f.getName())) {
         return f;
       }
@@ -119,7 +121,7 @@ public class ShareHandler implements HttpHandler {
         bufferedOutputStream.flush();
         httpProgress.addBytesToCurrent(byteRead);
       } catch (IOException e) {
-        System.err.println("Error: Problem with output stream occurred");
+        logger.log(Level.WARNING, "Problem with output stream occurred", e);
         httpProgress.reset();
         break;
       }
