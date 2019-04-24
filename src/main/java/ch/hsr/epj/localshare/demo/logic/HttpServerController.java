@@ -20,7 +20,7 @@ public class HttpServerController implements Observer {
   }
 
   private void startHttpServer() {
-    httpServer = new HTTPServer();
+    httpServer = new HTTPServer(this);
   }
 
   public void connectClientController(HttpClientController httpClientController) {
@@ -52,5 +52,9 @@ public class HttpServerController implements Observer {
     if (percent % 20 == 0) {
       System.out.println("Upload completeness = " + percent + "%");
     }
+  }
+
+  public void receivedNotification(Transfer transfer) {
+    httpClientController.getMetadataFromPeer(transfer);
   }
 }

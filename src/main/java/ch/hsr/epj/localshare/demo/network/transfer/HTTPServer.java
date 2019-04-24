@@ -1,5 +1,6 @@
 package ch.hsr.epj.localshare.demo.network.transfer;
 
+import ch.hsr.epj.localshare.demo.logic.HttpServerController;
 import ch.hsr.epj.localshare.demo.logic.Transfer;
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
 import com.sun.net.httpserver.HttpServer;
@@ -16,8 +17,10 @@ public class HTTPServer {
   private static final String CONTEXT_CHANNEL = "/channel";
   private static final String CONTEXT_NOTIFY = "/notify";
   private HttpServer httpServer;
+  private HttpServerController httpServerController;
 
-  public HTTPServer() {
+  public HTTPServer(HttpServerController httpServerController) {
+    this.httpServerController = httpServerController;
     System.out.println("Start HTTP Web Server on Port 8640");
     InetAddress myIPAddress = IPAddressUtil.getLocalIPAddress();
     InetSocketAddress socket = new InetSocketAddress(myIPAddress, 8640);
@@ -54,6 +57,6 @@ public class HTTPServer {
   }
 
   public void receivedNotification(Transfer transfer) {
-    System.out.println(transfer);
+    httpServerController.receivedNotification(transfer);
   }
 }
