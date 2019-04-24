@@ -73,7 +73,7 @@ public class MainWindowController implements Initializable {
     discoveryController.startServer();
     discoveryController.startSearcher();
 
-    httpClientController = new HttpClientController();
+    httpClientController = new HttpClientController(downloadObservableList);
     System.out.println(ConfigManager.getInstance().getDownloadPath());
 
     User user = User.getInstance();
@@ -158,6 +158,6 @@ public class MainWindowController implements Initializable {
   }
 
   private void startHttpClient() {
-    httpClientController = new HttpClientController();
+    httpClientController = new HttpClientController(downloadObservableList);
   }
 }

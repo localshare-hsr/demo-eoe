@@ -15,15 +15,18 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import javafx.collections.ObservableList;
 
 public class HttpClientController {
 
   private DownloadManager downloadManager;
   private HTTPNotifier httpNotifier;
+  private ObservableList<Download> downloadObservableList;
 
-  public HttpClientController() {
+  public HttpClientController(ObservableList<Download> downloadObservableList) {
     this.downloadManager = new DownloadManager();
     httpNotifier = new HTTPNotifier();
+    this.downloadObservableList = downloadObservableList;
   }
 
   public void downloadFileFromPeer(FileTransfer transfer) throws FileNotFoundException {
