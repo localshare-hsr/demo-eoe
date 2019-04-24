@@ -13,11 +13,14 @@ public class HTTPNotifier {
     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
     connection.setRequestMethod("PUT");
     connection.setRequestProperty("X-Resource", transfer.getFileUri());
+    System.out.println("connecting...");
     connection.connect();
-
+    System.out.println("connected");
     int status = connection.getResponseCode();
-    System.out.println(status);
+    //System.out.println(status);
+    System.out.println("received response code");
 
     connection.disconnect();
+    System.out.println("I'm FREEEE!");
   }
 }
