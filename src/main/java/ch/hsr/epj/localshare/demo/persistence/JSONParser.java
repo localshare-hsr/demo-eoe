@@ -1,4 +1,4 @@
-package ch.hsr.epj.localshare.demo.persistent;
+package ch.hsr.epj.localshare.demo.persistence;
 
 import ch.hsr.epj.localshare.demo.logic.environment.ConfigManager;
 import ch.hsr.epj.localshare.demo.logic.environment.StartupMethods;
