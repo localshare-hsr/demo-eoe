@@ -18,9 +18,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 
-public class HttpClientController {
+public class HttpClientController implements Observer {
 
   private DownloadManager downloadManager;
   private HTTPNotifier httpNotifier;
@@ -61,8 +64,21 @@ public class HttpClientController {
     } catch (MalformedURLException e) {
       e.printStackTrace();
     }
-    downloadManager.addMetaDownload(new HTTPMetaDownloader(url, downloadList));
-    downloadObservableList.addAll(downloadList);
+    HTTPMetaDownloader httpMetaDownloader = new HTTPMetaDownloader(url, downloadList, this);
+    downloadManager.addMetaDownload(httpMetaDownloader);
+    //downloadObservableList.addAll(downloadList);
     System.out.println("fake list added");
+  }
+
+
+  @Override
+  public void update(Observable o, Object arg) {
+    Platform.runLater(
+        () -> {
+          System.out.println("update observer called %%%%%%%%%%%");
+          List<Download> downloadList = (List<Download>) arg;
+          downloadObservableList.addAll(downloadList);
+        }
+    );
   }
 }
