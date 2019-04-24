@@ -1,5 +1,6 @@
 package ch.hsr.epj.localshare.demo.network.transfer;
 
+import ch.hsr.epj.localshare.demo.logic.Transfer;
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
 import com.sun.net.httpserver.HttpServer;
 import java.io.File;
@@ -25,7 +26,7 @@ public class HTTPServer {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    httpServer.createContext(CONTEXT_NOTIFY, new NotifyHandler());
+    httpServer.createContext(CONTEXT_NOTIFY, new NotifyHandler(this));
     httpServer.setExecutor(Executors.newFixedThreadPool(10));
     httpServer.start();
   }
@@ -50,5 +51,9 @@ public class HTTPServer {
     }
 
     httpServer.removeContext(CONTEXT_SHARE + "/" + path);
+  }
+
+  public void receivedNotification(Transfer transfer) {
+    System.out.println(transfer);
   }
 }

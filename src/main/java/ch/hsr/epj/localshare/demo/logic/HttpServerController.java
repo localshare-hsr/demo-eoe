@@ -23,6 +23,10 @@ public class HttpServerController implements Observer {
     httpServer = new HTTPServer();
   }
 
+  public void connectClientController(HttpClientController httpClientController) {
+    this.httpClientController = httpClientController;
+  }
+
   public void stopHTTPServer() {
     httpServer.stopHTTPServer();
   }
@@ -45,6 +49,8 @@ public class HttpServerController implements Observer {
   @Override
   public void update(Observable o, Object arg) {
     int percent = (int) arg;
-    System.out.println("Upload completeness = " + percent + "%");
+    if (percent % 20 == 0) {
+      System.out.println("Upload completeness = " + percent + "%");
+    }
   }
 }

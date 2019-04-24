@@ -1,5 +1,6 @@
 package ch.hsr.epj.localshare.demo.network.transfer;
 
+import com.google.gson.Gson;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -8,6 +9,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -57,11 +59,21 @@ public class ShareHandler implements HttpHandler {
     }
   }
 
-  private File requestDispatcher(URI uri) throws FileNotFoundException {
+  private File requestDispatcher(URI uri) throws FileNotFoundException, IOException {
     String uriPath = uri.getPath();
 
     if (uriPath.endsWith(INDEX_FOLDER)) {
-      return getFileFromPool(INDEX_FILE);
+      //return getFileFromPool(INDEX_FILE);
+      Gson gson = new Gson();
+      System.out.println("go json, yeah!");
+      String json = gson.toJson((filePool));
+      System.out.println(json);
+      //return new File(gson.toJson(filePool));
+      File tmpFile = new File("index.json");
+      FileWriter fwriter = new FileWriter(tmpFile);
+      fwriter.write(json);
+      fwriter.close();
+      return tmpFile;
     } else {
       return getFileFromPool(uriPath);
     }

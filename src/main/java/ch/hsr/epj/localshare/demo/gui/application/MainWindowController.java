@@ -2,6 +2,7 @@ package ch.hsr.epj.localshare.demo.gui.application;
 
 import ch.hsr.epj.localshare.demo.gui.data.Peer;
 import ch.hsr.epj.localshare.demo.logic.DiscoveryController;
+import ch.hsr.epj.localshare.demo.logic.HttpClientController;
 import ch.hsr.epj.localshare.demo.logic.HttpServerController;
 import ch.hsr.epj.localshare.demo.logic.User;
 import ch.hsr.epj.localshare.demo.logic.keymanager.KeyManager;
@@ -47,6 +48,7 @@ public class MainWindowController implements Initializable {
   private String fingerPrint;
   private String friendlyName;
   private HttpServerController httpServerController;
+  private HttpClientController httpClientController;
 
   @FXML
   private ObservableList<Peer> peerObservableList;
@@ -115,6 +117,8 @@ public class MainWindowController implements Initializable {
   public void initialize(URL location, ResourceBundle resources) {
     listView.setItems(peerObservableList);
     startHttpServer();
+    startHttpClient();
+    httpServerController.connectClientController(httpClientController);
     listView.setCellFactory(peerListView -> new PeerListViewCell(httpServerController));
     ipAddressText.setText(String.valueOf(IPAddressUtil.getLocalIPAddress()));
     fingerPrintText.setText(fingerPrint);
@@ -123,5 +127,9 @@ public class MainWindowController implements Initializable {
 
   private void startHttpServer() {
     httpServerController = new HttpServerController();
+  }
+
+  private void startHttpClient() {
+    httpClientController = new HttpClientController();
   }
 }
