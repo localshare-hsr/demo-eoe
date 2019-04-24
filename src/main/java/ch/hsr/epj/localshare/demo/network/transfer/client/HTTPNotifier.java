@@ -16,6 +16,7 @@ public class HTTPNotifier {
     System.out.println("connecting...");
     connection.connect();
     System.out.println("connected");
+    // TODO: wait only for some seconds, maybe try again, before aborting
     int status = connection.getResponseCode();
     //System.out.println(status);
     System.out.println("received response code");

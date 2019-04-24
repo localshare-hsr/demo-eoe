@@ -6,7 +6,6 @@ import ch.hsr.epj.localshare.demo.logic.environment.ConfigManager;
 import ch.hsr.epj.localshare.demo.network.transfer.client.DownloadManager;
 import ch.hsr.epj.localshare.demo.network.transfer.client.HTTPDownloader;
 import ch.hsr.epj.localshare.demo.network.transfer.client.HTTPNotifier;
-import ch.hsr.epj.localshare.demo.network.transfer.utils.UrlFactory;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -49,14 +48,27 @@ public class HttpClientController {
 
   public void getMetadataFromPeer(Transfer transfer) {
     // TODO Transfer what?
-    //
-    List<Download> transferList = null;
+    //fake some more ;)
+    List<Download> downloadList = null;
     URL url = null;
+    try {
+      url = new URL("http://www.42.tf");
+    } catch (MalformedURLException e) {
+      e.printStackTrace();
+    }
+    Download fakeDownload = new Download("marco", 4096, "owl.png", url);
+    Download fakeDownload2 = new Download("nobody", 1, "bad.txt", url);
+    downloadList.add(fakeDownload);
+    downloadList.add(fakeDownload2);
+
+    //URL url = null;
+    /*
     try {
       url = UrlFactory.generateMetaDataUrl(transfer);
     } catch (MalformedURLException e) {
       e.printStackTrace();
     }
-    //downloadManager.addDownload(new HTTPMetaDownloader(url, transferList));
+    */
+    //downloadManager.addDownload(new HTTPMetaDownloader(url, downloadList));
   }
 }
