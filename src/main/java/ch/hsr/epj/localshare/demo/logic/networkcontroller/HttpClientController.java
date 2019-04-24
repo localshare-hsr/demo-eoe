@@ -5,7 +5,9 @@ import ch.hsr.epj.localshare.demo.logic.Transfer;
 import ch.hsr.epj.localshare.demo.logic.environment.ConfigManager;
 import ch.hsr.epj.localshare.demo.network.transfer.client.DownloadManager;
 import ch.hsr.epj.localshare.demo.network.transfer.client.HTTPDownloader;
+import ch.hsr.epj.localshare.demo.network.transfer.client.HTTPMetaDownloader;
 import ch.hsr.epj.localshare.demo.network.transfer.client.HTTPNotifier;
+import ch.hsr.epj.localshare.demo.network.transfer.utils.UrlFactory;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -51,36 +53,16 @@ public class HttpClientController {
   }
 
   public void getMetadataFromPeer(Transfer transfer) {
-    // TODO Transfer what?
-    //fake some more ;)
     System.out.println("arrived in getMetadata function");
     List<Download> downloadList = new ArrayList<>();
     URL url = null;
-    try {
-      url = new URL("http://www.42.tf/");
-    } catch (MalformedURLException e) {
-      e.printStackTrace();
-    }
-    System.out.println("url faked");
-    Download fakeDownload = new Download("marco", 4096, "owl.png", url);
-    Download fakeDownload2 = new Download("nobody", 1, "bad.txt", url);
-    downloadList.add(fakeDownload);
-    downloadList.add(fakeDownload2);
-    System.out.println("fake list done");
-
-    for (Download d : downloadList) {
-      downloadObservableList.add(d);
-    }
-    System.out.println("fake list added");
-
-    //URL url = null;
-    /*
     try {
       url = UrlFactory.generateMetaDataUrl(transfer);
     } catch (MalformedURLException e) {
       e.printStackTrace();
     }
-    */
-    //downloadManager.addDownload(new HTTPMetaDownloader(url, downloadList));
+    downloadManager.addMetaDownload(new HTTPMetaDownloader(url, downloadList));
+    downloadObservableList.addAll(downloadList);
+    System.out.println("fake list added");
   }
 }
