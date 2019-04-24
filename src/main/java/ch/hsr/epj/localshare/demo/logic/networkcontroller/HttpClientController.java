@@ -64,6 +64,10 @@ public class HttpClientController {
     downloadList.add(fakeDownload);
     downloadList.add(fakeDownload2);
 
+    for (Download d : downloadList) {
+      downloadObservableList.add(d);
+    }
+
     //URL url = null;
     /*
     try {
