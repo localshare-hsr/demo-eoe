@@ -10,6 +10,8 @@ import java.net.InetAddress;
 public class NotifyHandler implements HttpHandler {
 
   private HTTPServer httpServer;
+  private static final int HTTP_OK = 200;
+  private static final int EMPTY_RESPONSE_BODY = 0;
 
   NotifyHandler(HTTPServer httpServer) {
     this.httpServer = httpServer;
@@ -29,5 +31,6 @@ public class NotifyHandler implements HttpHandler {
     System.out.println("X-Resource is: " + fileUri);
     System.out.println("IP-Address is: " + peerAddress);
     httpServer.receivedNotification(transfer);
+    httpExchange.sendResponseHeaders(HTTP_OK, EMPTY_RESPONSE_BODY);
   }
 }
