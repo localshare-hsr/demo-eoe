@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.ObservableList;
 
@@ -52,21 +53,25 @@ public class HttpClientController {
   public void getMetadataFromPeer(Transfer transfer) {
     // TODO Transfer what?
     //fake some more ;)
-    List<Download> downloadList = null;
+    System.out.println("arrived in getMetadata function");
+    List<Download> downloadList = new ArrayList<>();
     URL url = null;
     try {
-      url = new URL("http://www.42.tf");
+      url = new URL("http://www.42.tf/");
     } catch (MalformedURLException e) {
       e.printStackTrace();
     }
+    System.out.println("url faked");
     Download fakeDownload = new Download("marco", 4096, "owl.png", url);
     Download fakeDownload2 = new Download("nobody", 1, "bad.txt", url);
     downloadList.add(fakeDownload);
     downloadList.add(fakeDownload2);
+    System.out.println("fake list done");
 
     for (Download d : downloadList) {
       downloadObservableList.add(d);
     }
+    System.out.println("fake list added");
 
     //URL url = null;
     /*
