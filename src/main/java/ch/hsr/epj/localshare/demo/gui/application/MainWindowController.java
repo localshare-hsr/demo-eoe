@@ -1,6 +1,8 @@
 package ch.hsr.epj.localshare.demo.gui.application;
 
 import ch.hsr.epj.localshare.demo.gui.data.Peer;
+import ch.hsr.epj.localshare.demo.gui.data.Transfer;
+import ch.hsr.epj.localshare.demo.logic.ConfigManager;
 import ch.hsr.epj.localshare.demo.logic.DiscoveryController;
 import ch.hsr.epj.localshare.demo.logic.HttpClientController;
 import ch.hsr.epj.localshare.demo.logic.HttpServerController;
@@ -34,6 +36,9 @@ public class MainWindowController implements Initializable {
   private ListView<Peer> listView;
 
   @FXML
+  private ListView<Transfer> listViewTransfer;
+
+  @FXML
   private Text ipAddressText;
 
   @FXML
@@ -53,12 +58,23 @@ public class MainWindowController implements Initializable {
   @FXML
   private ObservableList<Peer> peerObservableList;
 
+  @FXML
+  private ObservableList<Transfer> transferObservableList;
+
+  // TODO where is it already initialized?
+  //HttpClientController httpClientController;
+
   public MainWindowController() {
 
     peerObservableList = FXCollections.observableArrayList();
+    transferObservableList = FXCollections.observableArrayList();
+
     DiscoveryController discoveryController = new DiscoveryController(peerObservableList);
     discoveryController.startServer();
     discoveryController.startSearcher();
+
+    httpClientController = new HttpClientController();
+    System.out.println(ConfigManager.getInstance().getDownloadPath());
 
     User user = User.getInstance();
     friendlyName = user.getFriendlyName();
@@ -115,11 +131,23 @@ public class MainWindowController implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
+
+    peerObservableList.add(new Peer("10.0.0.0", "dummy", "dummy", ""));
+
     listView.setItems(peerObservableList);
+
+    transferObservableList.addAll(new Transfer("Elvis", 12345, "Test.pdf", null),
+        new Transfer("Elvis", 35, "config.txt", null));
+
+    listViewTransfer.setItems(transferObservableList);
+
     startHttpServer();
     startHttpClient();
     httpServerController.connectClientController(httpClientController);
     listView.setCellFactory(peerListView -> new PeerListViewCell(httpServerController));
+    listViewTransfer
+        .setCellFactory(transferListView -> new TransferListViewCell(httpClientController));
+
     ipAddressText.setText(String.valueOf(IPAddressUtil.getLocalIPAddress()));
     fingerPrintText.setText(fingerPrint);
     friendlyNameText.setText(friendlyName);

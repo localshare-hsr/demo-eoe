@@ -5,15 +5,22 @@ import ch.hsr.epj.localshare.demo.logic.HttpServerController;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 
 public class PeerListViewCell extends ListCell<Peer> {
+
+  private static final Logger logger = Logger.getLogger(PeerListViewCell.class.getName());
 
   private static final String COLOR = "derive(palegreen, 50%)";
   @FXML
@@ -52,9 +59,35 @@ public class PeerListViewCell extends ListCell<Peer> {
         try {
           mLLoader.load();
         } catch (IOException e) {
-          e.printStackTrace();
+          logger.log(Level.WARNING, "Unable to load ListCell file", e);
         }
       }
+
+      ContextMenu contextMenu = new ContextMenu();
+      MenuItem editDisplayName = new MenuItem("Edit Displayname");
+      MenuItem editTrustState = new MenuItem("Change Trust State");
+
+      editDisplayName.setOnAction(event -> {
+        Peer item = this.getItem();
+        TextInputDialog textInputDialog = new TextInputDialog("hanswurst");
+        textInputDialog.setHeaderText("Enter Displayname");
+        textInputDialog.showAndWait();
+        peer.setDisplayName(textInputDialog.getEditor().getText());
+
+        // refresh ListView
+
+      });
+
+      editTrustState.setOnAction(event -> {
+        Peer item = this.getItem();
+        item.setTrustState(!item.getTrustState());
+      });
+
+      contextMenu.getItems().add(editDisplayName);
+      contextMenu.getItems().add(editTrustState);
+
+      this.setContextMenu(contextMenu);
+
 
       ip.setText(String.valueOf(peer.getIP()));
       fn.setText(String.valueOf(peer.getFriendlyName()));
@@ -75,23 +108,21 @@ public class PeerListViewCell extends ListCell<Peer> {
           });
 
       gridPane.setOnDragExited(
-          event -> {
-            gridPane.setStyle("-fx-background-color: none");
-          });
+          event -> gridPane.setStyle("-fx-background-color: none"));
 
       gridPane.setOnDragDropped(
           event -> {
             Dragboard db = event.getDragboard();
             boolean success = false;
             if (db.hasFiles()) {
-              System.out.println("Send File: " + db.getFiles().toString() + " To: " + fn.getText());
+              logger.log(Level.INFO,
+                  String.format("Send File: {0} To: {0}", db.getFiles().toString(), fn.getText()));
               try {
                 httpServerController
                     .sharePrivate(InetAddress.getByName(peer.getIP()), db.getFiles());
               } catch (UnknownHostException e) {
                 e.printStackTrace();
               }
-
               success = true;
             }
             /* let the source know whether the string was successfully

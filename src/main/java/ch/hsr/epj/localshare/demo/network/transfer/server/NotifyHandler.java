@@ -1,4 +1,4 @@
-package ch.hsr.epj.localshare.demo.network.transfer;
+package ch.hsr.epj.localshare.demo.network.transfer.server;
 
 import ch.hsr.epj.localshare.demo.logic.Transfer;
 import com.sun.net.httpserver.Headers;

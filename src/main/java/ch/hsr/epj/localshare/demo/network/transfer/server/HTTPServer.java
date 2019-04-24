@@ -1,7 +1,8 @@
-package ch.hsr.epj.localshare.demo.network.transfer;
+package ch.hsr.epj.localshare.demo.network.transfer.server;
 
 import ch.hsr.epj.localshare.demo.logic.HttpServerController;
 import ch.hsr.epj.localshare.demo.logic.Transfer;
+import ch.hsr.epj.localshare.demo.network.transfer.HTTPProgress;
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
 import com.sun.net.httpserver.HttpServer;
 import java.io.File;

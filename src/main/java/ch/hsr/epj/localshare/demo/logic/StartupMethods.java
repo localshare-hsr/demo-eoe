@@ -16,20 +16,27 @@ public class StartupMethods {
     File configFile;
 
     if (isWindows()) {
-      configFile = new File(configManager.getConfigPath() + "\\config.json");
+      configManager.setDownloadPath(getHomePath() + "\\LocalShare\\download\\");
+      configManager.setConfigPath(getHomePath() + "\\LocalShare\\config\\");
     } else {
-      configFile = new File(configManager.getConfigPath() + "/config.json");
+      configManager.setDownloadPath(getHomePath() + "/LocalShare/download/");
+      configManager.setConfigPath(getHomePath() + "/LocalShare/config/");
     }
+
+    File downloadFolder = new File(String.valueOf(configManager.getDownloadPath()));
+    if (!downloadFolder.exists()) {
+      downloadFolder.mkdir();
+    }
+
+    configFile = new File(configManager.getConfigPath() + "config.json");
 
     if (configFile.exists() && !configFile.isDirectory()) {
       firstLaunch = false;
-      JSONParser parser = new JSONParser();
-      parser.loadData();
     }
     return firstLaunch;
   }
 
-  public static String getOsName() {
+  private static String getOsName() {
     if (os == null) {
       os = System.getProperty("os.name");
     }
@@ -40,21 +47,15 @@ public class StartupMethods {
     return getOsName().startsWith("Windows");
   }
 
-  public static boolean isLinux() {
+  private static boolean isLinux() {
     return getOsName().startsWith("Linux");
   }
 
-  public static void setDefaultPath() {
-    ConfigManager configManager = ConfigManager.getInstance();
-
-    if (isWindows()) {
-      configManager.setDownloadPath(getHomePath() + "\\LocalShare\\download");
-      configManager.setConfigPath(getHomePath() + "\\LocalShare\\config");
-    } else {
-      configManager.setDownloadPath(getHomePath() + "/LocalShare/download");
-      configManager.setConfigPath(getHomePath() + "/LocalShare/config");
-    }
+  public static void loadConfig() {
+    JSONParser parser = new JSONParser();
+    parser.loadData();
   }
+
 
   private static String getHomePath() {
     String homePath = "";
