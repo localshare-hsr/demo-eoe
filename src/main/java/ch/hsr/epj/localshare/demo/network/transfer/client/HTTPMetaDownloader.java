@@ -1,6 +1,7 @@
 package ch.hsr.epj.localshare.demo.network.transfer.client;
 
 import ch.hsr.epj.localshare.demo.gui.presentation.Download;
+import ch.hsr.epj.localshare.demo.network.transfer.utils.MetaParser;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -15,13 +16,13 @@ public class HTTPMetaDownloader implements Runnable {
 
   private static final int BUFFER_SIZE = 1024;
   private static final int EOF = -1;
-
-
   private URL metaUrl;
   private long totalFileLength;
+  private List<Download> downloadList;
 
   public HTTPMetaDownloader(URL url, List<Download> downloadList) {
     this.metaUrl = url;
+    this.downloadList = downloadList;
   }
 
   @Override
@@ -64,6 +65,7 @@ public class HTTPMetaDownloader implements Runnable {
     bufferedInputStream.close();
     bufferedOutputStream.close();
     connection.disconnect();
+    downloadList = MetaParser.parse(jsonFile);
   }
 }
 
