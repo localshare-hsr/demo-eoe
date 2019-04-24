@@ -36,18 +36,6 @@ public class JSONParser {
     obj.put(jsonDownloadPath, manager.getDownloadPath());
   }
 
-  public void saveFriendlyNameIntoJSON(String friendlyName) {
-    obj.put(jsonFriendlyName, friendlyName);
-  }
-
-  public void saveConfigPathIntoJSON(String configPath) {
-    obj.put(jsonConfigPath, configPath);
-  }
-
-  public void saveDownloadPathINTOJSON(String downloadPath) {
-    obj.put(jsonDownloadPath, downloadPath);
-  }
-
   public void writeJSONToDisk() throws IOException {
     Files.createDirectories(Paths.get(manager.getConfigPath()));
     String savedFileName;
@@ -79,9 +67,12 @@ public class JSONParser {
 
       String friendlyName = (String) jsonObject.get(jsonFriendlyName);
       String downloadPath = (String) jsonObject.get(jsonDownloadPath);
+      String configPath = (String) jsonObject.get(jsonConfigPath);
 
       user.setFriendlyName(friendlyName);
       manager.setDownloadPath(downloadPath);
+      manager.setConfigPath(configPath);
+
 
     } catch (IOException | ParseException e) {
       logger.log(Level.WARNING, "Unable to load JSON file", e);
