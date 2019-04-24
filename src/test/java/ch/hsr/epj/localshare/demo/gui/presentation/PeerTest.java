@@ -1,4 +1,4 @@
-package ch.hsr.epj.localshare.demo.gui.data;
+package ch.hsr.epj.localshare.demo.gui.presentation;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

@@ -1,4 +1,4 @@
-package ch.hsr.epj.localshare.demo.logic;
+package ch.hsr.epj.localshare.demo.logic.environment;
 
 import ch.hsr.epj.localshare.demo.persistent.JSONParser;
 import java.io.File;

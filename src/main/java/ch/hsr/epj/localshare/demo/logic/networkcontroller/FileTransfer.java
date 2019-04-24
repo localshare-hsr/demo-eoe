@@ -1,6 +1,6 @@
-package ch.hsr.epj.localshare.demo.logic;
+package ch.hsr.epj.localshare.demo.logic.networkcontroller;
 
-import ch.hsr.epj.localshare.demo.gui.data.Peer;
+import ch.hsr.epj.localshare.demo.gui.presentation.Peer;
 import java.net.URL;
 import javafx.scene.control.ProgressBar;
 

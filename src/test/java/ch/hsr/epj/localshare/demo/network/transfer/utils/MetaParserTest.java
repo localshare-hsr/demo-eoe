@@ -2,7 +2,7 @@ package ch.hsr.epj.localshare.demo.network.transfer.utils;
 
 import static org.junit.Assert.assertEquals;
 
-import ch.hsr.epj.localshare.demo.gui.data.Transfer;
+import ch.hsr.epj.localshare.demo.gui.presentation.Transfer;
 import ch.hsr.epj.localshare.demo.network.transfer.server.DownloadFile;
 import java.io.BufferedWriter;
 import java.io.File;

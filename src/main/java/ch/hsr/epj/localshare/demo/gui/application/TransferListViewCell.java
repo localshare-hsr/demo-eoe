@@ -1,9 +1,9 @@
 package ch.hsr.epj.localshare.demo.gui.application;
 
-import ch.hsr.epj.localshare.demo.gui.data.Peer;
-import ch.hsr.epj.localshare.demo.gui.data.Transfer;
-import ch.hsr.epj.localshare.demo.logic.FileTransfer;
-import ch.hsr.epj.localshare.demo.logic.HttpClientController;
+import ch.hsr.epj.localshare.demo.gui.presentation.Peer;
+import ch.hsr.epj.localshare.demo.gui.presentation.Transfer;
+import ch.hsr.epj.localshare.demo.logic.networkcontroller.FileTransfer;
+import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpClientController;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;

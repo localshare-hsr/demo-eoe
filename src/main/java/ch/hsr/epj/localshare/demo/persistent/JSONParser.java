@@ -1,8 +1,8 @@
 package ch.hsr.epj.localshare.demo.persistent;
 
-import ch.hsr.epj.localshare.demo.logic.ConfigManager;
-import ch.hsr.epj.localshare.demo.logic.StartupMethods;
-import ch.hsr.epj.localshare.demo.logic.User;
+import ch.hsr.epj.localshare.demo.logic.environment.ConfigManager;
+import ch.hsr.epj.localshare.demo.logic.environment.StartupMethods;
+import ch.hsr.epj.localshare.demo.logic.environment.User;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
