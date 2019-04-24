@@ -1,5 +1,6 @@
-package ch.hsr.epj.localshare.demo.network.transfer;
+package ch.hsr.epj.localshare.demo.network.transfer.server;
 
+import ch.hsr.epj.localshare.demo.network.transfer.HTTPProgress;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
