@@ -1,5 +1,7 @@
 package ch.hsr.epj.localshare.demo.gui.application;
 
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+
 import ch.hsr.epj.localshare.demo.gui.presentation.Peer;
 import ch.hsr.epj.localshare.demo.gui.presentation.Transfer;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.FileTransfer;
@@ -8,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -63,6 +66,7 @@ public class TransferListViewCell extends ListCell<Transfer> {
         try {
           mLLoader.load();
         } catch (IOException e) {
+          LOGGER.log(Level.WARNING, "Couldn't load FXMLLoader", e);
           e.printStackTrace();
         }
       }

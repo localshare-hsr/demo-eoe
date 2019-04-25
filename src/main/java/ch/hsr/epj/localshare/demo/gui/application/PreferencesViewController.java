@@ -1,5 +1,7 @@
 package ch.hsr.epj.localshare.demo.gui.application;
 
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+
 import ch.hsr.epj.localshare.demo.logic.environment.ConfigManager;
 import ch.hsr.epj.localshare.demo.logic.environment.StartupMethods;
 import ch.hsr.epj.localshare.demo.persistence.JSONParser;
@@ -7,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -50,6 +53,7 @@ public class PreferencesViewController implements Initializable {
       try {
         parser.writeJSONToDisk();
       } catch (IOException e) {
+        LOGGER.log(Level.WARNING, "Unable to write ConfigFile", e);
         e.printStackTrace();
       }
 
