@@ -2,7 +2,6 @@ package ch.hsr.epj.localshare.demo.gui.application;
 
 import ch.hsr.epj.localshare.demo.gui.presentation.Peer;
 import ch.hsr.epj.localshare.demo.gui.presentation.Transfer;
-import ch.hsr.epj.localshare.demo.logic.environment.ConfigManager;
 import ch.hsr.epj.localshare.demo.logic.environment.User;
 import ch.hsr.epj.localshare.demo.logic.keymanager.KeyManager;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.DiscoveryController;
@@ -72,7 +71,6 @@ public class MainWindowController implements Initializable {
     discoveryController.startSearcher();
 
     httpClientController = new HttpClientController();
-    System.out.println(ConfigManager.getInstance().getDownloadPath());
 
     User user = User.getInstance();
     friendlyName = user.getFriendlyName();
@@ -121,10 +119,6 @@ public class MainWindowController implements Initializable {
     DiscoveryController discoveryController = new DiscoveryController(peerObservableList);
     discoveryController.startServer();
     discoveryController.startSearcher();
-
-    for (Peer item : listView.getItems()) {
-      System.out.println(item.toString());
-    }
   }
 
   @Override

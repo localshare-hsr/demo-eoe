@@ -66,7 +66,6 @@ public class PeerListViewCell extends ListCell<Peer> {
       MenuItem editTrustState = new MenuItem("Change Trust State");
 
       editDisplayName.setOnAction(event -> {
-        Peer item = this.getItem();
         TextInputDialog textInputDialog = new TextInputDialog("hanswurst");
         textInputDialog.setHeaderText("Enter Displayname");
         textInputDialog.showAndWait();
