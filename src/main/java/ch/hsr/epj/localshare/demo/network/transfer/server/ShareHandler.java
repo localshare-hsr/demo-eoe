@@ -80,7 +80,8 @@ public class ShareHandler implements HttpHandler {
   private DownloadFile generateDownloadFile(final File file) {
     String ownerFriendlyName = User.getInstance().getFriendlyName();
     String url =
-        "http://" + IPAddressUtil.getLocalIPAddress() + ":/share/" + path + "/" + file.getName();
+        "http://" + IPAddressUtil.getLocalIPAddress().getHostAddress() + ":8640/share/" + path + "/"
+            + file.getName();
     return new DownloadFile(ownerFriendlyName, file.getName(), file.length(), url);
   }
 
