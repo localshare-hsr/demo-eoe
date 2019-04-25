@@ -70,14 +70,14 @@ public class PeerListViewCell extends ListCell<Peer> {
         textInputDialog.setHeaderText("Enter Displayname");
         textInputDialog.showAndWait();
         peer.setDisplayName(textInputDialog.getEditor().getText());
-
-        // refresh ListView
-
+        this.getListView().refresh();
       });
 
       editTrustState.setOnAction(event -> {
         Peer item = this.getItem();
         item.setTrustState(!item.getTrustState());
+        this.getListView().refresh();
+
       });
 
       contextMenu.getItems().add(editDisplayName);
