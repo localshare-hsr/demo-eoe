@@ -116,7 +116,6 @@ public class ShareHandler implements HttpHandler {
     OutputStream outputStream = httpExchange.getResponseBody();
     BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
 
-    httpExchange.setStreams(bufferedInputStream, bufferedOutputStream);
     long totalLength = file.length();
     httpExchange.sendResponseHeaders(HTTP_OK, totalLength);
     httpProgress.setTotalByteLength(totalLength);
