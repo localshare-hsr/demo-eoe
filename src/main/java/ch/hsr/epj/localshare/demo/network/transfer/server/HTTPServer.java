@@ -58,7 +58,7 @@ public class HTTPServer {
     httpServer.removeContext(CONTEXT_SHARE + "/" + path);
   }
 
-  public void receivedNotification(Transfer transfer) {
+  public synchronized void receivedNotification(Transfer transfer) {
     httpServerController.receivedNotification(transfer);
   }
 }
