@@ -52,14 +52,8 @@ public class ShareHandler implements HttpHandler {
   @Override
   public void handle(HttpExchange httpExchange) throws IOException {
 
-    Headers headers = httpExchange.getResponseHeaders();
     try {
       File fileToSend = requestDispatcher(httpExchange.getRequestURI());
-      try {
-        headers.add(HEADER_CONTENT_TYPE, getMIMEType(fileToSend));
-      } catch (IOException e) {
-        logger.log(Level.WARNING, "Unable to set MIME Type for file", e);
-      }
       deliverFileToClient(httpExchange, fileToSend);
     } catch (FileNotFoundException e) {
       httpExchange.sendResponseHeaders(HTTP_NOT_FOUND, NO_RESPONSE_BODY);
@@ -113,12 +107,14 @@ public class ShareHandler implements HttpHandler {
     InputStream inputStream = new FileInputStream(file);
     BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
 
-    OutputStream outputStream = httpExchange.getResponseBody();
-    BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
-
     long totalLength = file.length();
     httpExchange.sendResponseHeaders(HTTP_OK, totalLength);
+    Headers headers = httpExchange.getResponseHeaders();
+    headers.add(HEADER_CONTENT_TYPE, getMIMEType(file));
     httpProgress.setTotalByteLength(totalLength);
+
+    OutputStream outputStream = httpExchange.getResponseBody();
+    BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
 
     byte[] buffer = new byte[BUFFER_SIZE];
     int byteRead;
