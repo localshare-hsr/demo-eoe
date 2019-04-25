@@ -12,6 +12,7 @@ public class HTTPNotifier {
     URL url = UrlFactory.generateNotifyUrl(transfer.getPeerAddress());
     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
     connection.setRequestMethod("PUT");
+    connection.setRequestProperty("Connection", "close");
     connection.setRequestProperty("X-Resource", transfer.getFileUri());
     System.out.println("connecting...");
     connection.connect();

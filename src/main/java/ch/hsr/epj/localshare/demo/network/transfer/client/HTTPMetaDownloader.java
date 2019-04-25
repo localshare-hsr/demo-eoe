@@ -42,6 +42,7 @@ public class HTTPMetaDownloader extends Observable implements Runnable {
     HttpURLConnection connection = (HttpURLConnection) metaUrl.openConnection();
     connection.setRequestMethod("GET");
     connection.setDoOutput(true);
+    connection.setRequestProperty("Connection", "close");
     connection.connect();
     int status = connection.getResponseCode();
 

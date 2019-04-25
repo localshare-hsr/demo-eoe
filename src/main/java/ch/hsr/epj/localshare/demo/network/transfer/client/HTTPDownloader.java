@@ -31,6 +31,7 @@ public class HTTPDownloader implements Runnable {
     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
     connection.setRequestMethod("GET");
     connection.setDoOutput(true);
+    connection.setRequestProperty("Connection", "close");
     connection.connect();
     int status = connection.getResponseCode();
 
