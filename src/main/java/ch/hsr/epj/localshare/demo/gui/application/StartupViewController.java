@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
@@ -33,9 +32,17 @@ public class StartupViewController implements Initializable {
   @FXML
   private Label defaultDownloadLabel;
 
+  @FXML
+  private Button finishButton;
+
   public void changeFriendlyName(String friendlyName) {
-    User user = User.getInstance();
-    user.setFriendlyName(friendlyName);
+    if (friendlyName.equals("")) {
+      finishButton.setDisable(true);
+    } else {
+      User user = User.getInstance();
+      user.setFriendlyName(friendlyName);
+      finishButton.setDisable(false);
+    }
   }
 
   @FXML
@@ -77,12 +84,7 @@ public class StartupViewController implements Initializable {
     friendlyNameText
         .textProperty()
         .addListener(
-            new ChangeListener<String>() {
-              @Override
-              public void changed(
-                  ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                changeFriendlyName(newValue);
-              }
-            });
+            (observable, oldValue, newValue) -> changeFriendlyName(newValue)
+        );
   }
 }
