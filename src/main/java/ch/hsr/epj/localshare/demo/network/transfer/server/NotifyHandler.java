@@ -12,7 +12,7 @@ public class NotifyHandler implements HttpHandler {
   private HTTPServer httpServer;
   private static final int HTTP_OK = 200;
   private static final int HTTP_METHOD_NOT_ALLOWED = 405;
-  private static final int EMPTY_RESPONSE_BODY = 0;
+  private static final int NO_RESPONSE_BODY = -1;
 
   NotifyHandler(HTTPServer httpServer) {
     this.httpServer = httpServer;
@@ -22,7 +22,7 @@ public class NotifyHandler implements HttpHandler {
   public void handle(HttpExchange httpExchange) throws IOException {
     String method = httpExchange.getRequestMethod();
     if (!method.equals("PUT")) {
-      httpExchange.sendResponseHeaders(HTTP_METHOD_NOT_ALLOWED, EMPTY_RESPONSE_BODY);
+      httpExchange.sendResponseHeaders(HTTP_METHOD_NOT_ALLOWED, NO_RESPONSE_BODY);
     } else {
       InetAddress peerAddress = httpExchange.getRemoteAddress().getAddress();
       Headers headers = httpExchange.getRequestHeaders();
@@ -32,7 +32,7 @@ public class NotifyHandler implements HttpHandler {
       System.out.println("X-Resource is: " + fileUri);
       System.out.println("IP-Address is: " + peerAddress);
       httpServer.receivedNotification(transfer);
-      httpExchange.sendResponseHeaders(HTTP_OK, EMPTY_RESPONSE_BODY);
+      httpExchange.sendResponseHeaders(HTTP_OK, NO_RESPONSE_BODY);
     }
     httpExchange.close();
   }

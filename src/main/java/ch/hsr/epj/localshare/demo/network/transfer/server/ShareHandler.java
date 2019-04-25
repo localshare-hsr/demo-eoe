@@ -28,7 +28,7 @@ public class ShareHandler implements HttpHandler {
 
   private static final int BUFFER_SIZE = 1024;
   private static final int EOF = -1;
-  private static final int EMPTY_RESPONSE_BODY = 0;
+  private static final int NO_RESPONSE_BODY = -1;
 
   private static final int HTTP_OK = 200;
   private static final int HTTP_NOT_FOUND = 404;
@@ -62,7 +62,7 @@ public class ShareHandler implements HttpHandler {
       }
       deliverFileToClient(httpExchange, fileToSend);
     } catch (FileNotFoundException e) {
-      httpExchange.sendResponseHeaders(HTTP_NOT_FOUND, EMPTY_RESPONSE_BODY);
+      httpExchange.sendResponseHeaders(HTTP_NOT_FOUND, NO_RESPONSE_BODY);
       logger.log(Level.WARNING, "File does not exist", e);
     } finally {
       httpExchange.close();
