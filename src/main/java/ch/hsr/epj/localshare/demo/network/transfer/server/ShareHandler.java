@@ -135,6 +135,5 @@ public class ShareHandler implements HttpHandler {
     }
     bufferedInputStream.close();
     bufferedOutputStream.close();
-    httpExchange.close();
   }
 }
