@@ -28,9 +28,6 @@ public class NotifyHandler implements HttpHandler {
       Headers headers = httpExchange.getRequestHeaders();
       String fileUri = headers.getFirst("X-Resource");
       Transfer transfer = new Transfer(peerAddress, fileUri);
-      System.out.println("Received PUT:");
-      System.out.println("X-Resource is: " + fileUri);
-      System.out.println("IP-Address is: " + peerAddress);
       httpServer.receivedNotification(transfer);
       httpExchange.sendResponseHeaders(HTTP_OK, NO_RESPONSE_BODY);
     }
