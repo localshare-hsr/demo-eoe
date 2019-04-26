@@ -24,12 +24,11 @@ public class StartupMethods {
     }
 
     File downloadFolder = new File(String.valueOf(configManager.getDownloadPath()));
-    File localShareFolder = null;
+    File localShareFolder;
     if (isWindows()) {
-      localShareFolder = new File(String.valueOf(getHomePath() + "\\LocalShare"));
-    }
-    if (isLinux()) {
-      localShareFolder = new File(String.valueOf(getHomePath() + "/LocalShare"));
+      localShareFolder = new File(getHomePath() + "\\LocalShare");
+    } else {
+      localShareFolder = new File(getHomePath() + "/LocalShare");
     }
 
     localShareFolder.mkdir();
