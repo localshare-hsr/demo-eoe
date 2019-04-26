@@ -13,13 +13,16 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 import java.util.Observable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HTTPMetaDownloader extends Observable implements Runnable {
+
+  private static final Logger logger = Logger.getLogger(HTTPMetaDownloader.class.getName());
 
   private static final int BUFFER_SIZE = 1024;
   private static final int EOF = -1;
   private URL metaUrl;
-  private long totalFileLength;
   private List<Download> downloadList;
 
   public HTTPMetaDownloader(URL url, List<Download> downloadList,
@@ -34,7 +37,7 @@ public class HTTPMetaDownloader extends Observable implements Runnable {
     try {
       startDownload();
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.log(Level.SEVERE, "Could not run download", e);
     }
   }
 
@@ -43,36 +46,37 @@ public class HTTPMetaDownloader extends Observable implements Runnable {
     connection.setRequestMethod("GET");
     connection.setDoOutput(true);
     connection.setRequestProperty("Connection", "close");
-    connection.connect();
-    int status = connection.getResponseCode();
 
-    totalFileLength = Long.parseLong(connection.getHeaderField("Content-Length"));
     InputStream inputStream = connection.getInputStream();
     BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
 
-    File jsonFile = new File("index.json");
+    int status = connection.getResponseCode();
+    if (status == 200) {
+      File jsonFile = new File("index.json");
 
-    FileOutputStream outputStream = new FileOutputStream(jsonFile);
-    BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
+      FileOutputStream outputStream = new FileOutputStream(jsonFile);
+      try (BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream)) {
+        byte[] buffer = new byte[BUFFER_SIZE];
+        int byteRead;
+        while ((byteRead = bufferedInputStream.read(buffer)) != EOF) {
+          try {
+            bufferedOutputStream.write(buffer, 0, byteRead);
+            bufferedOutputStream.flush();
 
-    byte[] buffer = new byte[BUFFER_SIZE];
-    int byteRead;
-    while ((byteRead = bufferedInputStream.read(buffer)) != EOF) {
-      try {
-        bufferedOutputStream.write(buffer, 0, byteRead);
-        bufferedOutputStream.flush();
-
-      } catch (IOException e) {
-        System.err.println("Error: Problem with output stream occurred");
-        break;
+          } catch (IOException e) {
+            logger.log(Level.WARNING, "Problem with output stream occurred", e);
+            break;
+          }
+        }
+        downloadList = MetaParser.parse(jsonFile);
+        setChanged();
+        notifyObservers(downloadList);
       }
+    } else {
+      logger.log(Level.INFO, "HTTP status code not 200 OK but {0}", status);
     }
     bufferedInputStream.close();
-    bufferedOutputStream.close();
     connection.disconnect();
-    downloadList = MetaParser.parse(jsonFile);
-    setChanged();
-    notifyObservers(downloadList);
   }
 }
 
