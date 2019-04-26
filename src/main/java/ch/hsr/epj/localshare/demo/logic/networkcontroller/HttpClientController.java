@@ -20,10 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 
 public class HttpClientController implements Observer {
+
+  private static final Logger logger = Logger.getLogger(HttpClientController.class.getName());
 
   private DownloadManager downloadManager;
   private HTTPNotifier httpNotifier;
@@ -37,7 +41,7 @@ public class HttpClientController implements Observer {
 
   public void downloadFileFromPeer(FileTransfer transfer) throws FileNotFoundException {
     String path = transfer.getPath().getFile();
-    String filename = path.substring(path.lastIndexOf('/') + 1, path.length());
+    String filename = path.substring(path.lastIndexOf('/') + 1);
     File file = new File(ConfigManager.getInstance().getDownloadPath() + filename);
 
     OutputStream outputStream = new FileOutputStream(file);
@@ -48,28 +52,23 @@ public class HttpClientController implements Observer {
   }
 
   void sendNotification(Transfer transfer) {
-    System.out.println("private path for share is: " + transfer.getFileUri());
-    System.out.println("peer IP address is: " + transfer.getPeerAddress());
     try {
       httpNotifier.sendNotification(transfer);
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.log(Level.WARNING, "IO problem sending notification", e);
     }
   }
 
-  public void getMetadataFromPeer(Transfer transfer) {
-    System.out.println("arrived in getMetadata function");
+  void getMetadataFromPeer(Transfer transfer) {
     List<Download> downloadList = new ArrayList<>();
     URL url = null;
     try {
       url = UrlFactory.generateMetaDataUrl(transfer);
     } catch (MalformedURLException e) {
-      e.printStackTrace();
+      logger.log(Level.WARNING, "URL is invalid", e);
     }
     HTTPMetaDownloader httpMetaDownloader = new HTTPMetaDownloader(url, downloadList, this);
     downloadManager.addMetaDownload(httpMetaDownloader);
-    //downloadObservableList.addAll(downloadList);
-    System.out.println("fake list added");
   }
 
 
@@ -77,7 +76,6 @@ public class HttpClientController implements Observer {
   public void update(Observable o, Object arg) {
     Platform.runLater(
         () -> {
-          System.out.println("update observer called %%%%%%%%%%%");
           List<Download> downloadList = (List<Download>) arg;
           downloadObservableList.addAll(downloadList);
         }
