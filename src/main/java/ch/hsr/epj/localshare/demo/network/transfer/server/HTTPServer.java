@@ -11,32 +11,37 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HTTPServer {
 
+  private static final Logger logger = Logger.getLogger(HTTPServer.class.getName());
+
+  private static final int PORT = 8640;
   private static final String CONTEXT_SHARE = "/share";
   private static final String CONTEXT_CHANNEL = "/channel";
   private static final String CONTEXT_NOTIFY = "/notify";
-  private HttpServer httpServer;
+  private HttpServer webServer;
   private HttpServerController httpServerController;
 
   public HTTPServer(HttpServerController httpServerController) {
     this.httpServerController = httpServerController;
-    System.out.println("Start HTTP Web Server on Port 8640");
     InetAddress myIPAddress = IPAddressUtil.getLocalIPAddress();
     InetSocketAddress socket = new InetSocketAddress(myIPAddress, 8640);
+    logger.log(Level.FINE, "Start HTTP Web Server on " + myIPAddress.getHostAddress() + ":" + PORT);
     try {
-      this.httpServer = HttpServer.create(socket, 0);
+      this.webServer = HttpServer.create(socket, 0);
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.log(Level.SEVERE, "Could not create HTTP server instance", e);
     }
-    httpServer.createContext(CONTEXT_NOTIFY, new NotifyHandler(this));
-    httpServer.setExecutor(Executors.newFixedThreadPool(10));
-    httpServer.start();
+    webServer.createContext(CONTEXT_NOTIFY, new NotifyHandler(this));
+    webServer.setExecutor(Executors.newFixedThreadPool(10));
+    webServer.start();
   }
 
   public void stopHTTPServer() {
-    httpServer.stop(0);
+    webServer.stop(0);
   }
 
   public HTTPProgress createNewShare(String path, List<File> files) {
@@ -45,20 +50,12 @@ public class HTTPServer {
     }
 
     HTTPProgress httpProgress = new HTTPProgress();
-    httpServer
+    webServer
         .createContext(CONTEXT_SHARE + "/" + path, new ShareHandler(files, httpProgress, path));
     return httpProgress;
   }
 
-  private void deleteShare(String path) {
-    if (path == null) {
-      throw new IllegalArgumentException("Error: Path mustno be null");
-    }
-
-    httpServer.removeContext(CONTEXT_SHARE + "/" + path);
-  }
-
-  public synchronized void receivedNotification(Transfer transfer) {
+  synchronized void receivedNotification(Transfer transfer) {
     httpServerController.receivedNotification(transfer);
   }
 }
