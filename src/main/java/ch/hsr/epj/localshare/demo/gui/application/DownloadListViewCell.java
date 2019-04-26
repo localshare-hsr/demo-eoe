@@ -6,6 +6,8 @@ import ch.hsr.epj.localshare.demo.logic.networkcontroller.FileTransfer;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpClientController;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -15,6 +17,8 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.GridPane;
 
 public class DownloadListViewCell extends ListCell<Download> {
+
+  private static final Logger logger = Logger.getLogger(DownloadListViewCell.class.getName());
 
   @FXML
   GridPane gridPaneTransfer;
@@ -41,7 +45,7 @@ public class DownloadListViewCell extends ListCell<Download> {
 
   private HttpClientController httpClientController;
 
-  public DownloadListViewCell(HttpClientController httpClientController) {
+  DownloadListViewCell(HttpClientController httpClientController) {
     this.httpClientController = httpClientController;
   }
 
@@ -61,7 +65,7 @@ public class DownloadListViewCell extends ListCell<Download> {
         try {
           mLLoader.load();
         } catch (IOException e) {
-          e.printStackTrace();
+          logger.log(Level.INFO, "Could not load TransferCell.fxml", e);
         }
       }
 
@@ -84,7 +88,7 @@ public class DownloadListViewCell extends ListCell<Download> {
               httpClientController.downloadFileFromPeer(fileTransfer);
 
             } catch (FileNotFoundException e) {
-              e.printStackTrace();
+              logger.log(Level.INFO, "Could not find file", e);
             }
 
             //handle ProgressBar e.g if 10% of File loaded
