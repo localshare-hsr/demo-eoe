@@ -45,8 +45,8 @@ public class ShareHandler implements HttpHandler {
   ShareHandler(List<File> filePool, HTTPProgress httpProgress, String path) {
     this.filePool = filePool;
     this.httpProgress = httpProgress;
-    downloadableFiles = generateFileContext(filePool);
     this.path = path;
+    downloadableFiles = generateFileContext(filePool);
   }
 
   @Override
