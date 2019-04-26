@@ -10,8 +10,12 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HttpServerController implements Observer {
+
+  private static final Logger logger = Logger.getLogger(HttpServerController.class.getName());
 
   private HTTPServer httpServer;
   private HttpClientController httpClientController;
@@ -51,7 +55,7 @@ public class HttpServerController implements Observer {
   public void update(Observable o, Object arg) {
     int percent = (int) arg;
     if (percent % 20 == 0) {
-      System.out.println("Upload completeness = " + percent + "%");
+      logger.log(Level.INFO, "Upload completeness = {0}%", percent);
     }
   }
 
