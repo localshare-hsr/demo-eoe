@@ -36,7 +36,9 @@ public class HttpClientController implements Observer {
   }
 
   public void downloadFileFromPeer(FileTransfer transfer) throws FileNotFoundException {
-    File file = new File(ConfigManager.getInstance().getDownloadPath() + "test.pdf");
+    String path = transfer.getPath().getFile();
+    String filename = path.substring(path.lastIndexOf('/') + 1, path.length());
+    File file = new File(ConfigManager.getInstance().getDownloadPath() + filename);
 
     OutputStream outputStream = new FileOutputStream(file);
 
