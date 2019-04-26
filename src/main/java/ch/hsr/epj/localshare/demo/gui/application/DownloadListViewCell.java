@@ -6,8 +6,6 @@ import ch.hsr.epj.localshare.demo.logic.networkcontroller.FileTransfer;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpClientController;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -80,13 +78,11 @@ public class DownloadListViewCell extends ListCell<Download> {
 
             try {
               FileTransfer fileTransfer = new FileTransfer(
-                  new Peer("10.10.10.10", "asdf", null, null),
-                  new URL("http://releases.ubuntu.com/18.04.2/ubuntu-18.04.2-desktop-amd64.iso"),
+                  new Peer("10.10.10.10", download.getFriendlyName(), null, null),
+                  download.getUrl(),
                   transferProgressBar);
               httpClientController.downloadFileFromPeer(fileTransfer);
 
-            } catch (MalformedURLException e) {
-              e.printStackTrace();
             } catch (FileNotFoundException e) {
               e.printStackTrace();
             }
