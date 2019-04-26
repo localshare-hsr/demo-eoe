@@ -5,8 +5,12 @@ import ch.hsr.epj.localshare.demo.network.transfer.utils.UrlFactory;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HTTPNotifier {
+
+  private static final Logger logger = Logger.getLogger(HTTPNotifier.class.getName());
 
   public void sendNotification(Transfer transfer) throws IOException {
     URL url = UrlFactory.generateNotifyUrl(transfer.getPeerAddress());
@@ -14,15 +18,13 @@ public class HTTPNotifier {
     connection.setRequestMethod("PUT");
     connection.setRequestProperty("Connection", "close");
     connection.setRequestProperty("X-Resource", transfer.getFileUri());
-    System.out.println("connecting...");
     connection.connect();
-    System.out.println("connected");
-    // TODO: wait only for some seconds, maybe try again, before aborting
     int status = connection.getResponseCode();
-    System.out.println(status);
-    System.out.println("received response code");
-
+    if (status == 200) {
+      logger.log(Level.INFO, "Send notification and received HTTP 200 OK");
+    } else {
+      logger.log(Level.WARNING, "Send notification but received {0}", status);
+    }
     connection.disconnect();
-    System.out.println("I'm FREEEE!");
   }
 }
