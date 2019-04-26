@@ -3,7 +3,7 @@ package ch.hsr.epj.localshare.demo.network.transfer.server;
 import ch.hsr.epj.localshare.demo.logic.environment.User;
 import ch.hsr.epj.localshare.demo.network.transfer.HTTPProgress;
 import ch.hsr.epj.localshare.demo.network.transfer.utils.MetaParser;
-import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
+import ch.hsr.epj.localshare.demo.network.transfer.utils.UrlFactory;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -73,9 +73,7 @@ public class ShareHandler implements HttpHandler {
 
   private DownloadFile generateDownloadFile(final File file) {
     String ownerFriendlyName = User.getInstance().getFriendlyName();
-    String url =
-        "http://" + IPAddressUtil.getLocalIPAddress().getHostAddress() + ":8640/share/" + path + "/"
-            + file.getName();
+    String url = UrlFactory.generateDownloadableURL(path, file);
     return new DownloadFile(ownerFriendlyName, file.getName(), file.length(), url);
   }
 
@@ -105,31 +103,30 @@ public class ShareHandler implements HttpHandler {
 
   private void deliverFileToClient(HttpExchange httpExchange, File file) throws IOException {
     InputStream inputStream = new FileInputStream(file);
-    BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+    try (BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream)) {
+      long totalLength = file.length();
+      httpExchange.sendResponseHeaders(HTTP_OK, totalLength);
+      Headers headers = httpExchange.getResponseHeaders();
+      headers.add(HEADER_CONTENT_TYPE, getMIMEType(file));
+      httpProgress.setTotalByteLength(totalLength);
 
-    long totalLength = file.length();
-    httpExchange.sendResponseHeaders(HTTP_OK, totalLength);
-    Headers headers = httpExchange.getResponseHeaders();
-    headers.add(HEADER_CONTENT_TYPE, getMIMEType(file));
-    httpProgress.setTotalByteLength(totalLength);
+      OutputStream outputStream = httpExchange.getResponseBody();
+      BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
 
-    OutputStream outputStream = httpExchange.getResponseBody();
-    BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
-
-    byte[] buffer = new byte[BUFFER_SIZE];
-    int byteRead;
-    while ((byteRead = bufferedInputStream.read(buffer)) != EOF) {
-      try {
-        bufferedOutputStream.write(buffer, 0, byteRead);
-        bufferedOutputStream.flush();
-        httpProgress.addBytesToCurrent(byteRead);
-      } catch (IOException e) {
-        logger.log(Level.WARNING, "Problem with output stream occurred", e);
-        httpProgress.reset();
-        break;
+      byte[] buffer = new byte[BUFFER_SIZE];
+      int byteRead;
+      while ((byteRead = bufferedInputStream.read(buffer)) != EOF) {
+        try {
+          bufferedOutputStream.write(buffer, 0, byteRead);
+          bufferedOutputStream.flush();
+          httpProgress.addBytesToCurrent(byteRead);
+        } catch (IOException e) {
+          logger.log(Level.WARNING, "Problem with output stream occurred", e);
+          httpProgress.reset();
+          break;
+        }
       }
+      bufferedOutputStream.close();
     }
-    bufferedInputStream.close();
-    bufferedOutputStream.close();
   }
 }
