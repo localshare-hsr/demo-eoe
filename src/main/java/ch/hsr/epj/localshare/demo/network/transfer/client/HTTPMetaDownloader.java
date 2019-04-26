@@ -41,7 +41,7 @@ public class HTTPMetaDownloader extends Observable implements Runnable {
     }
   }
 
-  void startDownload() throws IOException {
+  private void startDownload() throws IOException {
     HttpURLConnection connection = (HttpURLConnection) metaUrl.openConnection();
     connection.setRequestMethod("GET");
     connection.setDoOutput(true);
