@@ -118,6 +118,7 @@ public class PeerListViewCell extends ListCell<Peer> {
               logger.log(Level.INFO,
                   String.format("Send File: {0} To: {0}", db.getFiles().toString(), fn.getText()));
               try {
+
                 httpServerController
                     .sharePrivate(InetAddress.getByName(peer.getIP()), db.getFiles());
               } catch (UnknownHostException e) {

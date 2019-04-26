@@ -2,7 +2,6 @@ package ch.hsr.epj.localshare.demo.gui.application;
 
 import ch.hsr.epj.localshare.demo.gui.presentation.Download;
 import ch.hsr.epj.localshare.demo.gui.presentation.Peer;
-import ch.hsr.epj.localshare.demo.logic.environment.ConfigManager;
 import ch.hsr.epj.localshare.demo.logic.environment.User;
 import ch.hsr.epj.localshare.demo.logic.keymanager.KeyManager;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.DiscoveryController;
@@ -12,6 +11,7 @@ import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
 import java.io.IOException;
 import java.net.URL;
 import java.security.KeyStoreException;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -61,8 +61,6 @@ public class MainWindowController implements Initializable {
   @FXML
   private ObservableList<Download> downloadObservableList;
 
-  // TODO where is it already initialized?
-  //HttpClientController httpClientController;
 
   public MainWindowController() {
 
@@ -74,7 +72,6 @@ public class MainWindowController implements Initializable {
     discoveryController.startSearcher();
 
     httpClientController = new HttpClientController(downloadObservableList);
-    System.out.println(ConfigManager.getInstance().getDownloadPath());
 
     User user = User.getInstance();
     friendlyName = user.getFriendlyName();
@@ -93,7 +90,8 @@ public class MainWindowController implements Initializable {
   @FXML
   private void handlePreferencesButtonAction(ActionEvent event) throws IOException {
     AnchorPane preferencesPane =
-        FXMLLoader.load(getClass().getClassLoader().getResource("fxml/PreferencesView.fxml"));
+        FXMLLoader.load(Objects
+            .requireNonNull(getClass().getClassLoader().getResource("fxml/PreferencesView.fxml")));
     preferencesRootPane.getChildren().setAll(preferencesPane);
   }
 
@@ -124,20 +122,12 @@ public class MainWindowController implements Initializable {
     discoveryController.startServer();
     discoveryController.startSearcher();
 
-    for (Peer item : listView.getItems()) {
-      System.out.println(item.toString());
-    }
   }
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
 
-    peerObservableList.add(new Peer("10.0.0.0", "dummy", "dummy", ""));
-
     listView.setItems(peerObservableList);
-
-    downloadObservableList.addAll(new Download("Elvis", 12345, "Test.pdf", null),
-        new Download("Elvis", 35, "config.txt", null));
 
     listViewTransfer.setItems(downloadObservableList);
 
