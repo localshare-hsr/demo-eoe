@@ -3,6 +3,8 @@ package ch.hsr.epj.localshare.demo;
 import ch.hsr.epj.localshare.demo.logic.environment.StartupMethods;
 import ch.hsr.epj.localshare.demo.persistence.JSONParser;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,6 +12,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+
+  private static final Logger logger = Logger.getLogger(Main.class.getName());
 
   public static void main(String[] args) {
     launch(args);
@@ -43,7 +47,7 @@ public class Main extends Application {
           try {
             parser.writeJSONToDisk();
           } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Unable to parse config", e);
           }
         });
   }
