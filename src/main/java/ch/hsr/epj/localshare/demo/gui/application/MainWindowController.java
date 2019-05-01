@@ -13,6 +13,8 @@ import java.net.URL;
 import java.security.KeyStoreException;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,6 +30,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 public class MainWindowController implements Initializable {
+
+  private static final Logger logger = Logger.getLogger(MainWindowController.class.getName());
 
   @FXML
   private AnchorPane preferencesRootPane;
@@ -82,7 +86,7 @@ public class MainWindowController implements Initializable {
     try {
       fingerPrint = keyManager.getUsersFingerprint();
     } catch (KeyStoreException e) {
-      e.printStackTrace();
+      logger.log(Level.WARNING, "Could not load user fingerprint", e);
     }
 
   }
