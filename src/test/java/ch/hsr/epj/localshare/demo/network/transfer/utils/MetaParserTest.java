@@ -2,7 +2,7 @@ package ch.hsr.epj.localshare.demo.network.transfer.utils;
 
 import static org.junit.Assert.assertEquals;
 
-import ch.hsr.epj.localshare.demo.gui.presentation.Transfer;
+import ch.hsr.epj.localshare.demo.gui.presentation.Download;
 import ch.hsr.epj.localshare.demo.network.transfer.server.DownloadFile;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -66,152 +66,152 @@ public class MetaParserTest {
 
   @Test
   public void testFriendlyNameFirstObject() throws IOException {
-    List<Transfer> transferList = MetaParser.parse(index);
-    assertEquals("Elvis", transferList.get(0).getFriendlyName());
+    List<Download> downloadList = MetaParser.parse(index);
+    assertEquals("Elvis", downloadList.get(0).getFriendlyName());
   }
 
   @Test
   public void testFileNameFirstObject() throws IOException {
-    List<Transfer> transferList = MetaParser.parse(index);
-    assertEquals("abc.txt", transferList.get(0).getFileName());
+    List<Download> downloadList = MetaParser.parse(index);
+    assertEquals("abc.txt", downloadList.get(0).getFileName());
   }
 
   @Test
   public void testSizeFirstObject() throws IOException {
-    List<Transfer> transferList = MetaParser.parse(index);
-    assertEquals(1234567890, transferList.get(0).getSize(), 0);
+    List<Download> downloadList = MetaParser.parse(index);
+    assertEquals(1234567890, downloadList.get(0).getSize(), 0);
   }
 
   @Test
   public void testURLFirstObject() throws FileNotFoundException {
-    List<Transfer> transferList = MetaParser.parse(index);
+    List<Download> downloadList = MetaParser.parse(index);
     assertEquals("https://10.10.10.10:8640/share/354363462/abc.txt",
-        transferList.get(0).getUrl().toString());
+        downloadList.get(0).getUrl().toString());
   }
 
   @Test
   public void testFriendlyNameSecondObject() throws IOException {
-    List<Transfer> transferList = MetaParser.parse(index);
-    assertEquals("Elvis", transferList.get(1).getFriendlyName());
+    List<Download> downloadList = MetaParser.parse(index);
+    assertEquals("Elvis", downloadList.get(1).getFriendlyName());
   }
 
   @Test
   public void testFileNameSecondObject() throws IOException {
-    List<Transfer> transferList = MetaParser.parse(index);
-    assertEquals("def.pdf", transferList.get(1).getFileName());
+    List<Download> downloadList = MetaParser.parse(index);
+    assertEquals("def.pdf", downloadList.get(1).getFileName());
   }
 
   @Test
   public void testSizeSecondObject() throws IOException {
-    List<Transfer> transferList = MetaParser.parse(index);
-    assertEquals(1234567, transferList.get(1).getSize(), 0);
+    List<Download> downloadList = MetaParser.parse(index);
+    assertEquals(1234567, downloadList.get(1).getSize(), 0);
   }
 
   @Test
   public void testURLSecondObject() throws FileNotFoundException {
-    List<Transfer> transferList = MetaParser.parse(index);
+    List<Download> downloadList = MetaParser.parse(index);
     assertEquals("https://10.10.10.10:8640/share/354363462/def.pdf",
-        transferList.get(1).getUrl().toString());
+        downloadList.get(1).getUrl().toString());
   }
 
   @Test
   public void testFriendlyNameThirdObject() throws IOException {
-    List<Transfer> transferList = MetaParser.parse(index);
-    assertEquals("Elvis", transferList.get(2).getFriendlyName());
+    List<Download> downloadList = MetaParser.parse(index);
+    assertEquals("Elvis", downloadList.get(2).getFriendlyName());
   }
 
   @Test
   public void testFileNameThirdObject() throws IOException {
-    List<Transfer> transferList = MetaParser.parse(index);
-    assertEquals("ghi.png", transferList.get(2).getFileName());
+    List<Download> downloadList = MetaParser.parse(index);
+    assertEquals("ghi.png", downloadList.get(2).getFileName());
   }
 
   @Test
   public void testSizeThirdObject() throws IOException {
-    List<Transfer> transferList = MetaParser.parse(index);
-    assertEquals(98876, transferList.get(2).getSize(), 0);
+    List<Download> downloadList = MetaParser.parse(index);
+    assertEquals(98876, downloadList.get(2).getSize(), 0);
   }
 
   @Test
   public void testURLThirdObject() throws FileNotFoundException {
-    List<Transfer> transferList = MetaParser.parse(index);
+    List<Download> downloadList = MetaParser.parse(index);
     assertEquals("https://10.10.10.10:8640/share/354363462/ghi.png",
-        transferList.get(2).getUrl().toString());
+        downloadList.get(2).getUrl().toString());
   }
 
   @Test
   public void testFriendlyNameFirstGeneratedObject() throws IOException {
-    List<Transfer> transferList = MetaParser.parse(json);
-    assertEquals("Elvis", transferList.get(0).getFriendlyName());
+    List<Download> downloadList = MetaParser.parse(json);
+    assertEquals("Elvis", downloadList.get(0).getFriendlyName());
   }
 
   @Test
   public void testFileNameFirstGeneratedObject() throws IOException {
-    List<Transfer> transferList = MetaParser.parse(json);
-    assertEquals("abc.txt", transferList.get(0).getFileName());
+    List<Download> downloadList = MetaParser.parse(json);
+    assertEquals("abc.txt", downloadList.get(0).getFileName());
   }
 
   @Test
   public void testSizeFirstGeneratedObject() throws IOException {
-    List<Transfer> transferList = MetaParser.parse(json);
-    assertEquals(1234567890, transferList.get(0).getSize(), 0);
+    List<Download> downloadList = MetaParser.parse(json);
+    assertEquals(1234567890, downloadList.get(0).getSize(), 0);
   }
 
   @Test
   public void testURLFirstGeneratedObject() throws FileNotFoundException {
-    List<Transfer> transferList = MetaParser.parse(json);
+    List<Download> downloadList = MetaParser.parse(json);
     assertEquals("https://10.10.10.10:8640/share/354363462/abc.txt",
-        transferList.get(0).getUrl().toString());
+        downloadList.get(0).getUrl().toString());
   }
 
   @Test
   public void testFriendlyNameSecondGeneratedObject() throws IOException {
-    List<Transfer> transferList = MetaParser.parse(json);
-    assertEquals("Elvis", transferList.get(1).getFriendlyName());
+    List<Download> downloadList = MetaParser.parse(json);
+    assertEquals("Elvis", downloadList.get(1).getFriendlyName());
   }
 
   @Test
   public void testFileNameSecondGeneratedObject() throws IOException {
-    List<Transfer> transferList = MetaParser.parse(json);
-    assertEquals("def.pdf", transferList.get(1).getFileName());
+    List<Download> downloadList = MetaParser.parse(json);
+    assertEquals("def.pdf", downloadList.get(1).getFileName());
   }
 
   @Test
   public void testSizeSecondGeneratedObject() throws IOException {
-    List<Transfer> transferList = MetaParser.parse(json);
-    assertEquals(1234567, transferList.get(1).getSize(), 0);
+    List<Download> downloadList = MetaParser.parse(json);
+    assertEquals(1234567, downloadList.get(1).getSize(), 0);
   }
 
   @Test
   public void testURLSecondGeneratedObject() throws FileNotFoundException {
-    List<Transfer> transferList = MetaParser.parse(json);
+    List<Download> downloadList = MetaParser.parse(json);
     assertEquals("https://10.10.10.10:8640/share/354363462/def.pdf",
-        transferList.get(1).getUrl().toString());
+        downloadList.get(1).getUrl().toString());
   }
 
   @Test
   public void testFriendlyNameThirdGeneratedObject() throws IOException {
-    List<Transfer> transferList = MetaParser.parse(json);
-    assertEquals("Elvis", transferList.get(2).getFriendlyName());
+    List<Download> downloadList = MetaParser.parse(json);
+    assertEquals("Elvis", downloadList.get(2).getFriendlyName());
   }
 
   @Test
   public void testFileNameThirdGeneratedObject() throws IOException {
-    List<Transfer> transferList = MetaParser.parse(json);
-    assertEquals("ghi.png", transferList.get(2).getFileName());
+    List<Download> downloadList = MetaParser.parse(json);
+    assertEquals("ghi.png", downloadList.get(2).getFileName());
   }
 
   @Test
   public void testSizeThirdGeneratedObject() throws IOException {
-    List<Transfer> transferList = MetaParser.parse(json);
-    assertEquals(98876, transferList.get(2).getSize(), 0);
+    List<Download> downloadList = MetaParser.parse(json);
+    assertEquals(98876, downloadList.get(2).getSize(), 0);
   }
 
   @Test
   public void testURLThirdGeneratedObject() throws FileNotFoundException {
-    List<Transfer> transferList = MetaParser.parse(json);
+    List<Download> downloadList = MetaParser.parse(json);
     assertEquals("https://10.10.10.10:8640/share/354363462/ghi.png",
-        transferList.get(2).getUrl().toString());
+        downloadList.get(2).getUrl().toString());
   }
 
 }

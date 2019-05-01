@@ -1,6 +1,5 @@
 package ch.hsr.epj.localshare.demo.gui.application;
 
-
 import ch.hsr.epj.localshare.demo.logic.environment.ConfigManager;
 import ch.hsr.epj.localshare.demo.logic.environment.StartupMethods;
 import ch.hsr.epj.localshare.demo.persistence.JSONParser;
@@ -21,7 +20,6 @@ import javafx.stage.Stage;
 public class PreferencesViewController implements Initializable {
 
   private static final Logger logger = Logger.getLogger(PreferencesViewController.class.getName());
-
 
   private final DirectoryChooser directoryChooser = new DirectoryChooser();
   private ConfigManager configManager = ConfigManager.getInstance();
@@ -56,8 +54,7 @@ public class PreferencesViewController implements Initializable {
       try {
         parser.writeJSONToDisk();
       } catch (IOException e) {
-        logger.log(Level.WARNING, "Unable to write ConfigFile", e);
-        e.printStackTrace();
+        logger.log(Level.WARNING, "Could not write JSON config to disk");
       }
 
       downloadPath.setText(configManager.getDownloadPath());

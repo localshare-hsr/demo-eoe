@@ -1,17 +1,13 @@
 package ch.hsr.epj.localshare.demo.gui.application;
 
-
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
-
+import ch.hsr.epj.localshare.demo.gui.presentation.Download;
 import ch.hsr.epj.localshare.demo.gui.presentation.Peer;
-import ch.hsr.epj.localshare.demo.gui.presentation.Transfer;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.FileTransfer;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpClientController;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -20,7 +16,9 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.GridPane;
 
-public class TransferListViewCell extends ListCell<Transfer> {
+public class DownloadListViewCell extends ListCell<Download> {
+
+  private static final Logger logger = Logger.getLogger(DownloadListViewCell.class.getName());
 
   @FXML
   GridPane gridPaneTransfer;
@@ -43,19 +41,25 @@ public class TransferListViewCell extends ListCell<Transfer> {
   @FXML
   ProgressBar transferProgressBar;
 
+  @FXML
+  Label transferSpeed;
+
+  @FXML
+  Label secondsToGo;
+
   private FXMLLoader mLLoader;
 
   private HttpClientController httpClientController;
 
-  public TransferListViewCell(HttpClientController httpClientController) {
+  DownloadListViewCell(HttpClientController httpClientController) {
     this.httpClientController = httpClientController;
   }
 
   @Override
-  protected void updateItem(Transfer transfer, boolean empty) {
-    super.updateItem(transfer, empty);
+  protected void updateItem(Download download, boolean empty) {
+    super.updateItem(download, empty);
 
-    if (empty || transfer == null) {
+    if (empty || download == null) {
       setText(null);
       setGraphic(null);
 
@@ -67,8 +71,7 @@ public class TransferListViewCell extends ListCell<Transfer> {
         try {
           mLLoader.load();
         } catch (IOException e) {
-          LOGGER.log(Level.WARNING, "Couldn't load FXMLLoader", e);
-          e.printStackTrace();
+          logger.log(Level.INFO, "Could not load TransferCell.fxml", e);
         }
       }
 
@@ -85,15 +88,13 @@ public class TransferListViewCell extends ListCell<Transfer> {
 
             try {
               FileTransfer fileTransfer = new FileTransfer(
-                  new Peer("10.10.10.10", "asdf", null, null),
-                  new URL("http://releases.ubuntu.com/18.04.2/ubuntu-18.04.2-desktop-amd64.iso"),
-                  transferProgressBar);
+                  new Peer("10.10.10.10", download.getFriendlyName(), null, null),
+                  download.getUrl(),
+                  transferProgressBar, transferSpeed, secondsToGo);
               httpClientController.downloadFileFromPeer(fileTransfer);
 
-            } catch (MalformedURLException e) {
-              e.printStackTrace();
             } catch (FileNotFoundException e) {
-              e.printStackTrace();
+              logger.log(Level.INFO, "Could not find file", e);
             }
 
             //handle ProgressBar e.g if 10% of File loaded
@@ -114,8 +115,8 @@ public class TransferListViewCell extends ListCell<Transfer> {
           }
       );
 
-      size.setText(String.valueOf(transfer.getSize()));
-      filename.setText(String.valueOf(transfer.getFileName()));
+      size.setText(String.valueOf(download.getSize()));
+      filename.setText(String.valueOf(download.getFileName()));
       setGraphic(gridPaneTransfer);
 
     }

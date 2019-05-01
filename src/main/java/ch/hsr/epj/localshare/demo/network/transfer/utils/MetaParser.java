@@ -1,6 +1,6 @@
 package ch.hsr.epj.localshare.demo.network.transfer.utils;
 
-import ch.hsr.epj.localshare.demo.gui.presentation.Transfer;
+import ch.hsr.epj.localshare.demo.gui.presentation.Download;
 import ch.hsr.epj.localshare.demo.network.transfer.server.DownloadFile;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,9 +24,9 @@ public class MetaParser {
   private MetaParser() {
   }
 
-  public static List<Transfer> parse(final File jsonFile) throws FileNotFoundException {
+  public static List<Download> parse(final File jsonFile) throws FileNotFoundException {
 
-    List<Transfer> transferList = new LinkedList<>();
+    List<Download> transferList = new LinkedList<>();
 
     JSONParser parser = new JSONParser();
 
@@ -41,7 +41,7 @@ public class MetaParser {
         String name = (String) jsonFileEntryObject.get("name");
         long size = Long.parseLong((String) jsonFileEntryObject.get("size"));
         String url = (String) jsonFileEntryObject.get("url");
-        transferList.add(new Transfer(friendlyName, size, name, new URL(url)));
+        transferList.add(new Download(friendlyName, size, name, new URL(url)));
 
       }
 

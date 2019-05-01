@@ -2,8 +2,12 @@ package ch.hsr.epj.localshare.demo.logic.environment;
 
 import ch.hsr.epj.localshare.demo.persistence.JSONParser;
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class StartupMethods {
+
+  private static final Logger logger = Logger.getLogger(StartupMethods.class.getName());
 
   private static boolean firstLaunch = true;
   private static String os = null;
@@ -24,16 +28,21 @@ public class StartupMethods {
     }
 
     File downloadFolder = new File(String.valueOf(configManager.getDownloadPath()));
-    File localShareFolder = null;
+    File localShareFolder;
     if (isWindows()) {
-      localShareFolder = new File(String.valueOf(getHomePath() + "\\LocalShare"));
-    }
-    if (isLinux()) {
-      localShareFolder = new File(String.valueOf(getHomePath() + "/LocalShare"));
+      localShareFolder = new File(getHomePath() + "\\LocalShare");
+    } else {
+      localShareFolder = new File(getHomePath() + "/LocalShare");
     }
 
-    localShareFolder.mkdir();
-    downloadFolder.mkdir();
+    boolean existsLocalShareFolder = localShareFolder.mkdir();
+    if (!existsLocalShareFolder) {
+      logger.log(Level.WARNING, "Could not create folder LocalShare");
+    }
+    boolean existsDownloadFolder = downloadFolder.mkdir();
+    if (!existsDownloadFolder) {
+      logger.log(Level.WARNING, "Could not create folder download");
+    }
 
     configFile = new File(configManager.getConfigPath() + "config.json");
 

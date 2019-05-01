@@ -9,17 +9,14 @@
 <?import javafx.scene.layout.RowConstraints?>
 <GridPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8"
   fx:id="gridPaneTransfer">
-  <columnConstraints>
-    <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" percentWidth="20.0"/>
-    <ColumnConstraints hgrow="ALWAYS" percentWidth="35.0"/>
-    <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" percentWidth="35.0"/>
-  </columnConstraints>
-  <rowConstraints>
-    <RowConstraints/>
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-  </rowConstraints>
   <children>
+    <Button GridPane.columnIndex="2" GridPane.rowIndex="1" mnemonicParsing="false" text="Accept"
+      fx:id="buttonAccept"/>
+    <Button GridPane.columnIndex="2" GridPane.rowIndex="2" mnemonicParsing="false" text="Decline"
+      fx:id="buttonDecline"/>
+    <Button GridPane.columnIndex="2" GridPane.rowIndex="1" disable="true" mnemonicParsing="false"
+      text="Cancel Download" visible="false" fx:id="buttonCancelTransfer"/>
+    <Label GridPane.rowIndex="2" text="Filename"/>
     <Label GridPane.columnIndex="1" GridPane.rowIndex="1" text="size" fx:id="size">
       <padding>
         <Insets left="10.0" right="10.0"/>
@@ -32,14 +29,19 @@
       </padding>
     </Label>
     <Label GridPane.rowIndex="1" text="Size"/>
-    <Label GridPane.rowIndex="2" text="Filename"/>
-    <Button GridPane.columnIndex="2" GridPane.rowIndex="1" mnemonicParsing="false" text="Accept"
-      fx:id="buttonAccept"/>
-    <Button GridPane.columnIndex="2" GridPane.rowIndex="2" mnemonicParsing="false" text="Decline"
-      fx:id="buttonDecline"/>
     <ProgressBar GridPane.columnIndex="2" GridPane.rowIndex="2" prefWidth="200.0" progress="0.0"
       visible="false" fx:id="transferProgressBar"/>
-    <Button GridPane.columnIndex="2" GridPane.rowIndex="1" disable="true" mnemonicParsing="false"
-      text="Cancel Download" visible="false" fx:id="buttonCancelTransfer"/>
+    <Label GridPane.rowIndex="3" text="calculating..." fx:id="transferSpeed"/>
+    <Label GridPane.rowIndex="4" text="calculating..." fx:id="secondsToGo"/>
   </children>
+  <columnConstraints>
+    <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" percentWidth="20.0"/>
+    <ColumnConstraints hgrow="ALWAYS" percentWidth="35.0"/>
+    <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" percentWidth="35.0"/>
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints/>
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+  </rowConstraints>
 </GridPane>

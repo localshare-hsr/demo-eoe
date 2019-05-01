@@ -11,4 +11,10 @@ public class DownloadManager {
     executorService.execute(httpDownloader);
   }
 
+  public void addMetaDownload(HTTPMetaDownloader httpMetaDownloader) {
+    executorService.execute(httpMetaDownloader);
+  }
+
+
+
 }

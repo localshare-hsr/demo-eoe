@@ -1,7 +1,7 @@
 package ch.hsr.epj.localshare.demo.gui.application;
 
+import ch.hsr.epj.localshare.demo.gui.presentation.Download;
 import ch.hsr.epj.localshare.demo.gui.presentation.Peer;
-import ch.hsr.epj.localshare.demo.gui.presentation.Transfer;
 import ch.hsr.epj.localshare.demo.logic.environment.User;
 import ch.hsr.epj.localshare.demo.logic.keymanager.KeyManager;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.DiscoveryController;
@@ -11,7 +11,10 @@ import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
 import java.io.IOException;
 import java.net.URL;
 import java.security.KeyStoreException;
+import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,6 +31,8 @@ import javafx.scene.text.Text;
 
 public class MainWindowController implements Initializable {
 
+  private static final Logger logger = Logger.getLogger(MainWindowController.class.getName());
+
   @FXML
   private AnchorPane preferencesRootPane;
 
@@ -35,7 +40,7 @@ public class MainWindowController implements Initializable {
   private ListView<Peer> listView;
 
   @FXML
-  private ListView<Transfer> listViewTransfer;
+  private ListView<Download> listViewTransfer;
 
   @FXML
   private Text ipAddressText;
@@ -52,25 +57,25 @@ public class MainWindowController implements Initializable {
   private String fingerPrint;
   private String friendlyName;
   private HttpServerController httpServerController;
+  private HttpClientController httpClientController;
 
   @FXML
   private ObservableList<Peer> peerObservableList;
 
   @FXML
-  private ObservableList<Transfer> transferObservableList;
+  private ObservableList<Download> downloadObservableList;
 
-  HttpClientController httpClientController;
 
   public MainWindowController() {
 
     peerObservableList = FXCollections.observableArrayList();
-    transferObservableList = FXCollections.observableArrayList();
+    downloadObservableList = FXCollections.observableArrayList();
 
     DiscoveryController discoveryController = new DiscoveryController(peerObservableList);
     discoveryController.startServer();
     discoveryController.startSearcher();
 
-    httpClientController = new HttpClientController();
+    httpClientController = new HttpClientController(downloadObservableList);
 
     User user = User.getInstance();
     friendlyName = user.getFriendlyName();
@@ -81,7 +86,7 @@ public class MainWindowController implements Initializable {
     try {
       fingerPrint = keyManager.getUsersFingerprint();
     } catch (KeyStoreException e) {
-      e.printStackTrace();
+      logger.log(Level.WARNING, "Could not load user fingerprint", e);
     }
 
   }
@@ -89,7 +94,8 @@ public class MainWindowController implements Initializable {
   @FXML
   private void handlePreferencesButtonAction(ActionEvent event) throws IOException {
     AnchorPane preferencesPane =
-        FXMLLoader.load(getClass().getClassLoader().getResource("fxml/PreferencesView.fxml"));
+        FXMLLoader.load(Objects
+            .requireNonNull(getClass().getClassLoader().getResource("fxml/PreferencesView.fxml")));
     preferencesRootPane.getChildren().setAll(preferencesPane);
   }
 
@@ -119,24 +125,22 @@ public class MainWindowController implements Initializable {
     DiscoveryController discoveryController = new DiscoveryController(peerObservableList);
     discoveryController.startServer();
     discoveryController.startSearcher();
+
   }
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
 
-    peerObservableList.add(new Peer("10.0.0.0", "dummy", "dummy", ""));
-
     listView.setItems(peerObservableList);
 
-    transferObservableList.addAll(new Transfer("Elvis", 12345, "Test.pdf", null),
-        new Transfer("Elvis", 35, "config.txt", null));
-
-    listViewTransfer.setItems(transferObservableList);
+    listViewTransfer.setItems(downloadObservableList);
 
     startHttpServer();
+    startHttpClient();
+    httpServerController.connectClientController(httpClientController);
     listView.setCellFactory(peerListView -> new PeerListViewCell(httpServerController));
     listViewTransfer
-        .setCellFactory(transferListView -> new TransferListViewCell(httpClientController));
+        .setCellFactory(transferListView -> new DownloadListViewCell(httpClientController));
 
     ipAddressText.setText(String.valueOf(IPAddressUtil.getLocalIPAddress()));
     fingerPrintText.setText(fingerPrint);
@@ -145,5 +149,9 @@ public class MainWindowController implements Initializable {
 
   private void startHttpServer() {
     httpServerController = new HttpServerController();
+  }
+
+  private void startHttpClient() {
+    httpClientController = new HttpClientController(downloadObservableList);
   }
 }
