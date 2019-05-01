@@ -65,6 +65,7 @@ public class MainWindowController implements Initializable {
   @FXML
   private ObservableList<Download> downloadObservableList;
 
+  private KeyManager keyManager;
 
   public MainWindowController() {
 
@@ -79,7 +80,7 @@ public class MainWindowController implements Initializable {
 
     User user = User.getInstance();
     friendlyName = user.getFriendlyName();
-    KeyManager keyManager = new KeyManager();
+    keyManager = new KeyManager();
     if (!keyManager.existsKeyingMaterial(friendlyName)) {
       keyManager.generateKeyingMaterial(friendlyName);
     }
@@ -148,7 +149,7 @@ public class MainWindowController implements Initializable {
   }
 
   private void startHttpServer() {
-    httpServerController = new HttpServerController();
+    httpServerController = new HttpServerController(keyManager.getKeyStore());
   }
 
   private void startHttpClient() {
