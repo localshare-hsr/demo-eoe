@@ -79,7 +79,7 @@ public class PeerListViewCell extends ListCell<Peer> {
     MenuItem editTrustState = new MenuItem("Change Trust State");
 
     addDisplayNameActionListener(editDisplayName, peer);
-    addTrustStateActionListener(editDisplayName);
+    addTrustStateActionListener(editTrustState);
 
     contextMenu.getItems().add(editDisplayName);
     contextMenu.getItems().add(editTrustState);
@@ -89,14 +89,11 @@ public class PeerListViewCell extends ListCell<Peer> {
 
   private void addDisplayNameActionListener(final MenuItem menuItem, final Peer peer) {
     menuItem.setOnAction(event -> {
-      Peer item = this.getItem();
       TextInputDialog textInputDialog = new TextInputDialog("hanswurst");
       textInputDialog.setHeaderText("Enter Displayname");
       textInputDialog.showAndWait();
       peer.setDisplayName(textInputDialog.getEditor().getText());
-
-      // refresh ListView
-
+      this.getListView().refresh();
     });
   }
 
@@ -104,6 +101,7 @@ public class PeerListViewCell extends ListCell<Peer> {
     menuItem.setOnAction(event -> {
       Peer item = this.getItem();
       item.setTrustState(!item.getTrustState());
+      this.getListView().refresh();
     });
   }
 

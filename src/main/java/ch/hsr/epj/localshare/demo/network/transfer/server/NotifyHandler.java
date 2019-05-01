@@ -9,10 +9,10 @@ import java.net.InetAddress;
 
 public class NotifyHandler implements HttpHandler {
 
-  private HTTPServer httpServer;
   private static final int HTTP_OK = 200;
   private static final int HTTP_METHOD_NOT_ALLOWED = 405;
   private static final int NO_RESPONSE_BODY = -1;
+  private HTTPServer httpServer;
 
   NotifyHandler(HTTPServer httpServer) {
     this.httpServer = httpServer;
