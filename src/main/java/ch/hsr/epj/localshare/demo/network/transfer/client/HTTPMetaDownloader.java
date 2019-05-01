@@ -9,12 +9,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.net.ssl.HttpsURLConnection;
 
 public class HTTPMetaDownloader extends Observable implements Runnable {
 
@@ -42,7 +42,7 @@ public class HTTPMetaDownloader extends Observable implements Runnable {
   }
 
   private void startDownload() throws IOException {
-    HttpURLConnection connection = (HttpURLConnection) metaUrl.openConnection();
+    HttpsURLConnection connection = (HttpsURLConnection) metaUrl.openConnection();
     connection.setRequestMethod("GET");
     connection.setDoOutput(true);
     connection.setRequestProperty("Connection", "close");
