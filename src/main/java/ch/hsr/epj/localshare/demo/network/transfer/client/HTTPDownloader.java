@@ -1,5 +1,7 @@
 package ch.hsr.epj.localshare.demo.network.transfer.client;
 
+import ch.hsr.epj.localshare.demo.logic.networkcontroller.FileTransfer;
+import ch.hsr.epj.localshare.demo.network.transfer.HTTPProgress;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -8,8 +10,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
-import javafx.scene.control.ProgressBar;
 
 public class HTTPDownloader implements Runnable {
 
@@ -20,14 +20,12 @@ public class HTTPDownloader implements Runnable {
 
   private URL url;
   private BufferedOutputStream bufferedOutputStream;
-  private ProgressBar progressBar;
-  private long totalFileLength;
+  private HTTPProgress httpProgress;
 
-  public HTTPDownloader(URL url, BufferedOutputStream bufferedOutputStream,
-      ProgressBar progressBar) {
+  public HTTPDownloader(URL url, BufferedOutputStream bufferedOutputStream, FileTransfer transfer) {
     this.url = url;
     this.bufferedOutputStream = bufferedOutputStream;
-    this.progressBar = progressBar;
+    this.httpProgress = new HTTPProgress(transfer);
   }
 
   private void startDownload() throws IOException {
@@ -38,19 +36,18 @@ public class HTTPDownloader implements Runnable {
     connection.connect();
     int status = connection.getResponseCode();
     if (status == 200) {
-      totalFileLength = Long.parseLong(connection.getHeaderField("Content-Length"));
+      long totalFileLength = Long.parseLong(connection.getHeaderField("Content-Length"));
+      httpProgress.setTotalByteLength(totalFileLength);
       InputStream inputStream = connection.getInputStream();
       BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
 
       byte[] buffer = new byte[BUFFER_SIZE];
       int byteRead;
-      long totalbyteread = 0;
       while ((byteRead = bufferedInputStream.read(buffer)) != EOF) {
         try {
           bufferedOutputStream.write(buffer, 0, byteRead);
           bufferedOutputStream.flush();
-          totalbyteread += byteRead;
-          updateProgress(totalbyteread);
+          httpProgress.updateProgress(byteRead);
 
         } catch (IOException e) {
           logger.log(Level.WARNING, "Problem with output stream occurred", e);
@@ -63,16 +60,6 @@ public class HTTPDownloader implements Runnable {
     } else {
       logger.log(Level.INFO, "HTTP status code not 200 OK but {0}", status);
     }
-  }
-
-  private void updateProgress(long progress) {
-    Platform.runLater(
-        () -> {
-          double progressPercent = (double) 1 / totalFileLength * progress;
-          progressBar.setProgress(progressPercent);
-        }
-    );
-
   }
 
   @Override

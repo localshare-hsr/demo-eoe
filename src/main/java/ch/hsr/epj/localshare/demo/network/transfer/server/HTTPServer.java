@@ -2,7 +2,6 @@ package ch.hsr.epj.localshare.demo.network.transfer.server;
 
 import ch.hsr.epj.localshare.demo.logic.Transfer;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpServerController;
-import ch.hsr.epj.localshare.demo.network.transfer.HTTPProgress;
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
 import com.sun.net.httpserver.HttpServer;
 import java.io.File;
@@ -44,15 +43,13 @@ public class HTTPServer {
     webServer.stop(0);
   }
 
-  public HTTPProgress createNewShare(String path, List<File> files) {
+  public void createNewShare(String path, List<File> files) {
     if (path == null || files == null) {
       throw new IllegalArgumentException("Error: Path and files must not be null");
     }
 
-    HTTPProgress httpProgress = new HTTPProgress();
     webServer
-        .createContext(CONTEXT_SHARE + "/" + path, new ShareHandler(files, httpProgress, path));
-    return httpProgress;
+        .createContext(CONTEXT_SHARE + "/" + path, new ShareHandler(files, path));
   }
 
   synchronized void receivedNotification(Transfer transfer) {

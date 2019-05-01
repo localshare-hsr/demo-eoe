@@ -41,6 +41,12 @@ public class DownloadListViewCell extends ListCell<Download> {
   @FXML
   ProgressBar transferProgressBar;
 
+  @FXML
+  Label transferSpeed;
+
+  @FXML
+  Label secondsToGo;
+
   private FXMLLoader mLLoader;
 
   private HttpClientController httpClientController;
@@ -84,7 +90,7 @@ public class DownloadListViewCell extends ListCell<Download> {
               FileTransfer fileTransfer = new FileTransfer(
                   new Peer("10.10.10.10", download.getFriendlyName(), null, null),
                   download.getUrl(),
-                  transferProgressBar);
+                  transferProgressBar, transferSpeed, secondsToGo);
               httpClientController.downloadFileFromPeer(fileTransfer);
 
             } catch (FileNotFoundException e) {

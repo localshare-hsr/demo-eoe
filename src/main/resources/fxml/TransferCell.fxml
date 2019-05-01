@@ -31,6 +31,8 @@
     <Label GridPane.rowIndex="1" text="Size"/>
     <ProgressBar GridPane.columnIndex="2" GridPane.rowIndex="2" prefWidth="200.0" progress="0.0"
       visible="false" fx:id="transferProgressBar"/>
+    <Label GridPane.rowIndex="3" text="calculating..." fx:id="transferSpeed"/>
+    <Label GridPane.rowIndex="4" text="calculating..." fx:id="secondsToGo"/>
   </children>
   <columnConstraints>
     <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" percentWidth="20.0"/>

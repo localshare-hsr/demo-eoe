@@ -1,7 +1,6 @@
 package ch.hsr.epj.localshare.demo.network.transfer.server;
 
 import ch.hsr.epj.localshare.demo.logic.environment.User;
-import ch.hsr.epj.localshare.demo.network.transfer.HTTPProgress;
 import ch.hsr.epj.localshare.demo.network.transfer.utils.MetaParser;
 import ch.hsr.epj.localshare.demo.network.transfer.utils.UrlFactory;
 import com.sun.net.httpserver.Headers;
@@ -38,13 +37,11 @@ public class ShareHandler implements HttpHandler {
   private static final String INDEX_FOLDER = "/";
 
   private List<File> filePool;
-  private HTTPProgress httpProgress;
   private List<DownloadFile> downloadableFiles;
   private String path;
 
-  ShareHandler(List<File> filePool, HTTPProgress httpProgress, String path) {
+  ShareHandler(List<File> filePool, String path) {
     this.filePool = filePool;
-    this.httpProgress = httpProgress;
     this.path = path;
     downloadableFiles = generateFileContext(filePool);
   }
@@ -108,7 +105,6 @@ public class ShareHandler implements HttpHandler {
       httpExchange.sendResponseHeaders(HTTP_OK, totalLength);
       Headers headers = httpExchange.getResponseHeaders();
       headers.add(HEADER_CONTENT_TYPE, getMIMEType(file));
-      httpProgress.setTotalByteLength(totalLength);
 
       OutputStream outputStream = httpExchange.getResponseBody();
       BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
@@ -119,10 +115,8 @@ public class ShareHandler implements HttpHandler {
         try {
           bufferedOutputStream.write(buffer, 0, byteRead);
           bufferedOutputStream.flush();
-          httpProgress.addBytesToCurrent(byteRead);
         } catch (IOException e) {
           logger.log(Level.WARNING, "Problem with output stream occurred", e);
-          httpProgress.reset();
           break;
         }
       }
