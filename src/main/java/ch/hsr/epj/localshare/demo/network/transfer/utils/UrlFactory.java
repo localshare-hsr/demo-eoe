@@ -9,23 +9,23 @@ import java.net.URL;
 
 public class UrlFactory {
 
-  private static final String PROTCOL = "http://";
+  private static final String PROTOCOL = "https://";
   private static final String PORT = "8640";
 
   private UrlFactory() {
   }
 
   public static URL generateNotifyUrl(final InetAddress ipAddress) throws MalformedURLException {
-    return new URL(PROTCOL + ipAddress.getHostAddress() + ":" + PORT + "/notify/");
+    return new URL(PROTOCOL + ipAddress.getHostAddress() + ":" + PORT + "/notify/");
   }
 
   public static URL generateMetaDataUrl(final Transfer transfer) throws MalformedURLException {
     String ip = getIPAddress(transfer);
-    return new URL(PROTCOL + ip + ":" + PORT + "/share/" + transfer.getFileUri() + "/");
+    return new URL(PROTOCOL + ip + ":" + PORT + "/share/" + transfer.getFileUri() + "/");
   }
 
   public static String generateDownloadableURL(final String randomToken, File file) {
-    return PROTCOL + IPAddressUtil.getLocalIPAddress().getHostAddress() + ":" + PORT + "/share/"
+    return PROTOCOL + IPAddressUtil.getLocalIPAddress().getHostAddress() + ":" + PORT + "/share/"
         + randomToken + "/"
         + file.getName();
   }
