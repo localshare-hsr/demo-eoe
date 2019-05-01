@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,6 +18,8 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 public class PreferencesViewController implements Initializable {
+
+  private static final Logger logger = Logger.getLogger(PreferencesViewController.class.getName());
 
   private final DirectoryChooser directoryChooser = new DirectoryChooser();
   private ConfigManager configManager = ConfigManager.getInstance();
@@ -50,7 +54,7 @@ public class PreferencesViewController implements Initializable {
       try {
         parser.writeJSONToDisk();
       } catch (IOException e) {
-        e.printStackTrace();
+        logger.log(Level.WARNING, "Could not write JSON config to disk");
       }
 
       downloadPath.setText(configManager.getDownloadPath());
