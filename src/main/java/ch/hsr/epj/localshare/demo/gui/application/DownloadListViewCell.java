@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -21,31 +22,31 @@ public class DownloadListViewCell extends ListCell<Download> {
   private static final Logger logger = Logger.getLogger(DownloadListViewCell.class.getName());
 
   @FXML
-  GridPane gridPaneTransfer;
+  private GridPane gridPaneTransfer;
 
   @FXML
-  Label size;
+  private Label size;
 
   @FXML
-  Label filename;
+  private Label filename;
 
   @FXML
-  Button buttonAccept;
+  private Button buttonAccept;
 
   @FXML
-  Button buttonDecline;
+  private Button buttonDecline;
 
   @FXML
-  Button buttonCancelTransfer;
+  private Button buttonCancelTransfer;
 
   @FXML
-  ProgressBar transferProgressBar;
+  private ProgressBar transferProgressBar;
 
   @FXML
-  Label transferSpeed;
+  private Label transferSpeed;
 
   @FXML
-  Label secondsToGo;
+  private Label secondsToGo;
 
   private FXMLLoader mLLoader;
 
@@ -54,6 +55,7 @@ public class DownloadListViewCell extends ListCell<Download> {
   DownloadListViewCell(HttpClientController httpClientController) {
     this.httpClientController = httpClientController;
   }
+
 
   @Override
   protected void updateItem(Download download, boolean empty) {
@@ -110,8 +112,10 @@ public class DownloadListViewCell extends ListCell<Download> {
 
       buttonDecline.setOnAction(
           event -> {
-            // Methode im MainWindowController aufrufen mittels Interface das aktuell selektiertes Objekt aus ListView + ObservableList löscht
-
+            ObservableList<Download> downloadObservableList = httpClientController
+                .getDownloadObservableList();
+            downloadObservableList.remove(download);
+            this.getListView().refresh();
           }
       );
 

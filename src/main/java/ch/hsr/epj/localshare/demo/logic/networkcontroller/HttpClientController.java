@@ -51,6 +51,10 @@ public class HttpClientController implements Observer {
         new HTTPDownloader(transfer.getPath(), bufferedOutputStream, transfer));
   }
 
+  public ObservableList<Download> getDownloadObservableList() {
+    return downloadObservableList;
+  }
+
   void sendNotification(Transfer transfer) {
     try {
       httpNotifier.sendNotification(transfer);
