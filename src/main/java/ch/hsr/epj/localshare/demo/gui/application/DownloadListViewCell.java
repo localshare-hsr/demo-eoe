@@ -1,6 +1,7 @@
 package ch.hsr.epj.localshare.demo.gui.application;
 
 import ch.hsr.epj.localshare.demo.gui.presentation.Download;
+import ch.hsr.epj.localshare.demo.gui.presentation.Download.DownloadState;
 import ch.hsr.epj.localshare.demo.gui.presentation.Peer;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.FileTransfer;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpClientController;
@@ -61,6 +62,10 @@ public class DownloadListViewCell extends ListCell<Download> {
   protected void updateItem(Download download, boolean empty) {
     super.updateItem(download, empty);
 
+    if (download.getDownloadState() == DownloadState.RUNNING) {
+      setRunningVisability();
+    }
+
     if (empty || download == null) {
       setText(null);
       setGraphic(null);
@@ -79,14 +84,7 @@ public class DownloadListViewCell extends ListCell<Download> {
 
       buttonAccept.setOnAction(
           event -> {
-            gridPaneTransfer.setStyle("-fx-background-color: PALEGREEN");
-            buttonAccept.setVisible(false);
-            buttonAccept.setDisable(true);
-            buttonDecline.setVisible(false);
-            buttonDecline.setDisable(true);
-            transferProgressBar.setVisible(true);
-            buttonCancelTransfer.setDisable(false);
-            buttonCancelTransfer.setVisible(true);
+            setRunningVisability();
 
             try {
               FileTransfer fileTransfer = new FileTransfer(
@@ -99,7 +97,7 @@ public class DownloadListViewCell extends ListCell<Download> {
               logger.log(Level.INFO, "Could not find file", e);
             }
 
-            //handle ProgressBar e.g if 10% of File loaded
+
           }
       );
 
@@ -124,6 +122,19 @@ public class DownloadListViewCell extends ListCell<Download> {
       setGraphic(gridPaneTransfer);
 
     }
+  }
+
+  private void setRunningVisability() {
+    gridPaneTransfer.setStyle("-fx-background-color: PALEGREEN");
+    buttonAccept.setVisible(false);
+    buttonAccept.setDisable(true);
+    buttonDecline.setVisible(false);
+    buttonDecline.setDisable(true);
+    transferProgressBar.setVisible(true);
+    buttonCancelTransfer.setDisable(false);
+    buttonCancelTransfer.setVisible(true);
+    transferSpeed.setVisible((true));
+    secondsToGo.setVisible(true);
   }
 
 }

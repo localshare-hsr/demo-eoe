@@ -10,6 +10,11 @@ public class Download {
   private URL url;
   private boolean accepted;
 
+  public enum DownloadState {
+    RUNNING, WAITING, FINISHED
+  }
+
+  private DownloadState downloadState;
 
   public Download(String friendlyName, long size, String fileName, URL url) {
     this.friendlyName = friendlyName;
@@ -17,6 +22,15 @@ public class Download {
     this.fileName = fileName;
     this.url = url;
     accepted = false;
+    downloadState = DownloadState.WAITING;
+  }
+
+  public DownloadState getDownloadState() {
+    return downloadState;
+  }
+
+  public void setDownloadState(DownloadState downloadState) {
+    this.downloadState = downloadState;
   }
 
   public boolean isAccepted() {
