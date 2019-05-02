@@ -60,17 +60,19 @@ public class DownloadListViewCell extends ListCell<Download> {
 
   @Override
   protected void updateItem(Download download, boolean empty) {
+
     super.updateItem(download, empty);
 
-    if (download.getDownloadState() == DownloadState.RUNNING) {
-      setRunningVisability();
-    }
-
-    if (empty || download == null) {
+    if (empty) {
       setText(null);
       setGraphic(null);
 
     } else {
+
+      if (download.getDownloadState() == DownloadState.RUNNING) {
+        setRunningVisability();
+      }
+
       if (mLLoader == null) {
         mLLoader = new FXMLLoader(getClass().getResource("/fxml/TransferCell.fxml"));
         mLLoader.setController(this);
@@ -85,6 +87,7 @@ public class DownloadListViewCell extends ListCell<Download> {
       buttonAccept.setOnAction(
           event -> {
             setRunningVisability();
+            download.setDownloadState(DownloadState.RUNNING);
 
             try {
               FileTransfer fileTransfer = new FileTransfer(
@@ -125,16 +128,19 @@ public class DownloadListViewCell extends ListCell<Download> {
   }
 
   private void setRunningVisability() {
-    gridPaneTransfer.setStyle("-fx-background-color: PALEGREEN");
-    buttonAccept.setVisible(false);
-    buttonAccept.setDisable(true);
-    buttonDecline.setVisible(false);
-    buttonDecline.setDisable(true);
-    transferProgressBar.setVisible(true);
-    buttonCancelTransfer.setDisable(false);
-    buttonCancelTransfer.setVisible(true);
-    transferSpeed.setVisible((true));
-    secondsToGo.setVisible(true);
+    if (gridPaneTransfer != null) {
+      gridPaneTransfer.setStyle("-fx-background-color: PALEGREEN");
+      buttonAccept.setVisible(false);
+      buttonAccept.setDisable(true);
+      buttonDecline.setVisible(false);
+      buttonDecline.setDisable(true);
+      transferProgressBar.setVisible(true);
+      buttonCancelTransfer.setDisable(false);
+      buttonCancelTransfer.setVisible(true);
+      transferSpeed.setVisible((true));
+      secondsToGo.setVisible(true);
+
+    }
   }
 
 }
