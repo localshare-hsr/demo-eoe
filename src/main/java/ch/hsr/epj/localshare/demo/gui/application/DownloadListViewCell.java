@@ -69,10 +69,6 @@ public class DownloadListViewCell extends ListCell<Download> {
 
     } else {
 
-      if (download.getDownloadState() == DownloadState.RUNNING) {
-        setRunningVisability();
-      }
-
       if (mLLoader == null) {
         mLLoader = new FXMLLoader(getClass().getResource("/fxml/TransferCell.fxml"));
         mLLoader.setController(this);
@@ -82,6 +78,10 @@ public class DownloadListViewCell extends ListCell<Download> {
         } catch (IOException e) {
           logger.log(Level.INFO, "Could not load TransferCell.fxml", e);
         }
+      }
+
+      if (download.getDownloadState() == DownloadState.RUNNING) {
+        setRunningVisability();
       }
 
       buttonAccept.setOnAction(
@@ -128,19 +128,16 @@ public class DownloadListViewCell extends ListCell<Download> {
   }
 
   private void setRunningVisability() {
-    if (gridPaneTransfer != null) {
-      gridPaneTransfer.setStyle("-fx-background-color: PALEGREEN");
-      buttonAccept.setVisible(false);
-      buttonAccept.setDisable(true);
-      buttonDecline.setVisible(false);
-      buttonDecline.setDisable(true);
-      transferProgressBar.setVisible(true);
-      buttonCancelTransfer.setDisable(false);
-      buttonCancelTransfer.setVisible(true);
-      transferSpeed.setVisible((true));
-      secondsToGo.setVisible(true);
-
-    }
+    gridPaneTransfer.setStyle("-fx-background-color: PALEGREEN");
+    buttonAccept.setVisible(false);
+    buttonAccept.setDisable(true);
+    buttonDecline.setVisible(false);
+    buttonDecline.setDisable(true);
+    transferProgressBar.setVisible(true);
+    buttonCancelTransfer.setDisable(false);
+    buttonCancelTransfer.setVisible(true);
+    transferSpeed.setVisible((true));
+    secondsToGo.setVisible(true);
   }
 
 }
