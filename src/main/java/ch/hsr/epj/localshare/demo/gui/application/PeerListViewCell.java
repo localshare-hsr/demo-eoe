@@ -50,90 +50,107 @@ public class PeerListViewCell extends ListCell<Peer> {
     if (empty || peer == null) {
       setText(null);
       setGraphic(null);
-
     } else {
       if (mLLoader == null) {
-        mLLoader = new FXMLLoader(getClass().getResource("/fxml/ListCell.fxml"));
-        mLLoader.setController(this);
-
-        try {
-          mLLoader.load();
-        } catch (IOException e) {
-          logger.log(Level.WARNING, "Unable to load ListCell file", e);
-        }
+        loadMLLoader();
       }
-
-      ContextMenu contextMenu = new ContextMenu();
-      MenuItem editDisplayName = new MenuItem("Edit Displayname");
-      MenuItem editTrustState = new MenuItem("Change Trust State");
-
-      editDisplayName.setOnAction(event -> {
-        Peer item = this.getItem();
-        TextInputDialog textInputDialog = new TextInputDialog("hanswurst");
-        textInputDialog.setHeaderText("Enter Displayname");
-        textInputDialog.showAndWait();
-        peer.setDisplayName(textInputDialog.getEditor().getText());
-
-        // refresh ListView
-
-      });
-
-      editTrustState.setOnAction(event -> {
-        Peer item = this.getItem();
-        item.setTrustState(!item.getTrustState());
-      });
-
-      contextMenu.getItems().add(editDisplayName);
-      contextMenu.getItems().add(editTrustState);
-
+      ContextMenu contextMenu = createContextMenu(peer);
       this.setContextMenu(contextMenu);
 
+      setPeerAttributes(peer);
 
-      ip.setText(String.valueOf(peer.getIP()));
-      fn.setText(String.valueOf(peer.getFriendlyName()));
-      finger.setText(String.valueOf(peer.getFingerPrint()));
-      dn.setText(String.valueOf(peer.getDisplayName()));
-      if (peer.getTrustState()) {
-        setStyle("-fx-background: " + COLOR + ";");
-      }
-
-      gridPane.setOnDragOver(
-          event -> {
-            if (event.getGestureSource() != gridPane && event.getDragboard().hasFiles()) {
-              /* allow for both copying and moving, whatever user chooses */
-              event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-              gridPane.setStyle("-fx-background-color: PALEGREEN");
-            }
-            event.consume();
-          });
-
-      gridPane.setOnDragExited(
-          event -> gridPane.setStyle("-fx-background-color: none"));
-
-      gridPane.setOnDragDropped(
-          event -> {
-            Dragboard db = event.getDragboard();
-            boolean success = false;
-            if (db.hasFiles()) {
-              logger.log(Level.INFO,
-                  String.format("Send File: {0} To: {0}", db.getFiles().toString(), fn.getText()));
-              try {
-
-                httpServerController
-                    .sharePrivate(InetAddress.getByName(peer.getIP()), db.getFiles());
-              } catch (UnknownHostException e) {
-                e.printStackTrace();
-              }
-              success = true;
-            }
-            /* let the source know whether the string was successfully
-             * transferred and used */
-            event.setDropCompleted(success);
-
-            event.consume();
-          });
-
-      setGraphic(gridPane);
+      addDragAndDropCapabilities(peer);
     }
+  }
+
+  private void loadMLLoader() {
+    mLLoader = new FXMLLoader(getClass().getResource("/fxml/ListCell.fxml"));
+    mLLoader.setController(this);
+    try {
+      mLLoader.load();
+    } catch (IOException e) {
+      logger.log(Level.WARNING, "Unable to load ListCell file", e);
+    }
+  }
+
+  private ContextMenu createContextMenu(final Peer peer) {
+    ContextMenu contextMenu = new ContextMenu();
+    MenuItem editDisplayName = new MenuItem("Edit Displayname");
+    MenuItem editTrustState = new MenuItem("Change Trust State");
+
+    addDisplayNameActionListener(editDisplayName, peer);
+    addTrustStateActionListener(editTrustState);
+
+    contextMenu.getItems().add(editDisplayName);
+    contextMenu.getItems().add(editTrustState);
+
+    return contextMenu;
+  }
+
+  private void addDisplayNameActionListener(final MenuItem menuItem, final Peer peer) {
+    menuItem.setOnAction(event -> {
+      TextInputDialog textInputDialog = new TextInputDialog("hanswurst");
+      textInputDialog.setHeaderText("Enter Displayname");
+      textInputDialog.showAndWait();
+      peer.setDisplayName(textInputDialog.getEditor().getText());
+      this.getListView().refresh();
+    });
+  }
+
+  private void addTrustStateActionListener(final MenuItem menuItem) {
+    menuItem.setOnAction(event -> {
+      Peer item = this.getItem();
+      item.setTrustState(!item.getTrustState());
+      this.getListView().refresh();
+    });
+  }
+
+  private void setPeerAttributes(final Peer peer) {
+    ip.setText(String.valueOf(peer.getIP()));
+    fn.setText(String.valueOf(peer.getFriendlyName()));
+    finger.setText(String.valueOf(peer.getFingerPrint()));
+    dn.setText(String.valueOf(peer.getDisplayName()));
+    if (peer.getTrustState()) {
+      setStyle("-fx-background: " + COLOR + ";");
+    }
+  }
+
+  private void addDragAndDropCapabilities(final Peer peer) {
+    gridPane.setOnDragOver(
+        event -> {
+          if (event.getGestureSource() != gridPane && event.getDragboard().hasFiles()) {
+            /* allow for both copying and moving, whatever user chooses */
+            event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            gridPane.setStyle("-fx-background-color: PALEGREEN");
+          }
+          event.consume();
+        });
+
+    gridPane.setOnDragExited(
+        event -> gridPane.setStyle("-fx-background-color: none"));
+
+    gridPane.setOnDragDropped(
+        event -> {
+          Dragboard db = event.getDragboard();
+          boolean success = false;
+          if (db.hasFiles()) {
+            logger.log(Level.INFO,
+                String.format("Send File: {0} To: {0}", db.getFiles().toString(), fn.getText()));
+            try {
+
+              httpServerController
+                  .sharePrivate(InetAddress.getByName(peer.getIP()), db.getFiles());
+            } catch (UnknownHostException e) {
+              logger.log(Level.INFO, "Peer host does not exist", e);
+            }
+            success = true;
+          }
+          /* let the source know whether the string was successfully
+           * transferred and used */
+          event.setDropCompleted(success);
+
+          event.consume();
+        });
+    setGraphic(gridPane);
   }
 }
