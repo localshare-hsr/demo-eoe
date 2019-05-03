@@ -92,7 +92,7 @@
                 <Insets top="10.0"/>
               </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="Add Peer manually">
+            <Button mnemonicParsing="false" text="Add Peer manually" onAction="#addPeerManually">
               <HBox.margin>
                 <Insets left="10.0" top="10.0"/>
               </HBox.margin>

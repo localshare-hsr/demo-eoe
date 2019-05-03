@@ -21,13 +21,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import org.bouncycastle.util.IPAddress;
 
 public class MainWindowController implements Initializable {
 
@@ -126,6 +130,28 @@ public class MainWindowController implements Initializable {
     discoveryController.startServer();
     discoveryController.startSearcher();
 
+  }
+
+  @FXML
+  private void addPeerManually() {
+    TextInputDialog peerInputDialog = createInputDialog();
+    if (!IPAddress.isValid(peerInputDialog.getEditor().getText())) {
+      Alert invalidIP = new Alert(AlertType.ERROR);
+      invalidIP.setTitle("Invalid IP Address");
+      invalidIP.setHeaderText("Please insert a valid IP!");
+      invalidIP.showAndWait();
+      addPeerManually();
+    }
+
+
+  }
+
+  private TextInputDialog createInputDialog() {
+    TextInputDialog peerInputDialog = new TextInputDialog("152.96.");
+    peerInputDialog.setHeaderText("Enter Peer IP Address");
+    peerInputDialog.setTitle("Add Peer");
+    peerInputDialog.showAndWait();
+    return peerInputDialog;
   }
 
   @Override
