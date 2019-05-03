@@ -2,6 +2,7 @@ package ch.hsr.epj.localshare.demo.gui.application;
 
 import ch.hsr.epj.localshare.demo.gui.presentation.Download;
 import ch.hsr.epj.localshare.demo.gui.presentation.Peer;
+import ch.hsr.epj.localshare.demo.logic.Transfer;
 import ch.hsr.epj.localshare.demo.logic.environment.User;
 import ch.hsr.epj.localshare.demo.logic.keymanager.KeyManager;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.DiscoveryController;
@@ -9,6 +10,8 @@ import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpClientController;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpServerController;
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
 import java.io.IOException;
+import java.net.ConnectException;
+import java.net.InetAddress;
 import java.net.URL;
 import java.security.KeyStoreException;
 import java.util.Objects;
@@ -133,18 +136,39 @@ public class MainWindowController implements Initializable {
   }
 
   @FXML
-  private void addPeerManually() {
+  private void addPeerManually() throws IOException {
     TextInputDialog peerInputDialog = createInputDialog();
-    if (!IPAddress.isValid(peerInputDialog.getEditor().getText())) {
-      Alert invalidIP = new Alert(AlertType.ERROR);
-      invalidIP.setTitle("Invalid IP Address");
-      invalidIP.setHeaderText("Please insert a valid IP!");
-      invalidIP.showAndWait();
+    String insertedIP = peerInputDialog.getEditor().getText();
+    if (!IPAddress.isValid(insertedIP)) {
+      invalidIpDialog();
       addPeerManually();
+    } else {
+      try {
+        httpClientController
+            .checkPeerAvailability(new Transfer(InetAddress.getByName(insertedIP), ""));
+        Peer newPeer = new Peer(insertedIP, "test", "", "ab32342134532412341234");
+        peerObservableList.add(newPeer);
+      } catch (ConnectException e) {
+        ipNotAvailableDialog();
+      }
     }
-
-
   }
+
+  private void invalidIpDialog() {
+    Alert invalidIP = new Alert(AlertType.ERROR);
+    invalidIP.setTitle("Invalid IP Address");
+    invalidIP.setHeaderText("Please insert a valid IP!");
+    invalidIP.showAndWait();
+  }
+
+  private void ipNotAvailableDialog() {
+    Alert invalidIP = new Alert(AlertType.ERROR);
+    invalidIP.setTitle("LocalShare not available");
+    invalidIP.setHeaderText("There is no LocalShare-Instance Running");
+    invalidIP.showAndWait();
+  }
+
+
 
   private TextInputDialog createInputDialog() {
     TextInputDialog peerInputDialog = new TextInputDialog("152.96.");
