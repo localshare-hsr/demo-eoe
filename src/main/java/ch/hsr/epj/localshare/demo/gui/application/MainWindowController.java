@@ -15,6 +15,7 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.security.KeyStoreException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -138,20 +139,26 @@ public class MainWindowController implements Initializable {
   @FXML
   private void addPeerManually() throws IOException {
     TextInputDialog peerInputDialog = createInputDialog();
-    String insertedIP = peerInputDialog.getEditor().getText();
-    if (!IPAddress.isValid(insertedIP)) {
-      invalidIpDialog();
-      addPeerManually();
-    } else {
-      try {
-        httpClientController
-            .checkPeerAvailability(new Transfer(InetAddress.getByName(insertedIP), ""));
-        Peer newPeer = new Peer(insertedIP, "test", "", "ab32342134532412341234");
-        peerObservableList.add(newPeer);
-      } catch (ConnectException e) {
-        ipNotAvailableDialog();
+    Optional<String> result = peerInputDialog.showAndWait();
+    if (result.isPresent()) {
+      String insertedIP = peerInputDialog.getEditor().getText();
+      if (!IPAddress.isValid(insertedIP)) {
+        invalidIpDialog();
+        addPeerManually();
+      } else {
+        try {
+          httpClientController
+              .checkPeerAvailability(new Transfer(InetAddress.getByName(insertedIP), ""));
+          Peer newPeer = new Peer(insertedIP, "test", "", "ab32342134532412341234");
+          peerObservableList.add(newPeer);
+        } catch (ConnectException e) {
+          ipNotAvailableDialog();
+        }
       }
+    } else {
+      peerInputDialog.close();
     }
+
   }
 
   private void invalidIpDialog() {
@@ -169,12 +176,10 @@ public class MainWindowController implements Initializable {
   }
 
 
-
   private TextInputDialog createInputDialog() {
     TextInputDialog peerInputDialog = new TextInputDialog("152.96.");
     peerInputDialog.setHeaderText("Enter Peer IP Address");
     peerInputDialog.setTitle("Add Peer");
-    peerInputDialog.showAndWait();
     return peerInputDialog;
   }
 
