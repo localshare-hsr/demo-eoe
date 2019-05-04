@@ -54,7 +54,7 @@
                 <Insets bottom="10.0"/>
               </VBox.margin>
             </Text>
-            <ListView fx:id="listView" onMouseClicked="#onListItemDoubleClick" VBox.vgrow="ALWAYS"/>
+            <ListView VBox.vgrow="ALWAYS" fx:id="listView"/>
             <padding>
               <Insets right="10.0"/>
             </padding>

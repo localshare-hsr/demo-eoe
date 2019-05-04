@@ -23,7 +23,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.effect.InnerShadow;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -97,14 +96,6 @@ public class MainWindowController implements Initializable {
         FXMLLoader.load(Objects
             .requireNonNull(getClass().getClassLoader().getResource("fxml/PreferencesView.fxml")));
     preferencesRootPane.getChildren().setAll(preferencesPane);
-  }
-
-  @FXML
-  private void onListItemDoubleClick(MouseEvent click) {
-    if (click.getClickCount() == 2) {
-      Peer currentItemSelected = listView.getSelectionModel().getSelectedItem();
-      currentItemSelected.setTrustState(true);
-    }
   }
 
   @FXML

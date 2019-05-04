@@ -96,8 +96,6 @@ public class DownloadListViewCell extends ListCell<Download> {
             } catch (FileNotFoundException e) {
               logger.log(Level.INFO, "Could not find file", e);
             }
-
-            //handle ProgressBar e.g if 10% of File loaded
           }
       );
 
