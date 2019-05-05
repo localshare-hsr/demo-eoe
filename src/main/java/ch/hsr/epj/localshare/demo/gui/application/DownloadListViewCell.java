@@ -23,31 +23,31 @@ public class DownloadListViewCell extends ListCell<Download> {
   private static final Logger logger = Logger.getLogger(DownloadListViewCell.class.getName());
 
   @FXML
-  GridPane gridPaneTransfer;
+  private GridPane gridPaneTransfer;
 
   @FXML
-  Label size;
+  private Label size;
 
   @FXML
-  Label filename;
+  private Label filename;
 
   @FXML
-  Button buttonAccept;
+  private Button buttonAccept;
 
   @FXML
-  Button buttonDecline;
+  private Button buttonDecline;
 
   @FXML
-  Button buttonCancelTransfer;
+  private Button buttonCancelTransfer;
 
   @FXML
-  ProgressBar transferProgressBar;
+  private ProgressBar transferProgressBar;
 
   @FXML
-  Label transferSpeed;
+  private Label transferSpeed;
 
   @FXML
-  Label secondsToGo;
+  private Label secondsToGo;
 
   private FXMLLoader mLLoader;
 
@@ -80,6 +80,14 @@ public class DownloadListViewCell extends ListCell<Download> {
 
       if (download.getDownloadState() == DownloadState.RUNNING) {
         setRunningVisability();
+        ProgressBar progressBar = download.getProgressBar();
+        transferProgressBar.progressProperty().bind(progressBar.progressProperty());
+
+        Label transferSpeedLabel = download.getTransferSpeed();
+        transferSpeed.textProperty().bind(transferSpeedLabel.textProperty());
+
+        Label transferTime = download.getTransferTime();
+        secondsToGo.textProperty().bind(transferTime.textProperty());
       }
 
       buttonAccept.setOnAction(
@@ -87,11 +95,23 @@ public class DownloadListViewCell extends ListCell<Download> {
             setRunningVisability();
             download.setDownloadState(DownloadState.RUNNING);
 
+            ProgressBar progressBar = new ProgressBar();
+            download.setProgressBar(progressBar);
+            transferProgressBar.progressProperty().bind(progressBar.progressProperty());
+
+            Label transferSpeedLabel = new Label();
+            download.setTransferSpeed(transferSpeedLabel);
+            transferSpeed.textProperty().bind(transferSpeedLabel.textProperty());
+
+            Label transferTimeLabel = new Label();
+            download.setTransferTime(transferTimeLabel);
+            secondsToGo.textProperty().bind(transferTimeLabel.textProperty());
+
             try {
               fileTransfer = new FileTransfer(
                   new Peer("10.10.10.10", download.getFriendlyName(), null, null),
                   download.getUrl(),
-                  transferProgressBar, transferSpeed, secondsToGo);
+                  progressBar, transferSpeedLabel, transferTimeLabel);
               httpClientController.downloadFileFromPeer(fileTransfer);
 
             } catch (FileNotFoundException e) {
