@@ -13,6 +13,8 @@ public class FileTransfer {
   private ProgressBar progress;
   private Label transferSpeedInBytesPerSecond;
   private Label approximateTimeToDownloadInSeconds;
+  private TransferSpeedCalculator transferSpeedCalculator;
+  private TransferTimeCalculator transferTimeCalculator;
   private HTTPDownloader httpDownloader;
 
   public FileTransfer(final Peer peer, final URL path, final ProgressBar progress,
@@ -22,6 +24,8 @@ public class FileTransfer {
     this.progress = progress;
     this.transferSpeedInBytesPerSecond = bytesPerSecond;
     this.approximateTimeToDownloadInSeconds = secondsToGo;
+    this.transferSpeedCalculator = new TransferSpeedCalculator(BytePrefix.DECIMAL);
+    this.transferTimeCalculator = new TransferTimeCalculator();
   }
 
 
@@ -37,12 +41,14 @@ public class FileTransfer {
     progress.setProgress(percentage);
   }
 
-  public void updateTransferSpeed(final long bps) {
-    transferSpeedInBytesPerSecond.setText(bps + " Bps");
+  public void updateTransferSpeed(final int bps) {
+    String niceFormat = transferSpeedCalculator.formatBytesPerSecond(bps);
+    transferSpeedInBytesPerSecond.setText(niceFormat);
   }
 
-  public void updateTimeToGo(final long seconds) {
-    approximateTimeToDownloadInSeconds.setText(seconds + " s");
+  public void updateTimeToGo(final long millis) {
+    String niceFormat = transferTimeCalculator.formatSecond(millis);
+    approximateTimeToDownloadInSeconds.setText(niceFormat);
   }
 
   void setHttpDownloader(final HTTPDownloader httpDownloader) {

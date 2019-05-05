@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,11 +26,7 @@ class SearchingState extends Statemachine {
   }
 
   private void searchNetwork() throws InterruptedException {
-    try {
-      startNetworkScan();
-    } catch (IOException e) {
-      logger.log(Level.WARNING, "Unable to start network search scan", e);
-    }
+    startNetworkScan();
 
     boolean foundOtherPeer = IPResource.getInstance().hasNextPeer();
 
@@ -40,30 +37,40 @@ class SearchingState extends Statemachine {
     }
   }
 
-  private void startNetworkScan() throws IOException, InterruptedException {
+  private void startNetworkScan() throws InterruptedException {
 
     Thread.sleep(200); // small delay to start up the listening server first
     long startTimer = System.currentTimeMillis();
     try (DatagramSocket datagramSocket = new DatagramSocket(0)) {
-      byte[] buffer = "D".getBytes();
 
       String[] sortedIPs = startIP();
-
-      for (String s : sortedIPs) {
-
-        InetAddress targetAddress = InetAddress.getByName(s);
-        DatagramPacket request = new DatagramPacket(buffer, buffer.length, targetAddress, PORT);
-        datagramSocket.send(request);
-        Thread.sleep(100);
-
+      for (String ip : sortedIPs) {
+        sendUDPDatagram(datagramSocket, ip);
         if (IPResource.getInstance().hasNextPeer()) {
           return;
         }
       }
+    } catch (SocketException e) {
+      logger.log(Level.WARNING, "Could not create datagram socket", e);
     }
     long endTimer = System.currentTimeMillis();
 
     logger.log(Level.INFO, "IP Ranges scaned in {0} ms", (endTimer - startTimer));
+  }
+
+  private void sendUDPDatagram(final DatagramSocket datagramSocket, final String targetIP)
+      throws InterruptedException {
+    byte[] buffer = "D".getBytes();
+    String currentIP = "";
+    try {
+      InetAddress targetAddress = InetAddress.getByName(targetIP);
+      currentIP = targetAddress.getHostAddress();
+      DatagramPacket request = new DatagramPacket(buffer, buffer.length, targetAddress, PORT);
+      datagramSocket.send(request);
+      Thread.sleep(10);
+    } catch (IOException e) {
+      logger.log(Level.INFO, "Could not send request to " + currentIP);
+    }
   }
 
   private String[] startIP() {

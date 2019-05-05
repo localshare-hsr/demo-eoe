@@ -87,7 +87,7 @@ public class HTTPProgress extends Observable {
   }
 
   private long calculateTimeDifference(final long start, final long end) {
-    return start - end;
+    return end - start;
   }
 
   private long milliToSeconds(final long milliseconds) {
@@ -96,8 +96,9 @@ public class HTTPProgress extends Observable {
 
   private int calculateBytesPerSecond(final long currentMillis) {
     long timeDiffInMilliSeconds = calculateTimeDifference(startMillis, currentMillis);
-    if (timeDiffInMilliSeconds > 0) {
-      return (int) milliToSeconds(bytesAlreadySent / timeDiffInMilliSeconds);
+    long seconds = milliToSeconds(timeDiffInMilliSeconds);
+    if (seconds > 0) {
+      return (int) (bytesAlreadySent / seconds);
     } else {
       return 0;
     }
@@ -106,8 +107,7 @@ public class HTTPProgress extends Observable {
   private long calculateSecondToGo(final long currentMillis) {
     if (currentPercentage > 0) {
       long timeDiffInMilliSeconds = calculateTimeDifference(startMillis, currentMillis);
-      return milliToSeconds(
-          (timeDiffInMilliSeconds / currentPercentage * 100) - timeDiffInMilliSeconds);
+      return (timeDiffInMilliSeconds / currentPercentage * 100) - timeDiffInMilliSeconds;
     } else {
       return 0;
     }
