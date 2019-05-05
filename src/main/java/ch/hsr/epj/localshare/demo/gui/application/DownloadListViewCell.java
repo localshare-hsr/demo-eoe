@@ -23,44 +23,43 @@ public class DownloadListViewCell extends ListCell<Download> {
   private static final Logger logger = Logger.getLogger(DownloadListViewCell.class.getName());
 
   @FXML
-  private GridPane gridPaneTransfer;
+  GridPane gridPaneTransfer;
 
   @FXML
-  private Label size;
+  Label size;
 
   @FXML
-  private Label filename;
+  Label filename;
 
   @FXML
-  private Button buttonAccept;
+  Button buttonAccept;
 
   @FXML
-  private Button buttonDecline;
+  Button buttonDecline;
 
   @FXML
-  private Button buttonCancelTransfer;
+  Button buttonCancelTransfer;
 
   @FXML
-  private ProgressBar transferProgressBar;
+  ProgressBar transferProgressBar;
 
   @FXML
-  private Label transferSpeed;
+  Label transferSpeed;
 
   @FXML
-  private Label secondsToGo;
+  Label secondsToGo;
 
   private FXMLLoader mLLoader;
 
   private HttpClientController httpClientController;
+  private FileTransfer fileTransfer;
 
   DownloadListViewCell(HttpClientController httpClientController) {
     this.httpClientController = httpClientController;
   }
 
-
   @Override
   protected void updateItem(Download download, boolean empty) {
-
     super.updateItem(download, empty);
 
     if (empty) {
@@ -68,7 +67,6 @@ public class DownloadListViewCell extends ListCell<Download> {
       setGraphic(null);
 
     } else {
-
       if (mLLoader == null) {
         mLLoader = new FXMLLoader(getClass().getResource("/fxml/TransferCell.fxml"));
         mLLoader.setController(this);
@@ -90,7 +88,7 @@ public class DownloadListViewCell extends ListCell<Download> {
             download.setDownloadState(DownloadState.RUNNING);
 
             try {
-              FileTransfer fileTransfer = new FileTransfer(
+              fileTransfer = new FileTransfer(
                   new Peer("10.10.10.10", download.getFriendlyName(), null, null),
                   download.getUrl(),
                   transferProgressBar, transferSpeed, secondsToGo);
@@ -105,10 +103,7 @@ public class DownloadListViewCell extends ListCell<Download> {
       );
 
       buttonCancelTransfer.setOnAction(
-          event -> {
-            //cancel transfer thread + delete view
-
-          }
+          event -> fileTransfer.shutdownDownload()
       );
 
       buttonDecline.setOnAction(

@@ -21,7 +21,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -64,7 +63,7 @@ public class MainWindowController implements Initializable {
 
   private String fingerPrint;
   private String friendlyName;
-  private HttpServerController httpServerController;
+  private static HttpServerController httpServerController;
   private HttpClientController httpClientController;
 
   @FXML
@@ -99,12 +98,8 @@ public class MainWindowController implements Initializable {
 
   }
 
-  @FXML
-  private void handlePreferencesButtonAction(ActionEvent event) throws IOException {
-    AnchorPane preferencesPane =
-        FXMLLoader.load(Objects
-            .requireNonNull(getClass().getClassLoader().getResource("fxml/PreferencesView.fxml")));
-    preferencesRootPane.getChildren().setAll(preferencesPane);
+  private static void startHttpServer() {
+    httpServerController = new HttpServerController();
   }
 
   @FXML
@@ -202,11 +197,20 @@ public class MainWindowController implements Initializable {
     friendlyNameText.setText(friendlyName);
   }
 
-  private void startHttpServer() {
-    httpServerController = new HttpServerController();
+  public static void shutdownApplication() {
+    httpServerController.stopHTTPServer();
+    logger.log(Level.INFO, "LocalShare properly closed");
   }
 
   private void startHttpClient() {
     httpClientController = new HttpClientController(downloadObservableList);
+  }
+
+  @FXML
+  private void handlePreferencesButtonAction() throws IOException {
+    AnchorPane preferencesPane =
+        FXMLLoader.load(Objects
+            .requireNonNull(getClass().getClassLoader().getResource("fxml/PreferencesView.fxml")));
+    preferencesRootPane.getChildren().setAll(preferencesPane);
   }
 }
