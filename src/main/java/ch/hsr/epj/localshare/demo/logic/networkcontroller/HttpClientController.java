@@ -47,8 +47,10 @@ public class HttpClientController implements Observer {
     OutputStream outputStream = new FileOutputStream(file);
 
     BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
-    downloadManager.addDownload(
-        new HTTPDownloader(transfer.getPath(), bufferedOutputStream, transfer));
+    HTTPDownloader httpDownloader = new HTTPDownloader(transfer.getPath(), bufferedOutputStream,
+        transfer);
+    transfer.setHttpDownloader(httpDownloader);
+    downloadManager.addDownload(httpDownloader);
   }
 
   void sendNotification(Transfer transfer) {

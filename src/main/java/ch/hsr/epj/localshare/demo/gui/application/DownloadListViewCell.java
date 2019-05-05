@@ -50,6 +50,7 @@ public class DownloadListViewCell extends ListCell<Download> {
   private FXMLLoader mLLoader;
 
   private HttpClientController httpClientController;
+  private FileTransfer fileTransfer;
 
   DownloadListViewCell(HttpClientController httpClientController) {
     this.httpClientController = httpClientController;
@@ -87,7 +88,7 @@ public class DownloadListViewCell extends ListCell<Download> {
             buttonCancelTransfer.setVisible(true);
 
             try {
-              FileTransfer fileTransfer = new FileTransfer(
+              fileTransfer = new FileTransfer(
                   new Peer("10.10.10.10", download.getFriendlyName(), null, null),
                   download.getUrl(),
                   transferProgressBar, transferSpeed, secondsToGo);
@@ -96,16 +97,11 @@ public class DownloadListViewCell extends ListCell<Download> {
             } catch (FileNotFoundException e) {
               logger.log(Level.INFO, "Could not find file", e);
             }
-
-            //handle ProgressBar e.g if 10% of File loaded
           }
       );
 
       buttonCancelTransfer.setOnAction(
-          event -> {
-            //cancel transfer thread + delete view
-
-          }
+          event -> fileTransfer.shutdownDownload()
       );
 
       buttonDecline.setOnAction(
