@@ -59,10 +59,29 @@
           <archive>
             <index>true</index>
             <manifest>
-              <mainClass>ch.hsr.epj.localshare.demo.gui.application.Main</mainClass>
+              <mainClass>ch.hsr.epj.localshare.demo.Main</mainClass>
             </manifest>
           </archive>
         </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <id>report</id>
+            <phase>prepare-package</phase>
+          </execution>
+        </executions>
+        <groupId>org.jacoco</groupId>
+        <version>0.7.7.201606060606</version>
       </plugin>
     </plugins>
   </build>
@@ -89,6 +108,4 @@
       <version>1.1.1</version>
     </dependency>
   </dependencies>
-
-
 </project>

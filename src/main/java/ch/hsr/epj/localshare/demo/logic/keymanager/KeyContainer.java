@@ -1,6 +1,6 @@
 package ch.hsr.epj.localshare.demo.logic.keymanager;
 
-import ch.hsr.epj.localshare.demo.logic.ConfigManager;
+import ch.hsr.epj.localshare.demo.logic.environment.ConfigManager;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

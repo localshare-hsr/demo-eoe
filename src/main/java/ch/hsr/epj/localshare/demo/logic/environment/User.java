@@ -1,4 +1,4 @@
-package ch.hsr.epj.localshare.demo.logic;
+package ch.hsr.epj.localshare.demo.logic.environment;
 
 public class User {
 
@@ -24,3 +24,4 @@ public class User {
     friendlyName = name;
   }
 }
+
