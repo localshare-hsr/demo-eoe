@@ -2,23 +2,17 @@ package ch.hsr.epj.localshare.demo.logic.keymanager;
 
 import ch.hsr.epj.localshare.demo.persistence.KeyContainer;
 import java.io.File;
-import java.security.KeyStoreException;
+import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Logger;
 
-public class KeyManager {
-
-  private static final Logger logger = Logger.getLogger(KeyManager.class.getName());
+public class KeyManager implements KeyManagerServerInterface {
 
   private KeyContainer keyContainer;
   private KeyPeer user;
   private List<KeyPeer> peerList;
-
-  private KeyManager() {
-  }
 
   public KeyManager(String path, String file, String friendlyName) {
     File filePath = new File(path);
@@ -49,10 +43,12 @@ public class KeyManager {
    *
    * @param newCertificate in for trusted store
    */
-  public void addTrustedCertificate(final X509Certificate newCertificate) {
+  public boolean addTrustedCertificate(final X509Certificate newCertificate) {
+    boolean success;
     KeyPeer keyPeer = new KeyPeer(newCertificate);
     peerList.add(keyPeer);
-    keyContainer.addPeerCertificate(keyPeer.getFriendlyName(), newCertificate);
+    success = keyContainer.addPeerCertificate(keyPeer.getFriendlyName(), newCertificate);
+    return success;
   }
 
   /**
@@ -70,12 +66,18 @@ public class KeyManager {
    * @param alias Name of the certificate in the store
    * @return X.509 Certificate of alias
    */
-  public X509Certificate getTrustedCertificate(final String alias) throws KeyStoreException {
+  public X509Certificate getTrustedCertificate(final String alias) {
     return keyContainer.getCertificate(alias);
   }
 
   public KeyPeer getUser() {
     return user;
+  }
+
+  @Override
+  public KeyStore getKeyStore() {
+    //TODO
+    return null;
   }
 
   private void generateKeyingMaterial(final String userFriendlyName) {

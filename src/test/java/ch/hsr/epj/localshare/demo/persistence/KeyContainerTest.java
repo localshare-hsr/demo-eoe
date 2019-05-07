@@ -138,7 +138,7 @@ public class KeyContainerTest {
     keyContainer.addPeerCertificate("User2", testCertificate);
     keyContainer.addPeerCertificate("User3", testCertificate);
     Map<String, X509Certificate> allPeers = keyContainer.allPeerCertificates();
-    assertTrue(allPeers.size() == 3);
+    assertEquals(3, allPeers.size());
   }
 
   @Test
@@ -211,7 +211,7 @@ public class KeyContainerTest {
   public void testAddKeingMaterial() throws IOException {
     File store = tempFolder.newFolder("config");
     KeyContainer keyContainer = new KeyContainer(store, STORE);
-    Boolean result = keyContainer.addUserKeyingMaterial(TEST_USER, testCertificate, testPrivateKey);
+    boolean result = keyContainer.addUserKeyingMaterial(TEST_USER, testCertificate, testPrivateKey);
     assertTrue(result);
   }
 
@@ -220,7 +220,7 @@ public class KeyContainerTest {
     File store = tempFolder.newFolder("config");
     KeyContainer keyContainer = new KeyContainer(store, STORE);
     keyContainer.addUserKeyingMaterial(TEST_USER, testCertificate, testPrivateKey);
-    Boolean result = keyContainer.existsUserKeyingMaterial(TEST_USER);
+    boolean result = keyContainer.existsUserKeyingMaterial(TEST_USER);
     assertTrue(result);
   }
 

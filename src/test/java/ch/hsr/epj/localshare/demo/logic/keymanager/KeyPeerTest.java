@@ -1,7 +1,6 @@
 package ch.hsr.epj.localshare.demo.logic.keymanager;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 import java.io.ByteArrayInputStream;
 import java.security.cert.CertificateException;
@@ -29,36 +28,6 @@ public class KeyPeerTest {
     CertificateFactory factory = CertificateFactory.getInstance("X.509");
     testCertificate = (X509Certificate) factory
         .generateCertificate(new ByteArrayInputStream(CERTIFICATE.getBytes()));
-  }
-
-  @Test
-  public void testSimpleUserFriendlyName() {
-    KeyPeer keyPeer = new KeyPeer();
-    assertEquals("", keyPeer.getFriendlyName());
-  }
-
-  @Test
-  public void testSimpleUserFingerprint() {
-    KeyPeer keyPeer = new KeyPeer();
-    assertEquals("", keyPeer.getFingerprintNoFormat());
-  }
-
-  @Test
-  public void testSimpleUserFingerprintSpaces() {
-    KeyPeer keyPeer = new KeyPeer();
-    assertEquals("", keyPeer.getFingerprintSpaces());
-  }
-
-  @Test
-  public void testSimpleUserFingerprintColons() {
-    KeyPeer keyPeer = new KeyPeer();
-    assertEquals("", keyPeer.getFingerprintColons());
-  }
-
-  @Test
-  public void testSimpleUserCertificate() {
-    KeyPeer keyPeer = new KeyPeer();
-    assertNull(keyPeer.getCertificate());
   }
 
   @Test

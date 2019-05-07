@@ -70,7 +70,7 @@ public class KeyContainer {
     return success;
   }
 
-  public PrivateKey getUserPrivateKey(final String friendlyName) {
+  PrivateKey getUserPrivateKey(final String friendlyName) {
     checkFriendlyName(friendlyName);
 
     PrivateKey key = null;
@@ -88,28 +88,20 @@ public class KeyContainer {
 
     boolean success;
     PrivateKey privateKey = getUserPrivateKey(friendlyName);
-    if (privateKey == null) {
-      success = false;
-    } else {
-      success = true;
-    }
+    success = privateKey != null;
 
     return success;
   }
 
 
-  public boolean existsCertificate(final String friendlyName) {
+  boolean existsCertificate(final String friendlyName) {
     checkFriendlyName(friendlyName);
 
     boolean success;
     try {
 
       X509Certificate cert = (X509Certificate) keyStore.getCertificate(friendlyName);
-      if (cert != null) {
-        success = true;
-      } else {
-        success = false;
-      }
+      success = cert != null;
     } catch (KeyStoreException e) {
       success = false;
     }
@@ -149,7 +141,7 @@ public class KeyContainer {
     }
   }
 
-  public boolean removeEntry(final String friendlyName) {
+  void removeEntry(final String friendlyName) {
     checkFriendlyName(friendlyName);
 
     try {
@@ -159,10 +151,9 @@ public class KeyContainer {
     }
 
     writeToDisk();
-    return true;
   }
 
-  public Map<String, X509Certificate> allPeerCertificates() {
+  Map<String, X509Certificate> allPeerCertificates() {
     Map<String, X509Certificate> allPeerCertificates = new HashMap<>();
     try {
       Enumeration<String> allFriendlyNames = keyStore.aliases();
@@ -177,7 +168,7 @@ public class KeyContainer {
     return allPeerCertificates;
   }
 
-  public File getFilePath() {
+  File getFilePath() {
     return filePath;
   }
 
