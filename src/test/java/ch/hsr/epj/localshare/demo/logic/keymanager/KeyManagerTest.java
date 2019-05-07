@@ -1,20 +1,14 @@
 package ch.hsr.epj.localshare.demo.logic.keymanager;
 
-import static junit.framework.TestCase.assertNotNull;
-import static org.junit.Assert.assertEquals;
-
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.security.KeyStoreException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 
 public class KeyManagerTest {
 
+  private static final String TEST_USER = "Elvis";
   private static final String HSR_CERTIFICATE =
       "-----BEGIN CERTIFICATE-----\n"
           + "MIIImTCCB4GgAwIBAgIUBtSDyzaKnE5WhHpNQJPKU6cdPS4wDQYJKoZIhvcNAQEL\n"
@@ -64,7 +58,18 @@ public class KeyManagerTest {
           + "7e4MAkByraidqSTswPPJ1uPiWjyFtMsv+o8lCYM5dRAPvnwMcrTFJOkVhnqjpqw/\n"
           + "6bvZ4Jgf7T4zK6xBKN6SHTDXXteFGKWbDiYpNcc/OKQn6kK40R5gPQV+/vsk\n"
           + "-----END CERTIFICATE-----";
+  private static final String ELVIS_CERTIFICATE = "-----BEGIN CERTIFICATE-----\n"
+      + "MIIBIDCBx6ADAgECAgSg4L6+MAoGCCqGSM49BAMCMBAxDjAMBgNVBAMMBUVsdmlz\n"
+      + "MB4XDTE5MDQxOTIwMjY1MloXDTE5MDQyMDA0NTkzNFowEDEOMAwGA1UEAwwFRWx2\n"
+      + "aXMwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQmMAgD7dhM7qLFJRkfaH44uE4I\n"
+      + "mPRqGUI+DZk6KosZ4K0zr59fKgXRftqI45KKOOHo+Bp0K/h+rIkGJLavCr8wow8w\n"
+      + "DTALBgNVHQ8EBAMCAbYwCgYIKoZIzj0EAwIDSAAwRQIgQSdoDTb/MpROqL6puxlm\n"
+      + "nt7HjYY4807OBQRPJSMUoLoCIQD1enHxeStCp6K6GULXCsMlod4RC5mnbmm5ESa3\n"
+      + "4HB3IQ==\n"
+      + "-----END CERTIFICATE-----";
+
   private X509Certificate testCertificate1;
+  private X509Certificate testCertificate2;
 
   @Before
   public void loadTestCertificate() throws CertificateException {
@@ -72,18 +77,27 @@ public class KeyManagerTest {
 
     testCertificate1 = (X509Certificate) factory
         .generateCertificate(new ByteArrayInputStream(HSR_CERTIFICATE.getBytes()));
+    testCertificate2 = (X509Certificate) factory
+        .generateCertificate(new ByteArrayInputStream(ELVIS_CERTIFICATE.getBytes()));
   }
 
-  @After
-  public void removeTestKeyStore() {
-    File testKeyStoreFile = new File("keystore.p12");
-    testKeyStoreFile.delete();
+/*  @Test
+  public void testKeyStoreNonNull() {
+    KeyManager keyManager = new KeyManager();
+    assertNotNull(keyManager.getKeyStore());
+  }*/
+
+/*  @Test
+  public void testKeyStoreKeyingMaterialForTestUserDoesNotExists() {
+    KeyManager keyManager = new KeyManager();
+    assertFalse(keyManager.existsKeyingMaterial(TEST_USER));
   }
 
   @Test
-  public void testKeyStore() {
+  public void testKeyStoreKeyingMaterialForTestUserExists() {
     KeyManager keyManager = new KeyManager();
-    assertNotNull(keyManager.getKeyStore());
+    keyManager.generateKeyingMaterial(TEST_USER);
+    assertTrue(keyManager.existsKeyingMaterial(TEST_USER));
   }
 
   @Test
@@ -92,5 +106,5 @@ public class KeyManagerTest {
     keyManager.addTrustedCertificate(testCertificate1);
     X509Certificate result = keyManager.getTrustedCertificate("www.hsr.ch");
     assertEquals(testCertificate1, result);
-  }
+  }*/
 }
