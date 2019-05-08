@@ -26,7 +26,7 @@ public class DownloadListViewCell extends ListCell<Download> {
   private GridPane gridPaneTransfer;
 
   @FXML
-  private Label size;
+  private Label sizeTotal;
 
   @FXML
   private Label filename;
@@ -48,6 +48,9 @@ public class DownloadListViewCell extends ListCell<Download> {
 
   @FXML
   private Label secondsToGo;
+
+  @FXML
+  private Label sizeCurrent;
 
   @FXML
   Label labelDownloadFinished;
@@ -126,7 +129,7 @@ public class DownloadListViewCell extends ListCell<Download> {
               fileTransfer = new FileTransfer(
                   new Peer("10.10.10.10", download.getFriendlyName(), null, null),
                   download.getUrl(),
-                  progressBar, transferSpeedLabel, transferTimeLabel);
+                  progressBar, transferSpeedLabel, transferTimeLabel, sizeCurrent);
               httpClientController.downloadFileFromPeer(fileTransfer);
 
             } catch (FileNotFoundException e) {
@@ -150,7 +153,7 @@ public class DownloadListViewCell extends ListCell<Download> {
           }
       );
 
-      size.setText(download.getFileSize());
+      sizeTotal.setText(download.getFileSize());
       filename.setText(String.valueOf(download.getFileName()));
       setGraphic(gridPaneTransfer);
 

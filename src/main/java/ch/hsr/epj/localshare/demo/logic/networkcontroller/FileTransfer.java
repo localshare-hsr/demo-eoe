@@ -15,18 +15,22 @@ public class FileTransfer {
   private ProgressBar progress;
   private Label transferSpeedInBytesPerSecond;
   private Label approximateTimeToDownloadInSeconds;
+  private Label currentSize;
+  private TransferSizeCalculator transferSpeedCalculator;
   private TransferSizeCalculator transferSizeCalculator;
   private TransferTimeCalculator transferTimeCalculator;
   private HTTPDownloader httpDownloader;
 
   public FileTransfer(final Peer peer, final URL path, final ProgressBar progress,
-      final Label bytesPerSecond, final Label secondsToGo) {
+      final Label bytesPerSecond, final Label secondsToGo, final Label currentSize) {
     this.peer = peer;
     this.path = path;
     this.progress = progress;
     this.transferSpeedInBytesPerSecond = bytesPerSecond;
     this.approximateTimeToDownloadInSeconds = secondsToGo;
-    this.transferSizeCalculator = new TransferSizeCalculator(BytePrefix.DECIMAL, false);
+    this.currentSize = currentSize;
+    this.transferSpeedCalculator = new TransferSizeCalculator(BytePrefix.DECIMAL, false);
+    this.transferSizeCalculator = new TransferSizeCalculator(BytePrefix.DECIMAL, true);
     this.transferTimeCalculator = new TransferTimeCalculator();
   }
 
@@ -47,13 +51,18 @@ public class FileTransfer {
   }
 
   public void updateTransferSpeed(final int bps) {
-    String niceFormat = transferSizeCalculator.formatBytesToNiceString(bps);
+    String niceFormat = transferSpeedCalculator.formatBytesToNiceString(bps);
     transferSpeedInBytesPerSecond.setText(niceFormat);
   }
 
   public void updateTimeToGo(final long millis) {
     String niceFormat = transferTimeCalculator.formatSecond(millis);
     approximateTimeToDownloadInSeconds.setText(niceFormat);
+  }
+
+  public void updateTransferBytes(final long bytes) {
+    String niceFormat = transferSizeCalculator.formatBytesToNiceString(bytes);
+    currentSize.setText(niceFormat);
   }
 
   void setHttpDownloader(final HTTPDownloader httpDownloader) {
