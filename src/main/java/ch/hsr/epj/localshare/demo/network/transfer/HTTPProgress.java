@@ -48,12 +48,6 @@ public class HTTPProgress extends Observable {
     if (!isFinished) {
       bytesAlreadySent += newlyReadBytes;
 
-      if (bytesAlreadySent >= totalByteLength) {
-        isFinished = true;
-        currentPercentageDecimal = 1.0;
-        currentPercentage = 100;
-      }
-
       double newPercentage = (double) bytesAlreadySent / totalByteLength;
       double difference = newPercentage - currentPercentageDecimal;
 
@@ -70,6 +64,17 @@ public class HTTPProgress extends Observable {
     return currentPercentageDecimal;
   }
 
+  /**
+   * Mark download as finished.
+   */
+  public boolean setFinished() {
+    boolean success = true;
+    this.isFinished = success;
+    currentPercentageDecimal = 1.0;
+    currentPercentage = 100;
+    return success;
+  }
+
   private void startTimer() {
     startMillis = System.currentTimeMillis();
   }
@@ -78,7 +83,7 @@ public class HTTPProgress extends Observable {
     if (transfer != null) {
       Platform.runLater(
           () -> {
-            transfer.updateProgressBar(progress, false);
+            transfer.updateProgressBar(progress, isFinished);
             transfer.updateTransferSpeed(bytesPerSecond);
             transfer.updateTimeToGo(secondsToGo);
           }

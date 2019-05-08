@@ -54,6 +54,7 @@ public class HTTPDownloader implements Runnable {
           break;
         }
       }
+      httpProgress.setFinished();
       bufferedInputStream.close();
       bufferedOutputStream.close();
       connection.disconnect();
