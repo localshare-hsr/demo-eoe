@@ -106,6 +106,15 @@ public class DownloadListViewCell extends ListCell<Download> {
           }
       );
 
+      transferProgressBar.addEventHandler(CustomEvent.CUSTOM_EVENT_TYPE,
+          new MyCustomEventHandler() {
+            @Override
+            public void onFinishedEvent(int param0) {
+              System.out.println("Download finished");
+            }
+
+          });
+
       buttonDecline.setOnAction(
           event -> {
             // Methode im MainWindowController aufrufen mittels Interface das aktuell selektiertes Objekt aus ListView + ObservableList löscht
