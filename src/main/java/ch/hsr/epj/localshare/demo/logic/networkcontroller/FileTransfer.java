@@ -41,7 +41,6 @@ public class FileTransfer {
   public void updateProgressBar(final double percentage, boolean isFinished) {
     progress.setProgress(percentage);
     if (isFinished) {
-      System.out.println("fired");
       progress.fireEvent(new FinishedEvent(42));
     }
   }

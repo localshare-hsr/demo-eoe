@@ -106,7 +106,6 @@ public class DownloadListViewCell extends ListCell<Download> {
                 new MyCustomEventHandler() {
                   @Override
                   public void onFinishedEvent(int param0) {
-                    System.out.println("Download finished");
                     transferProgressBar.setVisible(false);
                     transferSpeed.setVisible(false);
                     secondsToGo.setVisible(false);
