@@ -8,31 +8,8 @@
 <GridPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" minHeight="-Infinity"
   minWidth="-Infinity"
   xmlns="http://javafx.com/javafx/8" fx:id="gridPane">
-  <columnConstraints>
-    <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" percentWidth="20.0"/>
-    <ColumnConstraints hgrow="ALWAYS" percentWidth="35.0"/>
-    <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" percentWidth="10.0"/>
-    <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" percentWidth="35.0"/>
-  </columnConstraints>
-  <rowConstraints>
-    <RowConstraints/>
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-  </rowConstraints>
-  <Label GridPane.columnIndex="1" GridPane.rowIndex="1" text="IP:" fx:id="ip">
-    <padding>
-      <Insets left="10.0" right="10.0"/>
-    </padding>
-  </Label>
   <Label GridPane.columnIndex="3" GridPane.rowIndex="1" prefHeight="17.0" prefWidth="72.0"
     text="FN:" fx:id="fn">
-    <padding>
-      <Insets left="10.0" right="10.0"/>
-    </padding>
-  </Label>
-  <Label GridPane.columnIndex="1" GridPane.rowIndex="2" prefHeight="17.0" prefWidth="125.0"
-    text="Fingerprint:"
-    fx:id="finger">
     <padding>
       <Insets left="10.0" right="10.0"/>
     </padding>
@@ -43,6 +20,29 @@
       <Insets left="10.0" right="10.0"/>
     </padding>
   </Label>
+  <Label GridPane.columnIndex="1" GridPane.rowIndex="1" text="IP:" fx:id="ip">
+    <padding>
+      <Insets left="10.0" right="10.0"/>
+    </padding>
+  </Label>
+  <columnConstraints>
+    <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" percentWidth="20.0"/>
+    <ColumnConstraints hgrow="ALWAYS" percentWidth="35.0"/>
+    <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" percentWidth="10.0"/>
+    <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" percentWidth="35.0"/>
+  </columnConstraints>
+  <Label GridPane.columnIndex="1" GridPane.rowIndex="2" prefHeight="17.0" prefWidth="125.0"
+    text="Fingerprint:"
+    fx:id="finger">
+    <padding>
+      <Insets left="10.0" right="10.0"/>
+    </padding>
+  </Label>
+  <rowConstraints>
+    <RowConstraints/>
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+  </rowConstraints>
   <Label GridPane.rowIndex="1" text="IP:"/>
   <Label GridPane.rowIndex="2" text="Fingerprint:"/>
   <Label GridPane.columnIndex="2" GridPane.rowIndex="1" text="FN:"/>

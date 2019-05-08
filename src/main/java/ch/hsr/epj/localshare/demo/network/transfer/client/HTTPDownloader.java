@@ -28,11 +28,20 @@ public class HTTPDownloader implements Runnable {
   private URL url;
   private BufferedOutputStream bufferedOutputStream;
   private HTTPProgress httpProgress;
+  private volatile boolean isRunning;
 
   public HTTPDownloader(URL url, BufferedOutputStream bufferedOutputStream, FileTransfer transfer) {
     this.url = url;
     this.bufferedOutputStream = bufferedOutputStream;
     this.httpProgress = new HTTPProgress(transfer);
+    this.isRunning = true;
+  }
+
+  /**
+   * Shutdown a running download
+   */
+  public void shutdownDownload() {
+    isRunning = false;
   }
 
   private void startDownload() throws IOException {
@@ -67,15 +76,13 @@ public class HTTPDownloader implements Runnable {
       byte[] buffer = new byte[BUFFER_SIZE];
       int byteRead;
       while ((byteRead = bufferedInputStream.read(buffer)) != EOF) {
-        try {
-          bufferedOutputStream.write(buffer, 0, byteRead);
-          bufferedOutputStream.flush();
-          httpProgress.updateProgress(byteRead);
-
-        } catch (IOException e) {
-          logger.log(Level.WARNING, "Problem with output stream occurred", e);
+        if (!isRunning) {
           break;
         }
+        bufferedOutputStream.write(buffer, 0, byteRead);
+        bufferedOutputStream.flush();
+        httpProgress.updateProgress(byteRead);
+
       }
       bufferedInputStream.close();
       bufferedOutputStream.close();
