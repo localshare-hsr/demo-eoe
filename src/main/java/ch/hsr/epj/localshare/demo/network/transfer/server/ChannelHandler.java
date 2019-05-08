@@ -8,5 +8,6 @@ public class ChannelHandler implements HttpHandler {
 
   @Override
   public void handle(HttpExchange httpExchange) throws IOException {
+    // Channel implementation will follow up in another iteration
   }
 }

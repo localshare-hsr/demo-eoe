@@ -1,5 +1,6 @@
 package ch.hsr.epj.localshare.demo;
 
+import ch.hsr.epj.localshare.demo.gui.application.MainWindowController;
 import ch.hsr.epj.localshare.demo.logic.environment.StartupMethods;
 import ch.hsr.epj.localshare.demo.persistence.JSONParser;
 import java.util.Objects;
@@ -9,6 +10,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -35,13 +37,16 @@ public class Main extends Application {
           FXMLLoader.load(
               Objects.requireNonNull(
                   getClass().getClassLoader().getResource("fxml/MainWindowView.fxml")));
-      primaryStage.setTitle("GUI Prototype");
-      primaryStage.setScene(new Scene(root, 800, 600));
+      primaryStage.setTitle("LocalShare");
+      Image icon = new Image("file:icon.png");
+      primaryStage.getIcons().add(icon);
+      primaryStage.setScene(new Scene(root, 800, 700));
       primaryStage.show();
     }
 
     primaryStage.setOnCloseRequest(
         event -> {
+          MainWindowController.shutdownApplication();
           JSONParser parser = new JSONParser();
           parser.saveAllToJSON();
           try {

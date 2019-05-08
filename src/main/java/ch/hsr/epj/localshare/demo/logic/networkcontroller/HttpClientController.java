@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -47,8 +48,14 @@ public class HttpClientController implements Observer {
     OutputStream outputStream = new FileOutputStream(file);
 
     BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
-    downloadManager.addDownload(
-        new HTTPDownloader(transfer.getPath(), bufferedOutputStream, transfer));
+    HTTPDownloader httpDownloader = new HTTPDownloader(transfer.getPath(), bufferedOutputStream,
+        transfer);
+    transfer.setHttpDownloader(httpDownloader);
+    downloadManager.addDownload(httpDownloader);
+  }
+
+  public ObservableList<Download> getDownloadObservableList() {
+    return downloadObservableList;
   }
 
   void sendNotification(Transfer transfer) {
@@ -57,6 +64,17 @@ public class HttpClientController implements Observer {
     } catch (IOException e) {
       logger.log(Level.WARNING, "IO problem sending notification", e);
     }
+  }
+
+  public void checkPeerAvailability(Transfer transfer) throws IOException {
+
+    try {
+      httpNotifier.checkPeerAvailability(transfer);
+    } catch (ConnectException e) {
+      logger.log(Level.WARNING, "HTTP Client Controller: IP not Available");
+      throw e;
+    }
+
   }
 
   void getMetadataFromPeer(Transfer transfer) {
