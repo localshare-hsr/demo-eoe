@@ -42,11 +42,12 @@
   <Button fx:id="buttonCancelTransfer" disable="true" mnemonicParsing="false"
     text="Cancel Download" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
   <Label text="Filename" GridPane.rowIndex="2"/>
-  <Label fx:id="size" text="size" GridPane.columnIndex="1" GridPane.rowIndex="1">
+  <Label GridPane.columnIndex="1" GridPane.rowIndex="1" text="size" fx:id="sizeTotal">
     <padding>
       <Insets left="10.0" right="10.0"/>
     </padding>
   </Label>
+  <Label text="calculating..." visible="false" fx:id="sizeCurrent"/>
   <Label fx:id="filename" prefHeight="17.0" prefWidth="125.0" text="filename"
     GridPane.columnIndex="1" GridPane.rowIndex="2">
     <padding>

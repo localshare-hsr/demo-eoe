@@ -85,7 +85,7 @@ public class DownloadListViewCell extends ListCell<Download> {
       }
 
       if (download.getDownloadState() == DownloadState.RUNNING) {
-        setRunningVisability();
+        setRunningVisibility();
         ProgressBar progressBar = download.getProgressBar();
         transferProgressBar.progressProperty().bind(progressBar.progressProperty());
 
@@ -98,7 +98,7 @@ public class DownloadListViewCell extends ListCell<Download> {
 
       buttonAccept.setOnAction(
           event -> {
-            setRunningVisability();
+            setRunningVisibility();
             download.setDownloadState(DownloadState.RUNNING);
 
             ProgressBar progressBar = new ProgressBar();
@@ -160,7 +160,7 @@ public class DownloadListViewCell extends ListCell<Download> {
     }
   }
 
-  private void setRunningVisability() {
+  private void setRunningVisibility() {
     gridPaneTransfer.setStyle("-fx-background-color: PALEGREEN");
     buttonAccept.setVisible(false);
     buttonAccept.setDisable(true);
@@ -171,6 +171,7 @@ public class DownloadListViewCell extends ListCell<Download> {
     buttonCancelTransfer.setVisible(true);
     transferSpeed.setVisible((true));
     secondsToGo.setVisible(true);
+    sizeCurrent.setVisible(true);
   }
 
 }
