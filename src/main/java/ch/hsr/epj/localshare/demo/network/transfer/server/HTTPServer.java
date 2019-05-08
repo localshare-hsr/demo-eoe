@@ -1,7 +1,7 @@
 package ch.hsr.epj.localshare.demo.network.transfer.server;
 
-import ch.hsr.epj.localshare.demo.logic.Transfer;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpServerController;
+import ch.hsr.epj.localshare.demo.logic.networkcontroller.Publisher;
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
 import com.sun.net.httpserver.HttpServer;
 import java.io.File;
@@ -34,6 +34,7 @@ public class HTTPServer {
     } catch (IOException e) {
       logger.log(Level.SEVERE, "Could not create HTTP server instance", e);
     }
+    assert webServer != null;
     webServer.createContext(CONTEXT_NOTIFY, new NotifyHandler(this));
     webServer.setExecutor(Executors.newFixedThreadPool(10));
     webServer.start();
@@ -52,7 +53,7 @@ public class HTTPServer {
         .createContext(CONTEXT_SHARE + "/" + path, new ShareHandler(files, path));
   }
 
-  synchronized void receivedNotification(Transfer transfer) {
-    httpServerController.receivedNotification(transfer);
+  synchronized void receivedNotification(Publisher publisher) {
+    httpServerController.receivedNotification(publisher);
   }
 }

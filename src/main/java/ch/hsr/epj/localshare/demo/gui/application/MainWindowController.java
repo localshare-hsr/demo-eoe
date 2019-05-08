@@ -2,12 +2,12 @@ package ch.hsr.epj.localshare.demo.gui.application;
 
 import ch.hsr.epj.localshare.demo.gui.presentation.Download;
 import ch.hsr.epj.localshare.demo.gui.presentation.Peer;
-import ch.hsr.epj.localshare.demo.logic.Transfer;
 import ch.hsr.epj.localshare.demo.logic.environment.User;
 import ch.hsr.epj.localshare.demo.logic.keymanager.KeyManager;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.DiscoveryController;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpClientController;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpServerController;
+import ch.hsr.epj.localshare.demo.logic.networkcontroller.Publisher;
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
 import java.io.IOException;
 import java.net.ConnectException;
@@ -143,7 +143,7 @@ public class MainWindowController implements Initializable {
       } else {
         try {
           httpClientController
-              .checkPeerAvailability(new Transfer(InetAddress.getByName(insertedIP), ""));
+              .checkPeerAvailability(new Publisher(InetAddress.getByName(insertedIP), ""));
           Peer newPeer = new Peer(insertedIP, "test", "", "ab32342134532412341234");
           peerObservableList.add(newPeer);
         } catch (ConnectException e) {

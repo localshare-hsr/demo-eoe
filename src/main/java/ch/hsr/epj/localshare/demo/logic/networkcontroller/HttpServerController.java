@@ -1,6 +1,5 @@
 package ch.hsr.epj.localshare.demo.logic.networkcontroller;
 
-import ch.hsr.epj.localshare.demo.logic.Transfer;
 import ch.hsr.epj.localshare.demo.network.transfer.server.HTTPServer;
 import java.io.File;
 import java.net.InetAddress;
@@ -39,11 +38,11 @@ public class HttpServerController {
     secureRandom.nextBytes(key);
     String privatePath = new String(Base64.getUrlEncoder().encode(key));
     httpServer.createNewShare(privatePath, files);
-    Transfer transfer = new Transfer(peer, privatePath);
-    httpClientController.sendNotification(transfer);
+    Publisher publisher = new Publisher(peer, privatePath);
+    httpClientController.sendNotification(publisher);
   }
 
-  public void receivedNotification(Transfer transfer) {
-    httpClientController.getMetadataFromPeer(transfer);
+  public void receivedNotification(Publisher publisher) {
+    httpClientController.getMetadataFromPeer(publisher);
   }
 }
