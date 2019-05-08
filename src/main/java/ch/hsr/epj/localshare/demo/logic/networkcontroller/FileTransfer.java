@@ -2,6 +2,7 @@ package ch.hsr.epj.localshare.demo.logic.networkcontroller;
 
 import ch.hsr.epj.localshare.demo.gui.application.FinishedEvent;
 import ch.hsr.epj.localshare.demo.gui.presentation.Peer;
+import ch.hsr.epj.localshare.demo.logic.networkcontroller.TransferSizeCalculator.BytePrefix;
 import ch.hsr.epj.localshare.demo.network.transfer.client.HTTPDownloader;
 import java.net.URL;
 import javafx.scene.control.Label;
@@ -14,7 +15,7 @@ public class FileTransfer {
   private ProgressBar progress;
   private Label transferSpeedInBytesPerSecond;
   private Label approximateTimeToDownloadInSeconds;
-  private TransferSpeedCalculator transferSpeedCalculator;
+  private TransferSizeCalculator transferSizeCalculator;
   private TransferTimeCalculator transferTimeCalculator;
   private HTTPDownloader httpDownloader;
 
@@ -25,7 +26,7 @@ public class FileTransfer {
     this.progress = progress;
     this.transferSpeedInBytesPerSecond = bytesPerSecond;
     this.approximateTimeToDownloadInSeconds = secondsToGo;
-    this.transferSpeedCalculator = new TransferSpeedCalculator(BytePrefix.DECIMAL);
+    this.transferSizeCalculator = new TransferSizeCalculator(BytePrefix.DECIMAL, false);
     this.transferTimeCalculator = new TransferTimeCalculator();
   }
 
@@ -34,7 +35,7 @@ public class FileTransfer {
     return peer;
   }
 
-  public URL getPath() {
+  URL getPath() {
     return path;
   }
 
@@ -46,7 +47,7 @@ public class FileTransfer {
   }
 
   public void updateTransferSpeed(final int bps) {
-    String niceFormat = transferSpeedCalculator.formatBytesPerSecond(bps);
+    String niceFormat = transferSizeCalculator.formatBytesToNiceString(bps);
     transferSpeedInBytesPerSecond.setText(niceFormat);
   }
 

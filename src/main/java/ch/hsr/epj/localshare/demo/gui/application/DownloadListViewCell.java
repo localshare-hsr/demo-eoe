@@ -150,7 +150,7 @@ public class DownloadListViewCell extends ListCell<Download> {
           }
       );
 
-      size.setText(String.valueOf(download.getSize()));
+      size.setText(download.getFileSize());
       filename.setText(String.valueOf(download.getFileName()));
       setGraphic(gridPaneTransfer);
 
