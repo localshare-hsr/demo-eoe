@@ -38,8 +38,8 @@ public class Main extends Application {
               Objects.requireNonNull(
                   getClass().getClassLoader().getResource("fxml/MainWindowView.fxml")));
       primaryStage.setTitle("LocalShare");
-      Image Icon = new Image("file:main/resources/icon.png");
-      primaryStage.getIcons().add(Icon);
+      Image icon = new Image("file:icon.png");
+      primaryStage.getIcons().add(icon);
       primaryStage.setScene(new Scene(root, 800, 700));
       primaryStage.show();
     }
