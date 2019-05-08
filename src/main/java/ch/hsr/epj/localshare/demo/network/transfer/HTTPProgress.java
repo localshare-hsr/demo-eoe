@@ -78,7 +78,7 @@ public class HTTPProgress extends Observable {
     if (transfer != null) {
       Platform.runLater(
           () -> {
-            transfer.updateProgressBar(progress);
+            transfer.updateProgressBar(progress, false);
             transfer.updateTransferSpeed(bytesPerSecond);
             transfer.updateTimeToGo(secondsToGo);
           }

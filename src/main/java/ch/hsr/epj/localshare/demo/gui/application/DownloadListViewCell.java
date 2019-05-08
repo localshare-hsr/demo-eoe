@@ -47,6 +47,9 @@ public class DownloadListViewCell extends ListCell<Download> {
   @FXML
   Label secondsToGo;
 
+  @FXML
+  Label labelDownloadFinished;
+
   private FXMLLoader mLLoader;
 
   private HttpClientController httpClientController;
@@ -110,9 +113,14 @@ public class DownloadListViewCell extends ListCell<Download> {
           new MyCustomEventHandler() {
             @Override
             public void onFinishedEvent(int param0) {
+              // Change style of View
               System.out.println("Download finished");
+              transferProgressBar.setVisible(false);
+              transferSpeed.setVisible(false);
+              secondsToGo.setVisible(false);
+              buttonCancelTransfer.setVisible(false);
+              labelDownloadFinished.setVisible(true);
             }
-
           });
 
       buttonDecline.setOnAction(

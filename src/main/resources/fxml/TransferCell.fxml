@@ -33,6 +33,8 @@
       visible="false" fx:id="transferProgressBar"/>
     <Label GridPane.rowIndex="3" text="calculating..." fx:id="transferSpeed"/>
     <Label GridPane.rowIndex="4" text="calculating..." fx:id="secondsToGo"/>
+    <Label GridPane.columnIndex="1" GridPane.rowIndex="3" text="Download Finished" visible="false"
+      fx:id="labelDownloadFinished"/>
   </children>
   <columnConstraints>
     <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" percentWidth="20.0"/>
@@ -43,5 +45,7 @@
     <RowConstraints/>
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+    <RowConstraints/>
+    <RowConstraints/>
   </rowConstraints>
 </GridPane>
