@@ -1,5 +1,6 @@
 package ch.hsr.epj.localshare.demo.logic.networkcontroller;
 
+import ch.hsr.epj.localshare.demo.gui.application.FinishedEvent;
 import ch.hsr.epj.localshare.demo.gui.presentation.Peer;
 import ch.hsr.epj.localshare.demo.network.transfer.client.HTTPDownloader;
 import java.net.URL;
@@ -37,8 +38,11 @@ public class FileTransfer {
     return path;
   }
 
-  public void updateProgressBar(final double percentage) {
+  public void updateProgressBar(final double percentage, boolean isFinished) {
     progress.setProgress(percentage);
+    if (isFinished) {
+      progress.fireEvent(new FinishedEvent(42));
+    }
   }
 
   public void updateTransferSpeed(final int bps) {

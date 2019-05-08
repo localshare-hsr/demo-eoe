@@ -54,4 +54,6 @@
     </padding>
   </Label>
   <Label text="Size" GridPane.rowIndex="1"/>
+  <Label GridPane.columnIndex="1" GridPane.rowIndex="3" text="Download Finished" visible="false"
+    fx:id="labelDownloadFinished"/>
 </GridPane>

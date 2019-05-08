@@ -49,6 +49,9 @@ public class DownloadListViewCell extends ListCell<Download> {
   @FXML
   private Label secondsToGo;
 
+  @FXML
+  Label labelDownloadFinished;
+
   private FXMLLoader mLLoader;
 
   private HttpClientController httpClientController;
@@ -98,6 +101,18 @@ public class DownloadListViewCell extends ListCell<Download> {
             ProgressBar progressBar = new ProgressBar();
             download.setProgressBar(progressBar);
             transferProgressBar.progressProperty().bind(progressBar.progressProperty());
+
+            progressBar.addEventHandler(CustomEvent.CUSTOM_EVENT_TYPE,
+                new MyCustomEventHandler() {
+                  @Override
+                  public void onFinishedEvent(int param0) {
+                    transferProgressBar.setVisible(false);
+                    transferSpeed.setVisible(false);
+                    secondsToGo.setVisible(false);
+                    buttonCancelTransfer.setVisible(false);
+                    labelDownloadFinished.setVisible(true);
+                  }
+                });
 
             Label transferSpeedLabel = new Label();
             download.setTransferSpeed(transferSpeedLabel);

@@ -1,6 +1,7 @@
 package ch.hsr.epj.localshare.demo.network.transfer;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -179,5 +180,13 @@ public class HTTPProgressTest {
     HTTPProgress progress = new HTTPProgress(null);
     progress.setTotalByteLength(1000);
     assertEquals(1.0, progress.updateProgress(1000), 0);
+  }
+
+  @Test
+  public void testProgressSetFinished() {
+    HTTPProgress progress = new HTTPProgress(null);
+    progress.setTotalByteLength(1000);
+    boolean result = progress.setFinished();
+    assertTrue(result);
   }
 }
