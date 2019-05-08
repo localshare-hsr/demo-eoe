@@ -79,13 +79,13 @@ public class MainWindowController implements Initializable {
 
     User user = User.getInstance();
     friendlyName = user.getFriendlyName();
-    KeyManager keyManager = new KeyManager(ConfigManager.getInstance().getConfigPath(),
+    keyManager = new KeyManager(ConfigManager.getInstance().getConfigPath(),
         "keystore.p12", friendlyName);
     fingerPrint = keyManager.getUsersFingerprint();
 
   }
 
-  private static void startHttpServer() {
+  private void startHttpServer() {
     httpServerController = new HttpServerController(keyManager.getKeyStore());
   }
 

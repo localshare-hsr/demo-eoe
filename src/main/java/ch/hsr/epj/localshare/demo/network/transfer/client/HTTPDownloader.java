@@ -88,7 +88,7 @@ public class HTTPDownloader implements Runnable {
       bufferedOutputStream.close();
       connection.disconnect();
     } else {
-      logger.log(Level.INFO, "HTTP status code not 200 OK but {0}", status);
+      logger.log(Level.SEVERE, "HTTP status code not 200 OK but {0}", status);
     }
   }
 
