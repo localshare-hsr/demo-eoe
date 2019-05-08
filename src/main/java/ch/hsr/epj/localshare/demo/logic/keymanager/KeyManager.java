@@ -74,10 +74,14 @@ public class KeyManager implements KeyManagerServerInterface {
     return user;
   }
 
+  /**
+   * Get KeyStore object to create TLS server instances.
+   *
+   * @return KeyStore with all keying material
+   */
   @Override
   public KeyStore getKeyStore() {
-    //TODO
-    return null;
+    return keyContainer.getKeyStore();
   }
 
   private void generateKeyingMaterial(final String userFriendlyName) {

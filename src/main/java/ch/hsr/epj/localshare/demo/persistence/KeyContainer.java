@@ -141,6 +141,10 @@ public class KeyContainer {
     }
   }
 
+  public KeyStore getKeyStore() {
+    return keyStore;
+  }
+
   void removeEntry(final String friendlyName) {
     checkFriendlyName(friendlyName);
 

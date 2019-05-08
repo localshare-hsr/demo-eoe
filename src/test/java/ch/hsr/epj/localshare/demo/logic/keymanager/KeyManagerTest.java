@@ -1,12 +1,17 @@
 package ch.hsr.epj.localshare.demo.logic.keymanager;
 
+import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.security.KeyStore;
 import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.security.Security;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -108,6 +113,37 @@ public class KeyManagerTest {
     keyManager.addTrustedCertificate(testCertificate);
     keyManager.addTrustedCertificate(testCertificate2);
     assertEquals(TEST_USER_2, keyManager.getPeerList().get(1).getFriendlyName());
+  }
+
+  @Test
+  public void testKeyStoreObject() throws IOException {
+    String store = tempFolder.newFolder("config").getAbsolutePath();
+    KeyManager keyManager = new KeyManager(store, STORE, TEST_USER);
+    KeyStore result = keyManager.getKeyStore();
+    assertNotNull(result);
+  }
+
+  @Test
+  public void testKeyStoreCertificate() throws IOException, KeyStoreException {
+    String store = tempFolder.newFolder("config").getAbsolutePath();
+    KeyManager keyManager = new KeyManager(store, STORE, TEST_USER);
+    X509Certificate result = (X509Certificate) keyManager.getKeyStore().getCertificate(TEST_USER);
+    assertNotNull(result);
+  }
+
+  @Test
+  public void testKeyStorePrivateKey()
+      throws IOException, KeyStoreException, UnrecoverableKeyException, NoSuchAlgorithmException {
+    String store = tempFolder.newFolder("config").getAbsolutePath();
+    KeyManager keyManager = new KeyManager(store, STORE, TEST_USER);
+    PrivateKey result = (PrivateKey) keyManager.getKeyStore()
+        .getKey(TEST_USER, getEncodedPassword());
+    assertNotNull(result);
+  }
+
+  private char[] getEncodedPassword() {
+    String encoded = "" + 0x66 + 0x6F + 0x6F + 0x62 + 0x61 + 0x72;
+    return encoded.toCharArray();
   }
 
 }
