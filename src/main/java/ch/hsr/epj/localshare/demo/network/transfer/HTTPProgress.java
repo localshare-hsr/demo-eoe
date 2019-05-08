@@ -48,12 +48,6 @@ public class HTTPProgress extends Observable {
     if (!isFinished) {
       bytesAlreadySent += newlyReadBytes;
 
-      if (bytesAlreadySent >= totalByteLength) {
-        isFinished = true;
-        currentPercentageDecimal = 1.0;
-        currentPercentage = 100;
-      }
-
       double newPercentage = (double) bytesAlreadySent / totalByteLength;
       double difference = newPercentage - currentPercentageDecimal;
 
@@ -70,6 +64,17 @@ public class HTTPProgress extends Observable {
     return currentPercentageDecimal;
   }
 
+  /**
+   * Mark download as finished.
+   */
+  public boolean setFinished() {
+    boolean success = true;
+    this.isFinished = success;
+    currentPercentageDecimal = 1.0;
+    currentPercentage = 100;
+    return success;
+  }
+
   private void startTimer() {
     startMillis = System.currentTimeMillis();
   }
@@ -78,7 +83,7 @@ public class HTTPProgress extends Observable {
     if (transfer != null) {
       Platform.runLater(
           () -> {
-            transfer.updateProgressBar(progress);
+            transfer.updateProgressBar(progress, isFinished);
             transfer.updateTransferSpeed(bytesPerSecond);
             transfer.updateTimeToGo(secondsToGo);
           }
@@ -87,7 +92,7 @@ public class HTTPProgress extends Observable {
   }
 
   private long calculateTimeDifference(final long start, final long end) {
-    return start - end;
+    return end - start;
   }
 
   private long milliToSeconds(final long milliseconds) {
@@ -96,8 +101,9 @@ public class HTTPProgress extends Observable {
 
   private int calculateBytesPerSecond(final long currentMillis) {
     long timeDiffInMilliSeconds = calculateTimeDifference(startMillis, currentMillis);
-    if (timeDiffInMilliSeconds > 0) {
-      return (int) milliToSeconds(bytesAlreadySent / timeDiffInMilliSeconds);
+    long seconds = milliToSeconds(timeDiffInMilliSeconds);
+    if (seconds > 0) {
+      return (int) (bytesAlreadySent / seconds);
     } else {
       return 0;
     }
@@ -106,8 +112,7 @@ public class HTTPProgress extends Observable {
   private long calculateSecondToGo(final long currentMillis) {
     if (currentPercentage > 0) {
       long timeDiffInMilliSeconds = calculateTimeDifference(startMillis, currentMillis);
-      return milliToSeconds(
-          (timeDiffInMilliSeconds / currentPercentage * 100) - timeDiffInMilliSeconds);
+      return (timeDiffInMilliSeconds / currentPercentage * 100) - timeDiffInMilliSeconds;
     } else {
       return 0;
     }

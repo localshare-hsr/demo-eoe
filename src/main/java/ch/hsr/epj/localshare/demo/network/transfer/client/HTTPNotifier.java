@@ -4,6 +4,8 @@ import ch.hsr.epj.localshare.demo.logic.Transfer;
 import ch.hsr.epj.localshare.demo.network.transfer.utils.SelfSignedSSL;
 import ch.hsr.epj.localshare.demo.network.transfer.utils.UrlFactory;
 import java.io.IOException;
+import java.net.ConnectException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -49,5 +51,19 @@ public class HTTPNotifier {
       logger.log(Level.WARNING, "Send notification but received {0}", status);
     }
     connection.disconnect();
+  }
+
+  public void checkPeerAvailability(Transfer transfer) throws IOException {
+
+    try {
+      URL url = UrlFactory.generateNotifyUrl(transfer.getPeerAddress());
+      HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+      connection.setRequestMethod("HEAD");
+      connection.connect();
+      connection.disconnect();
+    } catch (ConnectException e) {
+      logger.log(Level.WARNING, "Peer " + transfer.getPeerAddress() + " not available");
+      throw e;
+    }
   }
 }
