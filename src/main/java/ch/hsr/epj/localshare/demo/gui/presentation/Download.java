@@ -1,7 +1,7 @@
 package ch.hsr.epj.localshare.demo.gui.presentation;
 
-import ch.hsr.epj.localshare.demo.logic.networkcontroller.TransferSizeCalculator;
-import ch.hsr.epj.localshare.demo.logic.networkcontroller.TransferSizeCalculator.BytePrefix;
+import ch.hsr.epj.localshare.demo.logic.networkcontroller.TransferCalculator;
+import ch.hsr.epj.localshare.demo.logic.networkcontroller.TransferCalculator.BytePrefix;
 import java.net.URL;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -19,9 +19,9 @@ public class Download {
 
   public Download(String friendlyName, long size, String fileName, URL url) {
     this.friendlyName = friendlyName;
-    TransferSizeCalculator transferSizeCalculator = new TransferSizeCalculator(BytePrefix.DECIMAL,
+    TransferCalculator transferCalculator = new TransferCalculator(BytePrefix.DECIMAL,
         true);
-    this.fileSize = transferSizeCalculator.formatBytesToNiceString(size);
+    this.fileSize = transferCalculator.formatBytesToNiceString(size);
     this.size = size;
     this.fileName = fileName;
     this.url = url;
