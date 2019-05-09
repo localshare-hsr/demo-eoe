@@ -26,7 +26,7 @@ public class DownloadListViewCell extends ListCell<Download> {
   private GridPane gridPaneTransfer;
 
   @FXML
-  private Label size;
+  private Label sizeTotal;
 
   @FXML
   private Label filename;
@@ -48,6 +48,12 @@ public class DownloadListViewCell extends ListCell<Download> {
 
   @FXML
   private Label secondsToGo;
+
+  @FXML
+  private Label sizeCurrent;
+
+  @FXML
+  Label labelDownloadFinished;
 
   private FXMLLoader mLLoader;
 
@@ -79,7 +85,7 @@ public class DownloadListViewCell extends ListCell<Download> {
       }
 
       if (download.getDownloadState() == DownloadState.RUNNING) {
-        setRunningVisability();
+        setRunningVisibility();
         ProgressBar progressBar = download.getProgressBar();
         transferProgressBar.progressProperty().bind(progressBar.progressProperty());
 
@@ -92,12 +98,24 @@ public class DownloadListViewCell extends ListCell<Download> {
 
       buttonAccept.setOnAction(
           event -> {
-            setRunningVisability();
+            setRunningVisibility();
             download.setDownloadState(DownloadState.RUNNING);
 
             ProgressBar progressBar = new ProgressBar();
             download.setProgressBar(progressBar);
             transferProgressBar.progressProperty().bind(progressBar.progressProperty());
+
+            progressBar.addEventHandler(CustomEvent.CUSTOM_EVENT_TYPE,
+                new MyCustomEventHandler() {
+                  @Override
+                  public void onFinishedEvent(int param0) {
+                    transferProgressBar.setVisible(false);
+                    transferSpeed.setVisible(false);
+                    secondsToGo.setVisible(false);
+                    buttonCancelTransfer.setVisible(false);
+                    labelDownloadFinished.setVisible(true);
+                  }
+                });
 
             Label transferSpeedLabel = new Label();
             download.setTransferSpeed(transferSpeedLabel);
@@ -111,7 +129,7 @@ public class DownloadListViewCell extends ListCell<Download> {
               fileTransfer = new FileTransfer(
                   new Peer("10.10.10.10", download.getFriendlyName(), null, null),
                   download.getUrl(),
-                  progressBar, transferSpeedLabel, transferTimeLabel);
+                  progressBar, transferSpeedLabel, transferTimeLabel, sizeCurrent);
               httpClientController.downloadFileFromPeer(fileTransfer);
 
             } catch (FileNotFoundException e) {
@@ -135,14 +153,14 @@ public class DownloadListViewCell extends ListCell<Download> {
           }
       );
 
-      size.setText(String.valueOf(download.getSize()));
+      sizeTotal.setText(download.getFileSize());
       filename.setText(String.valueOf(download.getFileName()));
       setGraphic(gridPaneTransfer);
 
     }
   }
 
-  private void setRunningVisability() {
+  private void setRunningVisibility() {
     gridPaneTransfer.setStyle("-fx-background-color: PALEGREEN");
     buttonAccept.setVisible(false);
     buttonAccept.setDisable(true);
@@ -153,6 +171,7 @@ public class DownloadListViewCell extends ListCell<Download> {
     buttonCancelTransfer.setVisible(true);
     transferSpeed.setVisible((true));
     secondsToGo.setVisible(true);
+    sizeCurrent.setVisible(true);
   }
 
 }
