@@ -14,9 +14,10 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
-<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+<VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
   fx:controller="ch.hsr.epj.localshare.demo.gui.application.MainWindowController">
   <ImageView fitHeight="70.0" fitWidth="150.0">
     <VBox.margin>
@@ -59,35 +60,42 @@
             </rowConstraints>
           </GridPane>
           <HBox VBox.vgrow="ALWAYS">
-            <VBox id="testRefresh" HBox.hgrow="ALWAYS">
-              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Available Peers"
-                VBox.vgrow="ALWAYS">
-                <VBox.margin>
-                  <Insets bottom="10.0"/>
-                </VBox.margin>
-              </Text>
-              <ListView fx:id="listView"
-                VBox.vgrow="ALWAYS"/>
+            <VBox id="testRefresh" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+              <StackPane>
+                <Label maxWidth="1.7976931348623157E308" text="Available Peers"/>
+                <HBox fx:id="addPeerManually" accessibleRole="BUTTON" alignment="CENTER_RIGHT"
+                  maxWidth="1.7976931348623157E308">
+                  <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308"
+                    text="Add Peer" HBox.hgrow="ALWAYS"/>
+                  <ImageView onMouseClicked="#addPeerManually">
+                    <HBox.margin>
+                      <Insets bottom="5.0" left="5.0" top="5.0"/>
+                    </HBox.margin>
+                    <Image url="@../plus.png"/>
+                  </ImageView>
+                </HBox>
+              </StackPane>
+              <ListView fx:id="listView" VBox.vgrow="ALWAYS"/>
               <padding>
                 <Insets right="10.0"/>
               </padding>
             </VBox>
             <VBox HBox.hgrow="ALWAYS">
-              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Available Downloads"
-                VBox.vgrow="ALWAYS">
-                <VBox.margin>
-                  <Insets bottom="10.0"/>
-                </VBox.margin>
-              </Text>
+              <StackPane>
+                <Label maxWidth="1.7976931348623157E308" text="Available Downloads"/>
+                <HBox fx:id="openDownloads" accessibleRole="BUTTON" alignment="CENTER_RIGHT">
+                  <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308"
+                    text="Open Downloads"/>
+                  <ImageView>
+                    <HBox.margin>
+                      <Insets bottom="5.0" left="5.0" top="5.0"/>
+                    </HBox.margin>
+                    <Image url="@../folder.png"/>
+                  </ImageView>
+                </HBox>
+              </StackPane>
               <ListView fx:id="listViewTransfer" VBox.vgrow="ALWAYS"/>
             </VBox>
-          </HBox>
-          <HBox>
-            <Button mnemonicParsing="false" onAction="#addPeerManually" text="Add Peer manually">
-              <HBox.margin>
-                <Insets top="10.0"/>
-              </HBox.margin>
-            </Button>
           </HBox>
           <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
