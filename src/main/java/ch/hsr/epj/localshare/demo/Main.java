@@ -40,7 +40,7 @@ public class Main extends Application {
       primaryStage.setTitle("LocalShare");
       Image icon = new Image("file:icon.png");
       primaryStage.getIcons().add(icon);
-      primaryStage.setScene(new Scene(root, 800, 700));
+      primaryStage.setScene(new Scene(root, 1200, 700));
       primaryStage.show();
     }
 

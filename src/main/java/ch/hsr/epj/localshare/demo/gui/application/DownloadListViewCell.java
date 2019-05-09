@@ -12,18 +12,19 @@ import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.layout.GridPane;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 
 public class DownloadListViewCell extends ListCell<Download> {
 
   private static final Logger logger = Logger.getLogger(DownloadListViewCell.class.getName());
 
   @FXML
-  private GridPane gridPaneTransfer;
+  private AnchorPane paneTransfer;
 
   @FXML
   private Label sizeTotal;
@@ -32,13 +33,10 @@ public class DownloadListViewCell extends ListCell<Download> {
   private Label filename;
 
   @FXML
-  private Button buttonAccept;
+  private ImageView buttonAccept;
 
   @FXML
-  private Button buttonDecline;
-
-  @FXML
-  private Button buttonCancelTransfer;
+  private ImageView buttonCancelTransfer;
 
   @FXML
   private ProgressBar transferProgressBar;
@@ -50,7 +48,16 @@ public class DownloadListViewCell extends ListCell<Download> {
   private Label secondsToGo;
 
   @FXML
+  private HBox progressHbox;
+
+  @FXML
   private Label sizeCurrent;
+
+  @FXML
+  private ImageView finishedIcon;
+
+  @FXML
+  private ImageView downloadingIcon;
 
   @FXML
   Label labelDownloadFinished;
@@ -96,7 +103,7 @@ public class DownloadListViewCell extends ListCell<Download> {
         secondsToGo.textProperty().bind(transferTime.textProperty());
       }
 
-      buttonAccept.setOnAction(
+      buttonAccept.setOnMouseClicked(
           event -> {
             setRunningVisibility();
             download.setDownloadState(DownloadState.RUNNING);
@@ -109,10 +116,10 @@ public class DownloadListViewCell extends ListCell<Download> {
                 new MyCustomEventHandler() {
                   @Override
                   public void onFinishedEvent(int param0) {
-                    transferProgressBar.setVisible(false);
-                    transferSpeed.setVisible(false);
-                    secondsToGo.setVisible(false);
+                    progressHbox.setVisible(false);
                     buttonCancelTransfer.setVisible(false);
+                    finishedIcon.setVisible(true);
+                    downloadingIcon.setVisible(false);
                     labelDownloadFinished.setVisible(true);
                   }
                 });
@@ -140,38 +147,34 @@ public class DownloadListViewCell extends ListCell<Download> {
           }
       );
 
-      buttonCancelTransfer.setOnAction(
-          event -> fileTransfer.shutdownDownload()
-      );
-
-      buttonDecline.setOnAction(
+      buttonCancelTransfer.setOnMouseClicked(
           event -> {
-            ObservableList<Download> downloadObservableList = httpClientController
-                .getDownloadObservableList();
-            downloadObservableList.remove(download);
-            this.getListView().refresh();
-          }
-      );
+            if (download.getDownloadState() == DownloadState.RUNNING) {
+              fileTransfer.shutdownDownload();
+              download.setDownloadState(DownloadState.WAITING);
+              progressHbox.setVisible(false);
+              transferProgressBar.setVisible(false);
+              buttonAccept.setVisible(true);
+            } else {
+              ObservableList<Download> downloadObservableList = httpClientController
+                  .getDownloadObservableList();
+              downloadObservableList.remove(download);
+              this.getListView().refresh();
+            }
+          });
 
       sizeTotal.setText(download.getFileSize());
       filename.setText(String.valueOf(download.getFileName()));
-      setGraphic(gridPaneTransfer);
+      setGraphic(paneTransfer);
 
     }
   }
 
   private void setRunningVisibility() {
-    gridPaneTransfer.setStyle("-fx-background-color: PALEGREEN");
     buttonAccept.setVisible(false);
     buttonAccept.setDisable(true);
-    buttonDecline.setVisible(false);
-    buttonDecline.setDisable(true);
+    progressHbox.setVisible(true);
     transferProgressBar.setVisible(true);
-    buttonCancelTransfer.setDisable(false);
-    buttonCancelTransfer.setVisible(true);
-    transferSpeed.setVisible((true));
-    secondsToGo.setVisible(true);
-    sizeCurrent.setVisible(true);
   }
 
 }
