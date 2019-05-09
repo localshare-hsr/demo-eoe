@@ -5,6 +5,7 @@ import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpServerController;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
@@ -16,7 +17,10 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 
 public class PeerListViewCell extends ListCell<Peer> {
 
@@ -32,7 +36,15 @@ public class PeerListViewCell extends ListCell<Peer> {
   @FXML
   private Label dn;
   @FXML
-  private GridPane gridPane;
+  private HBox panePeer;
+  @FXML
+  private Circle peerIcon;
+  @FXML
+  private Text textIcon;
+
+  private Random random = new Random();
+
+
   private FXMLLoader mLLoader;
 
 
@@ -110,26 +122,37 @@ public class PeerListViewCell extends ListCell<Peer> {
     fn.setText(String.valueOf(peer.getFriendlyName()));
     finger.setText(String.valueOf(peer.getFingerPrint()));
     dn.setText(String.valueOf(peer.getDisplayName()));
+    peerIcon.setFill(Paint.valueOf(getRandomHexColor()));
+    textIcon.setText(peer.getFriendlyName().substring(0, 2).toUpperCase());
     if (peer.getTrustState()) {
       setStyle("-fx-background: " + COLOR + ";");
     }
   }
 
+  private String getRandomHexColor() {
+
+    // create a big random number - maximum is ffffff (hex) = 16777215 (dez)
+    int nextInt = random.nextInt(0xffffff + 1);
+
+    // format it as hexadecimal string (with hashtag and leading zeros)
+    return String.format("#%06x", nextInt);
+  }
+
   private void addDragAndDropCapabilities(final Peer peer) {
-    gridPane.setOnDragOver(
+    panePeer.setOnDragOver(
         event -> {
-          if (event.getGestureSource() != gridPane && event.getDragboard().hasFiles()) {
+          if (event.getGestureSource() != panePeer && event.getDragboard().hasFiles()) {
             /* allow for both copying and moving, whatever user chooses */
             event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            gridPane.setStyle("-fx-background-color: PALEGREEN");
+            panePeer.setStyle("-fx-background-color: PALEGREEN");
           }
           event.consume();
         });
 
-    gridPane.setOnDragExited(
-        event -> gridPane.setStyle("-fx-background-color: none"));
+    panePeer.setOnDragExited(
+        event -> panePeer.setStyle("-fx-background-color: none"));
 
-    gridPane.setOnDragDropped(
+    panePeer.setOnDragDropped(
         event -> {
           Dragboard db = event.getDragboard();
           boolean success = false;
@@ -151,6 +174,6 @@ public class PeerListViewCell extends ListCell<Peer> {
 
           event.consume();
         });
-    setGraphic(gridPane);
+    setGraphic(panePeer);
   }
 }
