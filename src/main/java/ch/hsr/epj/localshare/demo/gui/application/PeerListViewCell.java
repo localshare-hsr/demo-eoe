@@ -5,7 +5,9 @@ import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpServerController;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Random;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
@@ -21,6 +23,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import org.bouncycastle.util.encoders.Hex;
 
 public class PeerListViewCell extends ListCell<Peer> {
 
@@ -41,8 +44,6 @@ public class PeerListViewCell extends ListCell<Peer> {
   private Circle peerIcon;
   @FXML
   private Text textIcon;
-
-  private Random random = new Random();
 
 
   private FXMLLoader mLLoader;
@@ -69,7 +70,11 @@ public class PeerListViewCell extends ListCell<Peer> {
       ContextMenu contextMenu = createContextMenu(peer);
       this.setContextMenu(contextMenu);
 
-      setPeerAttributes(peer);
+      try {
+        setPeerAttributes(peer);
+      } catch (NoSuchAlgorithmException e) {
+        logger.log(Level.WARNING, "No such Algorithm in Bouncy Castle");
+      }
 
       addDragAndDropCapabilities(peer);
     }
@@ -117,21 +122,24 @@ public class PeerListViewCell extends ListCell<Peer> {
     });
   }
 
-  private void setPeerAttributes(final Peer peer) {
+  private void setPeerAttributes(final Peer peer) throws NoSuchAlgorithmException {
     ip.setText(String.valueOf(peer.getIP()));
     fn.setText(String.valueOf(peer.getFriendlyName()));
     finger.setText(String.valueOf(peer.getFingerPrint()));
     dn.setText(String.valueOf(peer.getDisplayName()));
-    peerIcon.setFill(Paint.valueOf(getRandomHexColor()));
+    peerIcon.setFill(Paint.valueOf(getPeerHexColor(peer.getFriendlyName() + peer.getIP())));
     textIcon.setText(peer.getFriendlyName().substring(0, 2).toUpperCase());
     if (peer.getTrustState()) {
       setStyle("-fx-background: " + COLOR + ";");
     }
   }
 
-  private String getRandomHexColor() {
-    int nextInt = random.nextInt(0xffffff + 1);
-    return String.format("#%06x", nextInt);
+  private String getPeerHexColor(String originalString) throws NoSuchAlgorithmException {
+    MessageDigest digest = MessageDigest.getInstance("MD5");
+    byte[] hash = digest.digest(
+        originalString.getBytes(StandardCharsets.UTF_8));
+    String md5hex = new String(Hex.encode(hash));
+    return "#" + md5hex.substring(0, 6);
   }
 
   private void addDragAndDropCapabilities(final Peer peer) {
