@@ -162,7 +162,7 @@ public class PeerListViewCell extends ListCell<Peer> {
           boolean success = false;
           if (db.hasFiles()) {
             logger.log(Level.INFO,
-                String.format("Send File: {0} To: {0}", db.getFiles().toString(), fn.getText()));
+                String.format("Send File: {0} To: {1}", db.getFiles().toString(), fn.getText()));
             try {
 
               httpServerController

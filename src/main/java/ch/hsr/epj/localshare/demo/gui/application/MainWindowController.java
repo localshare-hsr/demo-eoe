@@ -14,7 +14,10 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyStoreException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -37,8 +40,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import org.bouncycastle.util.IPAddress;
+import org.bouncycastle.util.encoders.Hex;
 
 public class MainWindowController implements Initializable {
 
@@ -80,6 +86,12 @@ public class MainWindowController implements Initializable {
 
   @FXML
   private VBox searchingPeers;
+
+  @FXML
+  private Circle ownIcon;
+
+  @FXML
+  private Text ownText;
 
 
   private String fingerPrint;
@@ -254,6 +266,13 @@ public class MainWindowController implements Initializable {
     ipAddressText.setText(String.valueOf(IPAddressUtil.getLocalIPAddress()));
     fingerPrintText.setText(fingerPrint);
     friendlyNameText.setText(friendlyName);
+    try {
+      ownIcon.setFill(
+          Paint.valueOf(getPeerHexColor(friendlyName + IPAddressUtil.getLocalIPAddress())));
+    } catch (NoSuchAlgorithmException e) {
+      logger.log(Level.WARNING, "No Algorithm Found");
+    }
+    ownText.setText(friendlyName.substring(0, 2).toUpperCase());
   }
 
   public static void shutdownApplication() {
@@ -263,6 +282,14 @@ public class MainWindowController implements Initializable {
 
   private void startHttpClient() {
     httpClientController = new HttpClientController(downloadObservableList);
+  }
+
+  private String getPeerHexColor(String originalString) throws NoSuchAlgorithmException {
+    MessageDigest digest = MessageDigest.getInstance("MD5");
+    byte[] hash = digest.digest(
+        originalString.getBytes(StandardCharsets.UTF_8));
+    String md5hex = new String(Hex.encode(hash));
+    return "#" + md5hex.substring(0, 6);
   }
 
   @FXML
