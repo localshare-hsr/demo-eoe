@@ -64,10 +64,11 @@
               <StackPane>
                 <Label maxWidth="1.7976931348623157E308" text="Available Peers"/>
                 <HBox fx:id="addPeerManually" accessibleRole="BUTTON" alignment="CENTER_RIGHT"
-                  maxWidth="1.7976931348623157E308">
-                  <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Add Peer"
-                    HBox.hgrow="ALWAYS"/>
-                  <ImageView onMouseClicked="#addPeerManually">
+                  maxWidth="1.7976931348623157E308" onMouseClicked="#addPeerManually"
+                  onMouseEntered="#highlightAddButton" onMouseExited="#normalizeAddButton">
+                  <Label fx:id="addPeerText" alignment="CENTER_RIGHT"
+                    maxWidth="1.7976931348623157E308" text="Add Peer" HBox.hgrow="ALWAYS"/>
+                  <ImageView fx:id="addPeerIcon">
                     <HBox.margin>
                       <Insets bottom="5.0" left="5.0" top="5.0"/>
                     </HBox.margin>
@@ -75,7 +76,16 @@
                   </ImageView>
                 </HBox>
               </StackPane>
-              <ListView fx:id="listView" VBox.vgrow="ALWAYS"/>
+              <StackPane VBox.vgrow="ALWAYS">
+                <ListView fx:id="listView"/>
+                <VBox fx:id="searchingPeers" alignment="CENTER">
+                  <ImageView fitHeight="100.0" fitWidth="100.0">
+                    <Image url="@../giphy.gif"/>
+                  </ImageView>
+                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308"
+                    text="Searching Peers..."/>
+                </VBox>
+              </StackPane>
               <padding>
                 <Insets right="10.0"/>
               </padding>
@@ -83,10 +93,12 @@
             <VBox HBox.hgrow="ALWAYS">
               <StackPane>
                 <Label maxWidth="1.7976931348623157E308" text="Available Downloads"/>
-                <HBox fx:id="openDownloads" accessibleRole="BUTTON" alignment="CENTER_RIGHT">
-                  <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308"
-                    text="Open Downloads"/>
-                  <ImageView onMouseClicked="#openDownloadFolder">
+                <HBox accessibleRole="BUTTON" alignment="CENTER_RIGHT"
+                  onMouseClicked="#openDownloadFolder" onMouseEntered="#highlightDownloadButton"
+                  onMouseExited="#normalizeDownloadButton">
+                  <Label fx:id="openDownloadsText" alignment="CENTER_RIGHT"
+                    maxWidth="1.7976931348623157E308" text="Open Downloads"/>
+                  <ImageView fx:id="openDownloadsIcon" onMouseClicked="#openDownloadFolder">
                     <HBox.margin>
                       <Insets bottom="5.0" left="5.0" top="5.0"/>
                     </HBox.margin>

@@ -21,16 +21,21 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import org.bouncycastle.util.IPAddress;
@@ -58,11 +63,37 @@ public class MainWindowController implements Initializable {
   @FXML
   private Text friendlyNameText;
 
+  @FXML
+  private ImageView openDownloads;
+
+  @FXML
+  private ImageView addPeerIcon;
+
+  @FXML
+  private Label addPeerText;
+
+  @FXML
+  private ImageView openDownloadsIcon;
+
+  @FXML
+  private Label openDownloadsText;
+
+  @FXML
+  private VBox searchingPeers;
+
 
   private String fingerPrint;
   private String friendlyName;
   private static HttpServerController httpServerController;
   private HttpClientController httpClientController;
+
+  private DropShadow createDropShadow() {
+    DropShadow dropShadow = new DropShadow();
+    dropShadow.setOffsetX(2.0f);
+    dropShadow.setOffsetX(2.0f);
+    dropShadow.setColor(Color.GRAY);
+    return dropShadow;
+  }
 
 
   @FXML
@@ -178,11 +209,38 @@ public class MainWindowController implements Initializable {
     return peerInputDialog;
   }
 
+  @FXML
+  private void highlightDownloadButton() {
+    openDownloadsIcon.setEffect(createDropShadow());
+    openDownloadsText.setEffect(createDropShadow());
+  }
+
+  @FXML
+  void normalizeDownloadButton() {
+    openDownloadsText.setEffect(null);
+    openDownloadsIcon.setEffect(null);
+  }
+
+
+  @FXML
+  private void highlightAddButton() {
+    addPeerIcon.setEffect(createDropShadow());
+    addPeerText.setEffect(createDropShadow());
+  }
+
+  @FXML
+  void normalizeAddButton() {
+    addPeerIcon.setEffect(null);
+    addPeerText.setEffect(null);
+  }
+
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
 
     listView.setItems(peerObservableList);
+    peerObservableList
+        .addListener((ListChangeListener<Peer>) c -> searchingPeers.setVisible(false));
 
     listViewTransfer.setItems(downloadObservableList);
 
