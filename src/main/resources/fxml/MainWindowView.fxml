@@ -65,8 +65,8 @@
                 <Label maxWidth="1.7976931348623157E308" text="Available Peers"/>
                 <HBox fx:id="addPeerManually" accessibleRole="BUTTON" alignment="CENTER_RIGHT"
                   maxWidth="1.7976931348623157E308">
-                  <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308"
-                    text="Add Peer" HBox.hgrow="ALWAYS"/>
+                  <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Add Peer"
+                    HBox.hgrow="ALWAYS"/>
                   <ImageView onMouseClicked="#addPeerManually">
                     <HBox.margin>
                       <Insets bottom="5.0" left="5.0" top="5.0"/>
@@ -86,7 +86,7 @@
                 <HBox fx:id="openDownloads" accessibleRole="BUTTON" alignment="CENTER_RIGHT">
                   <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308"
                     text="Open Downloads"/>
-                  <ImageView>
+                  <ImageView onMouseClicked="#openDownloadFolder">
                     <HBox.margin>
                       <Insets bottom="5.0" left="5.0" top="5.0"/>
                     </HBox.margin>

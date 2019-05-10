@@ -2,6 +2,7 @@ package ch.hsr.epj.localshare.demo.gui.application;
 
 import ch.hsr.epj.localshare.demo.gui.presentation.Download;
 import ch.hsr.epj.localshare.demo.gui.presentation.Peer;
+import ch.hsr.epj.localshare.demo.logic.environment.ConfigManager;
 import ch.hsr.epj.localshare.demo.logic.environment.User;
 import ch.hsr.epj.localshare.demo.logic.keymanager.KeyManager;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.DiscoveryController;
@@ -30,7 +31,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import org.bouncycastle.util.IPAddress;
@@ -54,16 +54,16 @@ public class MainWindowController implements Initializable {
   @FXML
   private Text fingerPrintText;
 
-  @FXML
-  private VBox testRefresh;
 
   @FXML
   private Text friendlyNameText;
+
 
   private String fingerPrint;
   private String friendlyName;
   private static HttpServerController httpServerController;
   private HttpClientController httpClientController;
+
 
   @FXML
   private ObservableList<Peer> peerObservableList;
@@ -106,6 +106,7 @@ public class MainWindowController implements Initializable {
     listView.setEffect(new InnerShadow(50, Color.GRAY));
   }
 
+
   @FXML
   private void onWindowDragExit() {
     listView.setEffect(null);
@@ -121,6 +122,14 @@ public class MainWindowController implements Initializable {
     discoveryController.startSearcher();
 
   }
+
+
+  @FXML
+  private void openDownloadFolder() throws IOException {
+    Runtime.getRuntime()
+        .exec("explorer.exe /select," + ConfigManager.getInstance().getDownloadPath());
+  }
+
 
   @FXML
   private void addPeerManually() throws IOException {
@@ -168,6 +177,7 @@ public class MainWindowController implements Initializable {
     peerInputDialog.setTitle("Add Peer");
     return peerInputDialog;
   }
+
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
