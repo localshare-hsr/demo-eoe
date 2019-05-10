@@ -3,7 +3,6 @@ package ch.hsr.epj.localshare.demo.network.transfer.client;
 import ch.hsr.epj.localshare.demo.gui.presentation.Download;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpClientController;
 import ch.hsr.epj.localshare.demo.network.transfer.utils.MetaParser;
-import ch.hsr.epj.localshare.demo.network.transfer.utils.SelfSignedSSL;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -11,17 +10,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
 
 public class HTTPMetaDownloader extends Observable implements Runnable {
 
@@ -49,22 +42,6 @@ public class HTTPMetaDownloader extends Observable implements Runnable {
   }
 
   private void startDownload() throws IOException {
-    // Create all-trusting host name verifier
-    HostnameVerifier allHostsValid = new HostnameVerifier() {
-      public boolean verify(String hostname, SSLSession session) {
-        return true;
-      }
-    };
-    try {
-      SSLContext sslContext = SSLContext.getInstance("TLS");
-      TrustManager[] gullible = new TrustManager[]{new SelfSignedSSL()};
-      sslContext.init(null, gullible, null);
-      HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
-      // Install the all-trusting host verifier
-      HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
-    } catch (NoSuchAlgorithmException | KeyManagementException e) {
-      logger.log(Level.SEVERE, "TLS algorithm not available", e);
-    }
     HttpsURLConnection connection = (HttpsURLConnection) metaUrl.openConnection();
     connection.setRequestMethod("GET");
     connection.setDoOutput(true);
