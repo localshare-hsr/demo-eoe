@@ -3,6 +3,8 @@ package ch.hsr.epj.localshare.demo.gui.application;
 import ch.hsr.epj.localshare.demo.gui.presentation.Download;
 import ch.hsr.epj.localshare.demo.gui.presentation.Peer;
 import ch.hsr.epj.localshare.demo.logic.environment.ConfigManager;
+import ch.hsr.epj.localshare.demo.logic.Transfer;
+import ch.hsr.epj.localshare.demo.logic.environment.ConfigManager;
 import ch.hsr.epj.localshare.demo.logic.environment.User;
 import ch.hsr.epj.localshare.demo.logic.keymanager.KeyManager;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.DiscoveryController;
@@ -114,6 +116,7 @@ public class MainWindowController implements Initializable {
   @FXML
   private ObservableList<Download> downloadObservableList;
 
+  private KeyManager keyManager;
 
   public MainWindowController() {
 
@@ -128,20 +131,14 @@ public class MainWindowController implements Initializable {
 
     User user = User.getInstance();
     friendlyName = user.getFriendlyName();
-    KeyManager keyManager = new KeyManager();
-    if (!keyManager.existsKeyingMaterial(friendlyName)) {
-      keyManager.generateKeyingMaterial(friendlyName);
-    }
-    try {
-      fingerPrint = keyManager.getUsersFingerprint();
-    } catch (KeyStoreException e) {
-      logger.log(Level.WARNING, "Could not load user fingerprint", e);
-    }
+    keyManager = new KeyManager(ConfigManager.getInstance().getConfigPath(),
+        "keystore.p12", friendlyName);
+    fingerPrint = keyManager.getUsersFingerprint();
 
   }
 
-  private static void startHttpServer() {
-    httpServerController = new HttpServerController();
+  private void startHttpServer() {
+    httpServerController = new HttpServerController(keyManager.getKeyStore());
   }
 
   @FXML

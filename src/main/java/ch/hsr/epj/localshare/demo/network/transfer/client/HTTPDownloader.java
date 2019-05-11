@@ -6,10 +6,10 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.net.ssl.HttpsURLConnection;
 
 public class HTTPDownloader implements Runnable {
 
@@ -38,7 +38,7 @@ public class HTTPDownloader implements Runnable {
   }
 
   private void startDownload() throws IOException {
-    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
     connection.setRequestMethod("GET");
     connection.setDoOutput(true);
     connection.setRequestProperty("Connection", "close");
@@ -66,7 +66,7 @@ public class HTTPDownloader implements Runnable {
       bufferedOutputStream.close();
       connection.disconnect();
     } else {
-      logger.log(Level.INFO, "HTTP status code not 200 OK but {0}", status);
+      logger.log(Level.SEVERE, "HTTP status code not 200 OK but {0}", status);
     }
   }
 

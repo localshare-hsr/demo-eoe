@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.util.LinkedList;
@@ -70,7 +71,12 @@ public class ShareHandler implements HttpHandler {
 
   private DownloadFile generateDownloadFile(final File file) {
     String ownerFriendlyName = User.getInstance().getFriendlyName();
-    String url = UrlFactory.generateDownloadableURL(path, file);
+    String url = null;
+    try {
+      url = UrlFactory.generateDownloadableURL(path, file);
+    } catch (UnsupportedEncodingException e) {
+      logger.log(Level.SEVERE, "File name could not be encoded into URL", e);
+    }
     return new DownloadFile(ownerFriendlyName, file.getName(), file.length(), url);
   }
 
