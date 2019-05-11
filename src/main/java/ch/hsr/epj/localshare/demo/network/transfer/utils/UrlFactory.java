@@ -23,7 +23,7 @@ public class UrlFactory {
 
   public static URL generateMetaDataUrl(final Publisher publisher) throws MalformedURLException {
     String ip = getIPAddress(publisher);
-    return new URL(PROTCOL + ip + ":" + PORT + "/share/" + publisher.getFileUri() + "/");
+    return new URL(PROTOCOL + ip + ":" + PORT + "/share/" + publisher.getFileUri() + "/");
   }
 
   public static String generateDownloadableURL(final String randomToken, File file)
