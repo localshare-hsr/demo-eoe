@@ -1,7 +1,6 @@
 package ch.hsr.epj.localshare.demo.logic.networkcontroller;
 
 import ch.hsr.epj.localshare.demo.gui.presentation.Download;
-import ch.hsr.epj.localshare.demo.logic.Transfer;
 import ch.hsr.epj.localshare.demo.logic.environment.ConfigManager;
 import ch.hsr.epj.localshare.demo.network.transfer.client.DownloadManager;
 import ch.hsr.epj.localshare.demo.network.transfer.client.HTTPDownloader;
@@ -58,18 +57,18 @@ public class HttpClientController implements Observer {
     return downloadObservableList;
   }
 
-  void sendNotification(Transfer transfer) {
+  void sendNotification(Publisher publisher) {
     try {
-      httpNotifier.sendNotification(transfer);
+      httpNotifier.sendNotification(publisher);
     } catch (IOException e) {
       logger.log(Level.WARNING, "IO problem sending notification", e);
     }
   }
 
-  public void checkPeerAvailability(Transfer transfer) throws IOException {
+  public void checkPeerAvailability(Publisher publisher) throws IOException {
 
     try {
-      httpNotifier.checkPeerAvailability(transfer);
+      httpNotifier.checkPeerAvailability(publisher);
     } catch (ConnectException e) {
       logger.log(Level.WARNING, "HTTP Client Controller: IP not Available");
       throw e;
@@ -77,11 +76,11 @@ public class HttpClientController implements Observer {
 
   }
 
-  void getMetadataFromPeer(Transfer transfer) {
+  void getMetadataFromPeer(Publisher publisher) {
     List<Download> downloadList = new ArrayList<>();
     URL url = null;
     try {
-      url = UrlFactory.generateMetaDataUrl(transfer);
+      url = UrlFactory.generateMetaDataUrl(publisher);
     } catch (MalformedURLException e) {
       logger.log(Level.WARNING, "URL is invalid", e);
     }

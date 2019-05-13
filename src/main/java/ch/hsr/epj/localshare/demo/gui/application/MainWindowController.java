@@ -2,38 +2,48 @@ package ch.hsr.epj.localshare.demo.gui.application;
 
 import ch.hsr.epj.localshare.demo.gui.presentation.Download;
 import ch.hsr.epj.localshare.demo.gui.presentation.Peer;
-import ch.hsr.epj.localshare.demo.logic.Transfer;
+import ch.hsr.epj.localshare.demo.logic.environment.ConfigManager;
 import ch.hsr.epj.localshare.demo.logic.environment.User;
 import ch.hsr.epj.localshare.demo.logic.keymanager.KeyManager;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.DiscoveryController;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpClientController;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpServerController;
+import ch.hsr.epj.localshare.demo.logic.networkcontroller.Publisher;
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.URL;
-import java.security.KeyStoreException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import org.bouncycastle.util.IPAddress;
+import org.bouncycastle.util.encoders.Hex;
 
 public class MainWindowController implements Initializable {
 
@@ -54,16 +64,51 @@ public class MainWindowController implements Initializable {
   @FXML
   private Text fingerPrintText;
 
-  @FXML
-  private VBox testRefresh;
 
   @FXML
   private Text friendlyNameText;
+
+  @FXML
+  private ImageView openDownloads;
+
+  @FXML
+  private ImageView addPeerIcon;
+
+  @FXML
+  private Label addPeerText;
+
+  @FXML
+  private ImageView openDownloadsIcon;
+
+  @FXML
+  private Label openDownloadsText;
+
+  @FXML
+  private VBox searchingPeers;
+
+  @FXML
+  private VBox noDownloads;
+
+  @FXML
+  private Circle ownIcon;
+
+  @FXML
+  private Text ownText;
+
 
   private String fingerPrint;
   private String friendlyName;
   private static HttpServerController httpServerController;
   private HttpClientController httpClientController;
+
+  private DropShadow createDropShadow() {
+    DropShadow dropShadow = new DropShadow();
+    dropShadow.setOffsetX(2.0f);
+    dropShadow.setOffsetX(2.0f);
+    dropShadow.setColor(Color.GRAY);
+    return dropShadow;
+  }
+
 
   @FXML
   private ObservableList<Peer> peerObservableList;
@@ -71,6 +116,7 @@ public class MainWindowController implements Initializable {
   @FXML
   private ObservableList<Download> downloadObservableList;
 
+  private KeyManager keyManager;
 
   public MainWindowController() {
 
@@ -85,26 +131,21 @@ public class MainWindowController implements Initializable {
 
     User user = User.getInstance();
     friendlyName = user.getFriendlyName();
-    KeyManager keyManager = new KeyManager();
-    if (!keyManager.existsKeyingMaterial(friendlyName)) {
-      keyManager.generateKeyingMaterial(friendlyName);
-    }
-    try {
-      fingerPrint = keyManager.getUsersFingerprint();
-    } catch (KeyStoreException e) {
-      logger.log(Level.WARNING, "Could not load user fingerprint", e);
-    }
+    keyManager = new KeyManager(ConfigManager.getInstance().getConfigPath(),
+        "keystore.p12", friendlyName);
+    fingerPrint = keyManager.getUsersFingerprint();
 
   }
 
-  private static void startHttpServer() {
-    httpServerController = new HttpServerController();
+  private void startHttpServer() {
+    httpServerController = new HttpServerController(keyManager.getKeyStore());
   }
 
   @FXML
   private void onWindowDragEnter() {
     listView.setEffect(new InnerShadow(50, Color.GRAY));
   }
+
 
   @FXML
   private void onWindowDragExit() {
@@ -122,6 +163,14 @@ public class MainWindowController implements Initializable {
 
   }
 
+
+  @FXML
+  private void openDownloadFolder() throws IOException {
+    Runtime.getRuntime()
+        .exec("explorer.exe /select," + ConfigManager.getInstance().getDownloadPath());
+  }
+
+
   @FXML
   private void addPeerManually() throws IOException {
     TextInputDialog peerInputDialog = createInputDialog();
@@ -134,7 +183,7 @@ public class MainWindowController implements Initializable {
       } else {
         try {
           httpClientController
-              .checkPeerAvailability(new Transfer(InetAddress.getByName(insertedIP), ""));
+              .checkPeerAvailability(new Publisher(InetAddress.getByName(insertedIP), ""));
           Peer newPeer = new Peer(insertedIP, "test", "", "ab32342134532412341234");
           peerObservableList.add(newPeer);
         } catch (ConnectException e) {
@@ -169,12 +218,42 @@ public class MainWindowController implements Initializable {
     return peerInputDialog;
   }
 
+  @FXML
+  private void highlightDownloadButton() {
+    openDownloadsIcon.setEffect(createDropShadow());
+    openDownloadsText.setEffect(createDropShadow());
+  }
+
+  @FXML
+  void normalizeDownloadButton() {
+    openDownloadsText.setEffect(null);
+    openDownloadsIcon.setEffect(null);
+  }
+
+
+  @FXML
+  private void highlightAddButton() {
+    addPeerIcon.setEffect(createDropShadow());
+    addPeerText.setEffect(createDropShadow());
+  }
+
+  @FXML
+  void normalizeAddButton() {
+    addPeerIcon.setEffect(null);
+    addPeerText.setEffect(null);
+  }
+
+
   @Override
   public void initialize(URL location, ResourceBundle resources) {
 
     listView.setItems(peerObservableList);
+    peerObservableList
+        .addListener((ListChangeListener<Peer>) c -> searchingPeers.setVisible(false));
 
     listViewTransfer.setItems(downloadObservableList);
+    downloadObservableList
+        .addListener((ListChangeListener<Download>) c -> noDownloads.setVisible(false));
 
     startHttpServer();
     startHttpClient();
@@ -186,6 +265,13 @@ public class MainWindowController implements Initializable {
     ipAddressText.setText(String.valueOf(IPAddressUtil.getLocalIPAddress()));
     fingerPrintText.setText(fingerPrint);
     friendlyNameText.setText(friendlyName);
+    try {
+      ownIcon.setFill(
+          Paint.valueOf(getPeerHexColor(friendlyName + IPAddressUtil.getLocalIPAddress())));
+    } catch (NoSuchAlgorithmException e) {
+      logger.log(Level.WARNING, "No Algorithm Found");
+    }
+    ownText.setText(friendlyName.substring(0, 2).toUpperCase());
   }
 
   public static void shutdownApplication() {
@@ -195,6 +281,14 @@ public class MainWindowController implements Initializable {
 
   private void startHttpClient() {
     httpClientController = new HttpClientController(downloadObservableList);
+  }
+
+  private String getPeerHexColor(String originalString) throws NoSuchAlgorithmException {
+    MessageDigest digest = MessageDigest.getInstance("MD5");
+    byte[] hash = digest.digest(
+        originalString.getBytes(StandardCharsets.UTF_8));
+    String md5hex = new String(Hex.encode(hash));
+    return "#" + md5hex.substring(0, 6);
   }
 
   @FXML

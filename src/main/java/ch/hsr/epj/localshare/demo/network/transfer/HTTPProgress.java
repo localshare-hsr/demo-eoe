@@ -86,6 +86,7 @@ public class HTTPProgress extends Observable {
             transfer.updateProgressBar(progress, isFinished);
             transfer.updateTransferSpeed(bytesPerSecond);
             transfer.updateTimeToGo(secondsToGo);
+            transfer.updateTransferBytes(bytesAlreadySent);
           }
       );
     }

@@ -1,6 +1,6 @@
 package ch.hsr.epj.localshare.demo.network.transfer.server;
 
-import ch.hsr.epj.localshare.demo.logic.Transfer;
+import ch.hsr.epj.localshare.demo.logic.networkcontroller.Publisher;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -27,8 +27,8 @@ public class NotifyHandler implements HttpHandler {
       InetAddress peerAddress = httpExchange.getRemoteAddress().getAddress();
       Headers headers = httpExchange.getRequestHeaders();
       String fileUri = headers.getFirst("X-Resource");
-      Transfer transfer = new Transfer(peerAddress, fileUri);
-      httpServer.receivedNotification(transfer);
+      Publisher publisher = new Publisher(peerAddress, fileUri);
+      httpServer.receivedNotification(publisher);
       httpExchange.sendResponseHeaders(HTTP_OK, NO_RESPONSE_BODY);
     }
     httpExchange.close();

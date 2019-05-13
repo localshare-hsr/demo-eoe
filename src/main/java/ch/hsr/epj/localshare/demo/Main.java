@@ -12,6 +12,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import jfxtras.styles.jmetro8.JMetro;
+import jfxtras.styles.jmetro8.JMetro.Style;
+
 
 public class Main extends Application {
 
@@ -29,6 +32,7 @@ public class Main extends Application {
               Objects.requireNonNull(
                   getClass().getClassLoader().getResource("fxml/StartupView.fxml")));
       primaryStage.setTitle("Startup Window");
+      new JMetro(JMetro.Style.LIGHT).applyTheme(root);
       primaryStage.setScene(new Scene(root, 800, 600));
       primaryStage.show();
     } else {
@@ -38,9 +42,11 @@ public class Main extends Application {
               Objects.requireNonNull(
                   getClass().getClassLoader().getResource("fxml/MainWindowView.fxml")));
       primaryStage.setTitle("LocalShare");
+      new JMetro(Style.LIGHT).applyTheme(root);
       Image icon = new Image("file:icon.png");
       primaryStage.getIcons().add(icon);
-      primaryStage.setScene(new Scene(root, 800, 700));
+      Scene scene = new Scene(root, 1200, 700);
+      primaryStage.setScene(scene);
       primaryStage.show();
     }
 
