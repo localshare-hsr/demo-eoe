@@ -72,6 +72,7 @@ public class HTTPProgress extends Observable {
     this.isFinished = success;
     currentPercentageDecimal = 1.0;
     currentPercentage = 100;
+    updateUIProgressBar(currentPercentage);
     return success;
   }
 
