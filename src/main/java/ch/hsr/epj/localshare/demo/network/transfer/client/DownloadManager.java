@@ -25,7 +25,7 @@ public class DownloadManager {
       }
     };
     try {
-      SSLContext sslContext = SSLContext.getInstance("TLS");
+      SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
       TrustManager[] gullible = new TrustManager[]{new SelfSignedSSL()};
       sslContext.init(null, gullible, null);
       HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());

@@ -44,7 +44,7 @@ public class HTTPServer {
       logger.log(Level.SEVERE, "Could not create HTTPS server instance", e);
     }
     try {
-      SSLContext sslContext = SSLContext.getInstance("TLS");
+      SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
       KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
       String encoded = "" + 0x66 + 0x6F + 0x6F + 0x62 + 0x61 + 0x72;
       keyManagerFactory.init(keystore, encoded.toCharArray());
