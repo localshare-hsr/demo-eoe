@@ -33,20 +33,20 @@ public class DownloadManager {
 
   private ExecutorService executorService = Executors.newFixedThreadPool(10);
 
-  public void addDownload(HTTPDownloader httpDownloader) {
-    executorService.execute(httpDownloader);
+  public void addDownload(Runnable downloadTask) {
+    executorService.execute(downloadTask);
   }
 
-  public void addMetaDownload(HTTPMetaDownloader httpMetaDownloader) {
-    executorService.execute(httpMetaDownloader);
+  public void addMetaDownload(Runnable downloadTask) {
+    executorService.execute(downloadTask);
   }
 
-  public void addNotifyTask(HTTPNotifier httpNotifier) {
-    executorService.execute(httpNotifier);
+  public void addNotifyTask(Runnable notifyTask) {
+    executorService.execute(notifyTask);
   }
 
-  public void addAvailabilityTask(HTTPPeerChecker httpPeerChecker) {
-    executorService.execute(httpPeerChecker);
+  public void addAvailabilityTask(Runnable checkTask) {
+    executorService.execute(checkTask);
   }
 
 
