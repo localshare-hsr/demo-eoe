@@ -41,8 +41,8 @@
                   <Insets bottom="5.0" left="5.0" top="5.0"/>
                 </StackPane.margin>
               </Circle>
-              <Text fx:id="ownText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0"
-                text="FN" StackPane.alignment="CENTER">
+              <Text fx:id="ownText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="FN"
+                StackPane.alignment="CENTER">
                 <font>
                   <Font size="28.0"/>
                 </font>
@@ -60,13 +60,13 @@
               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Fingerprint:"
                 wrappingWidth="581.7392578125"/>
             </VBox>
-            <VBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308">
-              <Text fx:id="friendlyNameText" strokeType="OUTSIDE" strokeWidth="0.0"
-                text="hansWurst" wrappingWidth="116.7392578125"/>
-              <Text fx:id="ipAddressText" strokeType="OUTSIDE" strokeWidth="0.0"
-                text="172.96.12.88" wrappingWidth="160.7392578125"/>
-              <Text fx:id="fingerPrintText" strokeType="OUTSIDE" strokeWidth="0.0" text="1234"
-                wrappingWidth="581.7392578125"/>
+            <VBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+              <Text fx:id="friendlyNameText" strokeType="OUTSIDE" strokeWidth="0.0" text="hansWurst"
+                wrappingWidth="116.7392578125"/>
+              <Text fx:id="ipAddressText" strokeType="OUTSIDE" strokeWidth="0.0" text="172.96.12.88"
+                wrappingWidth="160.7392578125"/>
+              <Text fx:id="fingerPrintText" strokeType="OUTSIDE" strokeWidth="0.0" text="asdf"
+                VBox.vgrow="ALWAYS"/>
             </VBox>
           </HBox>
           <HBox VBox.vgrow="ALWAYS">
@@ -116,7 +116,18 @@
                   </ImageView>
                 </HBox>
               </StackPane>
-              <ListView fx:id="listViewTransfer" VBox.vgrow="ALWAYS"/>
+              <StackPane VBox.vgrow="ALWAYS">
+                <ListView fx:id="listViewTransfer"/>
+                <VBox fx:id="noDownloads" alignment="CENTER">
+                  <ImageView>
+                    <VBox.margin>
+                      <Insets bottom="15.0"/>
+                    </VBox.margin>
+                    <Image url="@../notavailable.png"/>
+                  </ImageView>
+                  <Label text="No Files available yet."/>
+                </VBox>
+              </StackPane>
             </VBox>
           </HBox>
           <padding>

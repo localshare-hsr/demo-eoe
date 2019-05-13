@@ -87,6 +87,9 @@ public class MainWindowController implements Initializable {
   private VBox searchingPeers;
 
   @FXML
+  private VBox noDownloads;
+
+  @FXML
   private Circle ownIcon;
 
   @FXML
@@ -249,6 +252,8 @@ public class MainWindowController implements Initializable {
         .addListener((ListChangeListener<Peer>) c -> searchingPeers.setVisible(false));
 
     listViewTransfer.setItems(downloadObservableList);
+    downloadObservableList
+        .addListener((ListChangeListener<Download>) c -> noDownloads.setVisible(false));
 
     startHttpServer();
     startHttpClient();
