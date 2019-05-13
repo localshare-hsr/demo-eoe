@@ -59,9 +59,6 @@ public class DownloadListViewCell extends ListCell<Download> {
   @FXML
   private ImageView downloadingIcon;
 
-  @FXML
-  Label labelDownloadFinished;
-
   private FXMLLoader mLLoader;
 
   private HttpClientController httpClientController;
@@ -120,7 +117,6 @@ public class DownloadListViewCell extends ListCell<Download> {
                     buttonCancelTransfer.setVisible(false);
                     finishedIcon.setVisible(true);
                     downloadingIcon.setVisible(false);
-                    labelDownloadFinished.setVisible(true);
                   }
                 });
 
