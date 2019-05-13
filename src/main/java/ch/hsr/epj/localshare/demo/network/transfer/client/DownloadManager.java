@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 
 public class DownloadManager {
@@ -19,11 +18,7 @@ public class DownloadManager {
 
   public DownloadManager() {
     // Create all-trusting host name verifier
-    HostnameVerifier allHostsValid = new HostnameVerifier() {
-      public boolean verify(String hostname, SSLSession session) {
-        return true;
-      }
-    };
+    HostnameVerifier allHostsValid = (hostname, session) -> true;
     try {
       SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
       TrustManager[] gullible = new TrustManager[]{new SelfSignedSSL()};
@@ -44,6 +39,14 @@ public class DownloadManager {
 
   public void addMetaDownload(HTTPMetaDownloader httpMetaDownloader) {
     executorService.execute(httpMetaDownloader);
+  }
+
+  public void addNotifyTask(HTTPNotifier httpNotifier) {
+    executorService.execute(httpNotifier);
+  }
+
+  public void addAvailabilityTask(HTTPPeerChecker httpPeerChecker) {
+    executorService.execute(httpPeerChecker);
   }
 
 
