@@ -15,7 +15,6 @@ import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.security.KeyStoreException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
@@ -114,6 +113,7 @@ public class MainWindowController implements Initializable {
   @FXML
   private ObservableList<Download> downloadObservableList;
 
+  private KeyManager keyManager;
 
   public MainWindowController() {
 
@@ -128,20 +128,14 @@ public class MainWindowController implements Initializable {
 
     User user = User.getInstance();
     friendlyName = user.getFriendlyName();
-    KeyManager keyManager = new KeyManager();
-    if (!keyManager.existsKeyingMaterial(friendlyName)) {
-      keyManager.generateKeyingMaterial(friendlyName);
-    }
-    try {
-      fingerPrint = keyManager.getUsersFingerprint();
-    } catch (KeyStoreException e) {
-      logger.log(Level.WARNING, "Could not load user fingerprint", e);
-    }
+    keyManager = new KeyManager(ConfigManager.getInstance().getConfigPath(),
+        "keystore.p12", friendlyName);
+    fingerPrint = keyManager.getUsersFingerprint();
 
   }
 
-  private static void startHttpServer() {
-    httpServerController = new HttpServerController();
+  private void startHttpServer() {
+    httpServerController = new HttpServerController(keyManager.getKeyStore());
   }
 
   @FXML
