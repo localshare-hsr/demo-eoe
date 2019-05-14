@@ -17,37 +17,31 @@ public class JSONParser {
 
   private static final Logger logger = Logger.getLogger(JSONParser.class.getName());
 
-  String jsonFriendlyName = "friendly_name";
-  String jsonConfigPath = "config_path";
-  String jsonDownloadPath = "download_path";
-  User user;
-  ConfigManager manager;
-  private JSONObject obj;
+  private String jsonFriendlyName = "friendly_name";
+  private String jsonConfigPath = "config_path";
+  private String jsonDownloadPath = "download_path";
+  private User user;
+  private ConfigManager manager;
+  private JSONObject jsonObject;
 
   public JSONParser() {
-    obj = new JSONObject();
+    jsonObject = new JSONObject();
     user = User.getInstance();
     manager = ConfigManager.getInstance();
   }
 
   public void saveAllToJSON() {
-    obj.put(jsonFriendlyName, user.getFriendlyName());
-    obj.put(jsonConfigPath, manager.getConfigPath());
-    obj.put(jsonDownloadPath, manager.getDownloadPath());
+    jsonObject.put(jsonFriendlyName, user.getFriendlyName());
+    jsonObject.put(jsonConfigPath, manager.getConfigPath());
+    jsonObject.put(jsonDownloadPath, manager.getDownloadPath());
   }
 
   public void writeJSONToDisk() throws IOException {
     Files.createDirectories(Paths.get(manager.getConfigPath()));
-    String savedFileName;
-
-    if (StartupMethods.isWindows()) {
-      savedFileName = manager.getConfigPath() + "\\config.json";
-    } else {
-      savedFileName = manager.getConfigPath() + "/config.json";
-    }
+    String savedFileName = getOSConfigPath();
 
     try (FileWriter jsonConfig = new FileWriter(savedFileName)) {
-      jsonConfig.write(obj.toJSONString());
+      jsonConfig.write(jsonObject.toJSONString());
     } catch (IOException e) {
       logger.log(Level.WARNING, "Unable to write JSON file", e);
     }
@@ -56,18 +50,11 @@ public class JSONParser {
   public void loadData() {
     org.json.simple.parser.JSONParser parser = new org.json.simple.parser.JSONParser();
     try {
-      JSONObject jsonObject;
-      if (StartupMethods.isWindows()) {
-        jsonObject = (JSONObject) parser
-            .parse(new FileReader(manager.getConfigPath() + "\\config.json"));
-      } else {
-        jsonObject = (JSONObject) parser
-            .parse(new FileReader(manager.getConfigPath() + "/config.json"));
-      }
+      JSONObject parsedJSONData = (JSONObject) parser.parse(new FileReader(getOSConfigPath()));
 
-      String friendlyName = (String) jsonObject.get(jsonFriendlyName);
-      String downloadPath = (String) jsonObject.get(jsonDownloadPath);
-      String configPath = (String) jsonObject.get(jsonConfigPath);
+      String friendlyName = (String) parsedJSONData.get(jsonFriendlyName);
+      String downloadPath = (String) parsedJSONData.get(jsonDownloadPath);
+      String configPath = (String) parsedJSONData.get(jsonConfigPath);
 
       user.setFriendlyName(friendlyName);
       manager.setDownloadPath(downloadPath);
@@ -77,5 +64,15 @@ public class JSONParser {
     } catch (IOException | ParseException e) {
       logger.log(Level.WARNING, "Unable to load JSON file", e);
     }
+  }
+
+  private String getOSConfigPath() {
+    String configPath;
+    if (StartupMethods.isWindows()) {
+      configPath = manager.getConfigPath() + "\\config.json";
+    } else {
+      configPath = manager.getConfigPath() + "/config.json";
+    }
+    return configPath;
   }
 }
