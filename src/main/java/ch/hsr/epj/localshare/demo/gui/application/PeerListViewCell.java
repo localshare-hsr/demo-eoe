@@ -125,7 +125,7 @@ public class PeerListViewCell extends ListCell<Peer> {
   private void setPeerAttributes(final Peer peer) throws NoSuchAlgorithmException {
     ip.setText(String.valueOf(peer.getIP()));
     fn.setText(String.valueOf(peer.getFriendlyName()));
-    finger.setText(String.valueOf(peer.getFingerPrint()));
+    finger.setText(String.valueOf(peer.getFingerPrintShort()));
     dn.setText(String.valueOf(peer.getDisplayName()));
     peerIcon.setFill(Paint.valueOf(getPeerHexColor(peer.getFriendlyName() + peer.getIP())));
     textIcon.setText(peer.getFriendlyName().substring(0, 2).toUpperCase());
@@ -161,8 +161,6 @@ public class PeerListViewCell extends ListCell<Peer> {
           Dragboard db = event.getDragboard();
           boolean success = false;
           if (db.hasFiles()) {
-            logger.log(Level.INFO,
-                String.format("Send File: {0} To: {1}", db.getFiles().toString(), fn.getText()));
             try {
 
               httpServerController

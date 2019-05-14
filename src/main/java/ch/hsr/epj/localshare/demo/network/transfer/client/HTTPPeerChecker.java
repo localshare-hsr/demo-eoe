@@ -1,27 +1,38 @@
 package ch.hsr.epj.localshare.demo.network.transfer.client;
 
-import ch.hsr.epj.localshare.demo.logic.networkcontroller.Publisher;
+import ch.hsr.epj.localshare.demo.gui.presentation.Peer;
+import ch.hsr.epj.localshare.demo.logic.keymanager.KeyPeer;
 import ch.hsr.epj.localshare.demo.network.transfer.utils.UrlFactory;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
+import java.security.cert.X509Certificate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javax.net.ssl.HttpsURLConnection;
 
 public class HTTPPeerChecker implements Runnable {
 
   private static final Logger logger = Logger.getLogger(HTTPPeerChecker.class.getName());
 
-  private Publisher publisher;
+  private Peer peer;
   private URL url;
+  private ObservableList<Peer> observableList;
 
-  public HTTPPeerChecker(Publisher publisher) {
-    this.publisher = publisher;
+  public HTTPPeerChecker(Peer peer, ObservableList<Peer> observableList) {
+    this.peer = peer;
+    this.observableList = observableList;
     try {
-      url = UrlFactory.generateNotifyUrl(publisher.getPeerAddress());
+      InetAddress ip = InetAddress.getByName(peer.getIP());
+      url = UrlFactory.generateNotifyUrl(ip);
     } catch (MalformedURLException e) {
       logger.log(Level.WARNING, "URL malcormed");
+    } catch (UnknownHostException e) {
+      logger.log(Level.WARNING, "Invalid peer ip address");
     }
   }
 
@@ -36,16 +47,26 @@ public class HTTPPeerChecker implements Runnable {
 
   private void startDownload() throws IOException {
     HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-    connection.setRequestMethod("HEAD");
+    connection.setRequestMethod("GET");
     connection.setRequestProperty("Connection", "close");
     connection.connect();
-    int status = connection.getResponseCode();
-    if (status == 200) {
-      logger.log(Level.INFO, "Sent notification");
-    } else {
-      logger.log(Level.SEVERE, "HTTP status code not 200 OK but {0}", status);
-    }
+    KeyPeer keyPeer = new KeyPeer((X509Certificate) connection.getServerCertificates()[0]);
+    update(keyPeer);
+    peer.setFriendlyName(keyPeer.getFriendlyName());
+    peer.setFingerPrint(keyPeer.getFingerprintSpaces());
     connection.disconnect();
+  }
+
+  private void update(KeyPeer keyPeer) {
+    Platform.runLater(
+        () -> {
+          Peer newPeer = new Peer(peer.getIP(), keyPeer.getFriendlyName(), "",
+              keyPeer.getFingerprintSpaces());
+
+          if (!observableList.contains(newPeer)) {
+            observableList.add(newPeer);
+          }
+        });
   }
 
 }

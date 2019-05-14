@@ -1,6 +1,5 @@
 package ch.hsr.epj.localshare.demo;
 
-import ch.hsr.epj.localshare.demo.gui.application.MainWindowController;
 import ch.hsr.epj.localshare.demo.logic.environment.StartupMethods;
 import ch.hsr.epj.localshare.demo.persistence.JSONParser;
 import java.util.Objects;
@@ -52,7 +51,6 @@ public class Main extends Application {
 
     primaryStage.setOnCloseRequest(
         event -> {
-          MainWindowController.shutdownApplication();
           JSONParser parser = new JSONParser();
           parser.saveAllToJSON();
           try {

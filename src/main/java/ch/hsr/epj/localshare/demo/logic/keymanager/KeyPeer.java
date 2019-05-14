@@ -20,7 +20,7 @@ public class KeyPeer {
   private String fingerprint;
   private X509Certificate certificate;
 
-  KeyPeer(final X509Certificate certificate) {
+  public KeyPeer(final X509Certificate certificate) {
     checkInputCertificate(certificate);
     this.friendlyName = parseFriendlyName(certificate);
     this.fingerprint = parseFingerprint(certificate);
@@ -35,7 +35,7 @@ public class KeyPeer {
     return fingerprint;
   }
 
-  String getFingerprintSpaces() {
+  public String getFingerprintSpaces() {
     if (!fingerprint.equals("")) {
       return addSpace(fingerprint);
     } else {
