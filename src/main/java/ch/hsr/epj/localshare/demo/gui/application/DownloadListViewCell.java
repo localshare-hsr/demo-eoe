@@ -3,6 +3,7 @@ package ch.hsr.epj.localshare.demo.gui.application;
 import ch.hsr.epj.localshare.demo.gui.presentation.Download;
 import ch.hsr.epj.localshare.demo.gui.presentation.Download.DownloadState;
 import ch.hsr.epj.localshare.demo.gui.presentation.Peer;
+import ch.hsr.epj.localshare.demo.gui.presentation.UIProgress;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.FileTransfer;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpClientController;
 import java.io.FileNotFoundException;
@@ -129,10 +130,11 @@ public class DownloadListViewCell extends ListCell<Download> {
             secondsToGo.textProperty().bind(transferTimeLabel.textProperty());
 
             try {
+              UIProgress uiProgress = new UIProgress(progressBar, transferSpeedLabel,
+                  transferTimeLabel, sizeCurrent);
               fileTransfer = new FileTransfer(
                   new Peer("10.10.10.10", download.getFriendlyName(), null, null),
-                  download.getUrl(),
-                  progressBar, transferSpeedLabel, transferTimeLabel, sizeCurrent);
+                  download.getUrl(), uiProgress);
               httpClientController.downloadFileFromPeer(fileTransfer);
 
             } catch (FileNotFoundException e) {
