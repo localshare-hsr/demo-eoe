@@ -38,8 +38,6 @@ public class HTTPPeerChecker implements Runnable {
     HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
     connection.setRequestMethod("HEAD");
     connection.setRequestProperty("Connection", "close");
-    connection.setRequestProperty("X-Resource", publisher.getFileUri());
-    connection.setRequestProperty("Connection", "close");
     connection.connect();
     int status = connection.getResponseCode();
     if (status == 200) {
