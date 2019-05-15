@@ -29,10 +29,6 @@ public class HttpServerController {
     httpServer.stopHTTPServer();
   }
 
-  public void shareChannel(String filePath, long fileSize, String channelName) {
-    // server.serveFileInChannel(filePath, channelName);
-  }
-
   public void sharePrivate(InetAddress peer, List<File> files) {
     SecureRandom secureRandom = new SecureRandom();
     byte[] key = new byte[16];

@@ -1,4 +1,4 @@
-package ch.hsr.epj.localshare.demo.logic;
+package ch.hsr.epj.localshare.demo.persistence;
 
 import org.junit.Test;
 

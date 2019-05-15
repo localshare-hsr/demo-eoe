@@ -1,8 +1,8 @@
-package ch.hsr.epj.localshare.demo.logic;
+package ch.hsr.epj.localshare.demo.logic.environment;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
-import ch.hsr.epj.localshare.demo.logic.environment.ConfigManager;
 import org.junit.Test;
 
 public class ConfigManagerTest {
@@ -30,7 +30,7 @@ public class ConfigManagerTest {
     String downloadPath = null;
     configManager.setDownloadPath(downloadPath);
 
-    assertEquals(configManager.getDownloadPath(), null);
+    assertNull(configManager.getDownloadPath());
   }
 
 }
