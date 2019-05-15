@@ -8,8 +8,12 @@ import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class UrlFactory {
+
+  private static final Logger logger = Logger.getLogger(UrlFactory.class.getName());
 
   private static final String PROTOCOL = "https://";
   private static final String PORT = "8640";
@@ -28,9 +32,11 @@ public class UrlFactory {
 
   public static String generateDownloadableURL(final String randomToken, File file)
       throws UnsupportedEncodingException {
+    String fileUri = URLEncoder.encode(file.getName(), "UTF-8");
+    //.replaceAll("\\+", "%20");
+    logger.log(Level.INFO, "notifying for file: {0}", fileUri);
     return PROTOCOL + IPAddressUtil.getLocalIPAddress().getHostAddress() + ":" + PORT + "/share/"
-        + randomToken + "/"
-        + URLEncoder.encode(file.getName(), "UTF-8");
+        + randomToken + "/" + fileUri;
   }
 
   private static String getIPAddress(final Publisher publisher) {

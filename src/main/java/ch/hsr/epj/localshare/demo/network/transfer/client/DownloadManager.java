@@ -19,7 +19,8 @@ public class DownloadManager {
   public DownloadManager() {
     // Create all-trusting host name verifier
     HostnameVerifier allHostsValid = (hostname, session) -> {
-      logger.log(Level.INFO, "Hostname {0}", hostname);
+      // bit annoying
+      //logger.log(Level.INFO, "Hostname {0}", hostname);
       return hostname != null;
     };
     try {
