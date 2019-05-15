@@ -36,12 +36,24 @@ public class Peer {
     return fingerPrint;
   }
 
+  public String getFingerPrintShort() {
+    return fingerPrint.substring(0, fingerPrint.length() / 2);
+  }
+
   public boolean getTrustState() {
     return isTrusted;
   }
 
   public void setTrustState(boolean value) {
     isTrusted = value;
+  }
+
+  public void setFriendlyName(String friendlyName) {
+    this.friendlyName = friendlyName;
+  }
+
+  public void setFingerPrint(String fingerPrint) {
+    this.fingerPrint = fingerPrint;
   }
 
   @Override

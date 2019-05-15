@@ -35,7 +35,7 @@ public class StartupViewController implements Initializable {
   @FXML
   private Button finishButton;
 
-  public void changeFriendlyName(String friendlyName) {
+  private void changeFriendlyName(String friendlyName) {
     if (friendlyName.equals("")) {
       finishButton.setDisable(true);
     } else {
@@ -47,9 +47,11 @@ public class StartupViewController implements Initializable {
 
   @FXML
   private void handleFinishButtonClick(ActionEvent event) throws IOException {
-    JSONParser parser = new JSONParser();
-    parser.saveAllToJSON();
-    parser.writeJSONToDisk();
+    String configPath = ConfigManager.getInstance().getConfigPath();
+    String downloadPath = ConfigManager.getInstance().getDownloadPath();
+    String friendlyName = User.getInstance().getFriendlyName();
+    JSONParser parser = new JSONParser(configPath, friendlyName, downloadPath);
+    parser.writeData();
 
     Parent root =
         FXMLLoader.load(
