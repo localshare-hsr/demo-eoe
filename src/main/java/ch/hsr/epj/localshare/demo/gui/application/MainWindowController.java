@@ -9,6 +9,8 @@ import ch.hsr.epj.localshare.demo.logic.networkcontroller.DiscoveryController;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpClientController;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpServerController;
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.URL;
@@ -153,8 +155,8 @@ public class MainWindowController implements Initializable {
 
   @FXML
   private void openDownloadFolder() throws IOException {
-    Runtime.getRuntime()
-        .exec("explorer.exe /open," + ConfigManager.getInstance().getDownloadPath());
+    File dir = new File(ConfigManager.getInstance().getDownloadPath());
+    Desktop.getDesktop().open(dir);
   }
 
 
