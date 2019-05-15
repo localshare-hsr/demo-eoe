@@ -2,6 +2,7 @@ package ch.hsr.epj.localshare.demo.logic.environment;
 
 import ch.hsr.epj.localshare.demo.persistence.JSONParser;
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -68,8 +69,15 @@ public class StartupMethods {
   }
 
   public static void loadConfig() {
-    JSONParser parser = new JSONParser();
-    parser.loadData();
+    try {
+      JSONParser parser = new JSONParser(ConfigManager.getInstance().getConfigPath());
+      parser.loadData();
+      ConfigManager.getInstance().setDownloadPath(parser.getDownloadPath());
+      ConfigManager.getInstance().setConfigPath(parser.getConfigPath());
+      User.getInstance().setFriendlyName(parser.getFriendlyName());
+    } catch (IOException e) {
+      logger.log(Level.SEVERE, "Could not safe config file");
+    }
   }
 
 

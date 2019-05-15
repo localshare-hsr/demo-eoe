@@ -21,15 +21,17 @@ public class NotifyHandler implements HttpHandler {
   @Override
   public void handle(HttpExchange httpExchange) throws IOException {
     String method = httpExchange.getRequestMethod();
-    if (!method.equals("PUT")) {
-      httpExchange.sendResponseHeaders(HTTP_METHOD_NOT_ALLOWED, NO_RESPONSE_BODY);
-    } else {
+    if (method.equals("PUT") || method.equals("GET")) {
       InetAddress peerAddress = httpExchange.getRemoteAddress().getAddress();
       Headers headers = httpExchange.getRequestHeaders();
       String fileUri = headers.getFirst("X-Resource");
-      Publisher publisher = new Publisher(peerAddress, fileUri);
-      httpServer.receivedNotification(publisher);
+      if (fileUri != null) {
+        Publisher publisher = new Publisher(peerAddress, fileUri);
+        httpServer.receivedNotification(publisher);
+      }
       httpExchange.sendResponseHeaders(HTTP_OK, NO_RESPONSE_BODY);
+    } else {
+      httpExchange.sendResponseHeaders(HTTP_METHOD_NOT_ALLOWED, NO_RESPONSE_BODY);
     }
     httpExchange.close();
   }

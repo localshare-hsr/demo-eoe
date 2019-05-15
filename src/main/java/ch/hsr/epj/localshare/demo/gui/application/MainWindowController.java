@@ -8,11 +8,9 @@ import ch.hsr.epj.localshare.demo.logic.keymanager.KeyManager;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.DiscoveryController;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpClientController;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpServerController;
-import ch.hsr.epj.localshare.demo.logic.networkcontroller.Publisher;
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
 import java.io.IOException;
 import java.net.ConnectException;
-import java.net.InetAddress;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -98,7 +96,7 @@ public class MainWindowController implements Initializable {
 
   private String fingerPrint;
   private String friendlyName;
-  private static HttpServerController httpServerController;
+  private HttpServerController httpServerController;
   private HttpClientController httpClientController;
 
   private DropShadow createDropShadow() {
@@ -123,11 +121,12 @@ public class MainWindowController implements Initializable {
     peerObservableList = FXCollections.observableArrayList();
     downloadObservableList = FXCollections.observableArrayList();
 
-    DiscoveryController discoveryController = new DiscoveryController(peerObservableList);
+    httpClientController = new HttpClientController(downloadObservableList, peerObservableList);
+
+    DiscoveryController discoveryController = new DiscoveryController(httpClientController);
     discoveryController.startServer();
     discoveryController.startSearcher();
 
-    httpClientController = new HttpClientController(downloadObservableList);
 
     User user = User.getInstance();
     friendlyName = user.getFriendlyName();
@@ -153,18 +152,6 @@ public class MainWindowController implements Initializable {
   }
 
   @FXML
-  private void refreshList() {
-
-    listView.refresh();
-    peerObservableList = FXCollections.observableArrayList();
-    DiscoveryController discoveryController = new DiscoveryController(peerObservableList);
-    discoveryController.startServer();
-    discoveryController.startSearcher();
-
-  }
-
-
-  @FXML
   private void openDownloadFolder() throws IOException {
     Runtime.getRuntime()
         .exec("explorer.exe /select," + ConfigManager.getInstance().getDownloadPath());
@@ -182,10 +169,7 @@ public class MainWindowController implements Initializable {
         addPeerManually();
       } else {
         try {
-          httpClientController
-              .checkPeerAvailability(new Publisher(InetAddress.getByName(insertedIP), ""));
-          Peer newPeer = new Peer(insertedIP, "test", "", "ab32342134532412341234");
-          peerObservableList.add(newPeer);
+          httpClientController.checkPeerAvailability(new Peer(insertedIP, "", "", ""));
         } catch (ConnectException e) {
           ipNotAvailableDialog();
         }
@@ -274,13 +258,13 @@ public class MainWindowController implements Initializable {
     ownText.setText(friendlyName.substring(0, 2).toUpperCase());
   }
 
-  public static void shutdownApplication() {
+  public void shutdownApplication() {
     httpServerController.stopHTTPServer();
     logger.log(Level.INFO, "LocalShare properly closed");
   }
 
   private void startHttpClient() {
-    httpClientController = new HttpClientController(downloadObservableList);
+    httpClientController = new HttpClientController(downloadObservableList, peerObservableList);
   }
 
   private String getPeerHexColor(String originalString) throws NoSuchAlgorithmException {

@@ -5,20 +5,21 @@ import ch.hsr.epj.localshare.demo.network.discovery.IPResource;
 import ch.hsr.epj.localshare.demo.network.discovery.searcher.NetworkDiscovery;
 import ch.hsr.epj.localshare.demo.network.discovery.server.OuroborosUDPServer;
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
-import javafx.application.Platform;
-import javafx.collections.ObservableList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.concurrent.Task;
 
 public class DiscoveryController implements Observer {
 
-  private ObservableList<Peer> peerObservableList;
+  private static final Logger logger = Logger.getLogger(DiscoveryController.class.getName());
 
-  public DiscoveryController(ObservableList<Peer> peerObservableList) {
-    this.peerObservableList = peerObservableList;
+  private HttpClientController httpClientController;
+
+  public DiscoveryController(HttpClientController httpClientController) {
+    this.httpClientController = httpClientController;
     IPResource.getInstance().addObserver(this);
   }
 
@@ -56,19 +57,14 @@ public class DiscoveryController implements Observer {
 
   @Override
   public void update(Observable o, Object arg) {
-    Platform.runLater(
-        () -> {
-          List<Peer> newPeerList = new ArrayList<>();
-          String[] event = (String[]) arg;
-          for (String ip : event) {
-            newPeerList.add(new Peer(ip, "LS user", "", "aasd98asdas8d7"));
-          }
-
-          for (Peer p : newPeerList) {
-            if (!peerObservableList.contains(p)) {
-              peerObservableList.add(p);
-            }
-          }
-        });
+    String[] event = (String[]) arg;
+    for (String ip : event) {
+      Peer peer = new Peer(ip, "LS User", "", "1337");
+      try {
+        httpClientController.checkPeerAvailability(peer);
+      } catch (IOException e) {
+        logger.log(Level.WARNING, "Unable to check peer availability");
+      }
+    }
   }
 }

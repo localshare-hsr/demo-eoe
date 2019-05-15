@@ -2,6 +2,7 @@ package ch.hsr.epj.localshare.demo.logic.networkcontroller;
 
 import ch.hsr.epj.localshare.demo.gui.application.FinishedEvent;
 import ch.hsr.epj.localshare.demo.gui.presentation.Peer;
+import ch.hsr.epj.localshare.demo.gui.presentation.UIProgress;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.TransferCalculator.BytePrefix;
 import ch.hsr.epj.localshare.demo.network.transfer.client.HTTPDownloader;
 import java.net.URL;
@@ -21,14 +22,13 @@ public class FileTransfer {
   private TransferTimeCalculator transferTimeCalculator;
   private HTTPDownloader httpDownloader;
 
-  public FileTransfer(final Peer peer, final URL path, final ProgressBar progress,
-      final Label bytesPerSecond, final Label secondsToGo, final Label currentSize) {
+  public FileTransfer(final Peer peer, final URL path, final UIProgress uiProgress) {
     this.peer = peer;
     this.path = path;
-    this.progress = progress;
-    this.transferSpeedInBytesPerSecond = bytesPerSecond;
-    this.approximateTimeToDownloadInSeconds = secondsToGo;
-    this.currentSize = currentSize;
+    this.progress = uiProgress.getProgress();
+    this.transferSpeedInBytesPerSecond = uiProgress.getBytesPerSecond();
+    this.approximateTimeToDownloadInSeconds = uiProgress.getSecondsToGo();
+    this.currentSize = uiProgress.getCurrentSize();
     this.transferSpeedCalculator = new TransferCalculator(BytePrefix.DECIMAL, false);
     this.transferSizeCalculator = new TransferCalculator(BytePrefix.DECIMAL, true);
     this.transferTimeCalculator = new TransferTimeCalculator();
