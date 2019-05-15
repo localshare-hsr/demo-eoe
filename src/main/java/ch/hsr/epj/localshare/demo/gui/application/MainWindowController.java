@@ -154,7 +154,7 @@ public class MainWindowController implements Initializable {
   @FXML
   private void openDownloadFolder() throws IOException {
     Runtime.getRuntime()
-        .exec("explorer.exe /select," + ConfigManager.getInstance().getDownloadPath());
+        .exec("explorer.exe /open," + ConfigManager.getInstance().getDownloadPath());
   }
 
 
