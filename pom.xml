@@ -93,11 +93,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>commons-net</groupId>
-      <artifactId>commons-net</artifactId>
-      <version>3.6</version>
-    </dependency>
-    <dependency>
       <artifactId>bcpkix-jdk15on</artifactId>
       <groupId>org.bouncycastle</groupId>
       <version>1.61</version>
@@ -108,9 +103,24 @@
       <version>1.1.1</version>
     </dependency>
     <dependency>
-      <groupId>org.jfxtras</groupId>
-      <artifactId>jmetro</artifactId>
-      <version>5.2</version>
+      <groupId>org.testfx</groupId>
+      <artifactId>testfx-core</artifactId>
+      <version>4.0.15-alpha</version>
+    </dependency>
+    <dependency>
+      <groupId>org.testfx</groupId>
+      <artifactId>testfx-junit</artifactId>
+      <version>4.0.15-alpha</version>
+    </dependency>
+    <dependency>
+      <groupId>scommons-net</groupId>
+      <artifactId>commons-net</artifactId>
+      <version>3.6</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-net</groupId>
+      <artifactId>commons-net</artifactId>
+      <version>3.6</version>
     </dependency>
   </dependencies>
 </project>
