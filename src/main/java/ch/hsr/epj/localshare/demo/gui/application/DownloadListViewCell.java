@@ -98,84 +98,99 @@ public class DownloadListViewCell extends ListCell<Download> {
       }
 
       if (download.getDownloadState() == DownloadState.RUNNING) {
-        setRunningVisibility();
-        ProgressBar progressBar = download.getProgressBar();
-        transferProgressBar.progressProperty().bind(progressBar.progressProperty());
-
-        Label transferSpeedLabel = download.getTransferSpeed();
-        transferSpeed.textProperty().bind(transferSpeedLabel.textProperty());
-
-        Label transferTime = download.getTransferTime();
-        secondsToGo.textProperty().bind(transferTime.textProperty());
+        setRunningState(download);
       }
 
       if (download.getDownloadState() == DownloadState.FINISHED) {
         setFinishedVisibility();
       }
 
-      buttonAccept.setOnMouseClicked(
-          event -> {
-            setEmptyState();
-            setRunningVisibility();
-            download.setDownloadState(DownloadState.RUNNING);
+      setOnMouseClickAcceptMethod(buttonAccept, download);
 
-            ProgressBar progressBar = new ProgressBar();
-            download.setProgressBar(progressBar);
-            transferProgressBar.progressProperty().bind(progressBar.progressProperty());
-
-            progressBar.addEventHandler(CustomEvent.CUSTOM_EVENT_TYPE,
-                new MyCustomEventHandler() {
-                  @Override
-                  public void onFinishedEvent(int param0) {
-                    setEmptyState();
-                    setFinishedVisibility();
-                    download.setDownloadState(DownloadState.FINISHED);
-                    refreshList();
-                  }
-                });
-
-            Label transferSpeedLabel = new Label();
-            download.setTransferSpeed(transferSpeedLabel);
-            transferSpeed.textProperty().bind(transferSpeedLabel.textProperty());
-
-            Label transferTimeLabel = new Label();
-            download.setTransferTime(transferTimeLabel);
-            secondsToGo.textProperty().bind(transferTimeLabel.textProperty());
-
-            try {
-              UIProgress uiProgress = new UIProgress(progressBar, transferSpeedLabel,
-                  transferTimeLabel, sizeCurrent);
-              fileTransfer = new FileTransfer(
-                  new Peer("10.10.10.10", download.getFriendlyName(), null, null),
-                  download.getUrl(), uiProgress);
-              httpClientController.downloadFileFromPeer(fileTransfer);
-
-            } catch (FileNotFoundException e) {
-              logger.log(Level.INFO, "Could not find file", e);
-            }
-
-
-          }
-      );
-
-      buttonCancel.setOnMouseClicked(
-          event -> {
-            if (download.getDownloadState() == DownloadState.RUNNING) {
-              fileTransfer.shutdownDownload();
-
-            }
-              ObservableList<Download> downloadObservableList = httpClientController
-                  .getDownloadObservableList();
-              downloadObservableList.remove(download);
-              this.getListView().refresh();
-
-          });
+      setOnMouseClickCancelMethod(buttonCancel, download);
 
       sizeTotal.setText(download.getFileSize());
       filename.setText(String.valueOf(download.getFileName()));
       setGraphic(paneTransfer);
 
     }
+  }
+
+  private void setOnMouseClickCancelMethod(ImageView buttonCancel, Download download) {
+    buttonCancel.setOnMouseClicked(
+        event -> {
+          if (download.getDownloadState() == DownloadState.RUNNING) {
+            fileTransfer.shutdownDownload();
+          }
+          removeDownload(download);
+
+        });
+  }
+
+  private void removeDownload(Download download) {
+    ObservableList<Download> downloadObservableList = httpClientController
+        .getDownloadObservableList();
+    downloadObservableList.remove(download);
+    refreshList();
+  }
+
+  private void setRunningState(Download download) {
+    setRunningVisibility();
+    ProgressBar progressBar = download.getProgressBar();
+    transferProgressBar.progressProperty().bind(progressBar.progressProperty());
+
+    Label transferSpeedLabel = download.getTransferSpeed();
+    transferSpeed.textProperty().bind(transferSpeedLabel.textProperty());
+
+    Label transferTime = download.getTransferTime();
+    secondsToGo.textProperty().bind(transferTime.textProperty());
+  }
+
+  private void setOnMouseClickAcceptMethod(ImageView buttonAccept, Download download) {
+    buttonAccept.setOnMouseClicked(
+        event -> {
+          setEmptyState();
+          setRunningVisibility();
+          download.setDownloadState(DownloadState.RUNNING);
+
+          ProgressBar progressBar = new ProgressBar();
+          download.setProgressBar(progressBar);
+          transferProgressBar.progressProperty().bind(progressBar.progressProperty());
+
+          progressBar.addEventHandler(CustomEvent.CUSTOM_EVENT_TYPE,
+              new MyCustomEventHandler() {
+                @Override
+                public void onFinishedEvent(int param0) {
+                  setEmptyState();
+                  setFinishedVisibility();
+                  download.setDownloadState(DownloadState.FINISHED);
+                  refreshList();
+                }
+              });
+
+          Label transferSpeedLabel = new Label();
+          download.setTransferSpeed(transferSpeedLabel);
+          transferSpeed.textProperty().bind(transferSpeedLabel.textProperty());
+
+          Label transferTimeLabel = new Label();
+          download.setTransferTime(transferTimeLabel);
+          secondsToGo.textProperty().bind(transferTimeLabel.textProperty());
+
+          try {
+            UIProgress uiProgress = new UIProgress(progressBar, transferSpeedLabel,
+                transferTimeLabel, sizeCurrent);
+            fileTransfer = new FileTransfer(
+                new Peer("10.10.10.10", download.getFriendlyName(), null, null),
+                download.getUrl(), uiProgress);
+            httpClientController.downloadFileFromPeer(fileTransfer);
+
+          } catch (FileNotFoundException e) {
+            logger.log(Level.INFO, "Could not find file", e);
+          }
+
+
+        }
+    );
   }
 
   private void refreshList() {
