@@ -91,6 +91,12 @@ public class DownloadListViewCell extends ListCell<Download> {
         }
       }
 
+      setEmptyState();
+
+      if (download.getDownloadState() == DownloadState.WAITING) {
+        setWaitingVisibility();
+      }
+
       if (download.getDownloadState() == DownloadState.RUNNING) {
         setRunningVisibility();
         ProgressBar progressBar = download.getProgressBar();
@@ -103,8 +109,13 @@ public class DownloadListViewCell extends ListCell<Download> {
         secondsToGo.textProperty().bind(transferTime.textProperty());
       }
 
+      if (download.getDownloadState() == DownloadState.FINISHED) {
+        setFinishedVisibility();
+      }
+
       buttonAccept.setOnMouseClicked(
           event -> {
+            setEmptyState();
             setRunningVisibility();
             download.setDownloadState(DownloadState.RUNNING);
 
@@ -116,10 +127,10 @@ public class DownloadListViewCell extends ListCell<Download> {
                 new MyCustomEventHandler() {
                   @Override
                   public void onFinishedEvent(int param0) {
-                    progressHbox.setVisible(false);
-                    buttonCancel.setVisible(false);
-                    finishedIcon.setVisible(true);
-                    downloadingIcon.setVisible(false);
+                    setEmptyState();
+                    setFinishedVisibility();
+                    download.setDownloadState(DownloadState.FINISHED);
+                    refreshList();
                   }
                 });
 
@@ -151,14 +162,13 @@ public class DownloadListViewCell extends ListCell<Download> {
           event -> {
             if (download.getDownloadState() == DownloadState.RUNNING) {
               fileTransfer.shutdownDownload();
-              download.setDownloadState(DownloadState.WAITING);
-              setWaitingVisibility();
-            } else {
+
+            }
               ObservableList<Download> downloadObservableList = httpClientController
                   .getDownloadObservableList();
               downloadObservableList.remove(download);
               this.getListView().refresh();
-            }
+
           });
 
       sizeTotal.setText(download.getFileSize());
@@ -168,10 +178,32 @@ public class DownloadListViewCell extends ListCell<Download> {
     }
   }
 
+  private void refreshList() {
+    this.getListView().refresh();
+  }
+
+  private void setEmptyState() {
+    buttonAccept.setVisible(false);
+    buttonCancel.setVisible(false);
+    finishedIcon.setVisible(false);
+    downloadingIcon.setVisible(false);
+    progressHbox.setVisible(false);
+    transferProgressBar.setVisible(false);
+    filename.setVisible(false);
+  }
+
+  private void setFinishedVisibility() {
+    finishedIcon.setVisible(true);
+    filename.setVisible(true);
+  }
+
   private void setWaitingVisibility() {
     progressHbox.setVisible(false);
     transferProgressBar.setVisible(false);
     buttonAccept.setVisible(true);
+    filename.setVisible(true);
+    buttonCancel.setVisible(true);
+    downloadingIcon.setVisible(true);
   }
 
   private DropShadow createDropShadow() {
@@ -204,10 +236,11 @@ public class DownloadListViewCell extends ListCell<Download> {
 
 
   private void setRunningVisibility() {
-    buttonAccept.setVisible(false);
-    buttonAccept.setDisable(true);
     progressHbox.setVisible(true);
+    filename.setVisible(true);
     transferProgressBar.setVisible(true);
+    buttonCancel.setVisible(true);
+    downloadingIcon.setVisible(true);
   }
 
 }
