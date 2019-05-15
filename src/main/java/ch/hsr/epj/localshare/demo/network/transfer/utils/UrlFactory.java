@@ -32,8 +32,8 @@ public class UrlFactory {
 
   public static String generateDownloadableURL(final String randomToken, File file)
       throws UnsupportedEncodingException {
-    String fileUri = URLEncoder.encode(file.getName(), "UTF-8");
-    //.replaceAll("\\+", "%20");
+    String fileUri = URLEncoder.encode(file.getName(), "UTF-8")
+        .replaceAll("\\+", "%20");
     logger.log(Level.INFO, "notifying for file: {0}", fileUri);
     return PROTOCOL + IPAddressUtil.getLocalIPAddress().getHostAddress() + ":" + PORT + "/share/"
         + randomToken + "/" + fileUri;
