@@ -2,6 +2,7 @@ package ch.hsr.epj.localshare.demo.gui.application;
 
 import ch.hsr.epj.localshare.demo.logic.environment.ConfigManager;
 import ch.hsr.epj.localshare.demo.logic.environment.StartupMethods;
+import ch.hsr.epj.localshare.demo.logic.environment.User;
 import ch.hsr.epj.localshare.demo.persistence.JSONParser;
 import java.io.File;
 import java.io.IOException;
@@ -49,10 +50,12 @@ public class PreferencesViewController implements Initializable {
         configManager.setDownloadPath(dir.getAbsolutePath() + "/");
       }
 
-      JSONParser parser = new JSONParser();
-      parser.saveAllToJSON();
       try {
-        parser.writeJSONToDisk();
+        String config = ConfigManager.getInstance().getConfigPath();
+        String download = ConfigManager.getInstance().getDownloadPath();
+        String friendlyName = User.getInstance().getFriendlyName();
+        JSONParser parser = new JSONParser(config, friendlyName, download);
+        parser.writeData();
       } catch (IOException e) {
         logger.log(Level.WARNING, "Could not write JSON config to disk");
       }

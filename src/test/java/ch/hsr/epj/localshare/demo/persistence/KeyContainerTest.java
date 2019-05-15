@@ -242,4 +242,31 @@ public class KeyContainerTest {
     assertArrayEquals(testPrivateKey.getEncoded(), result.getEncoded());
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void testAddInvalidUserKeyingMaterialPrivateKey() throws IOException {
+    File store = tempFolder.newFolder("config");
+    KeyContainer keyContainer = new KeyContainer(store, STORE);
+    keyContainer.addUserKeyingMaterial(TEST_USER, testCertificate, null);
+    PrivateKey result = keyContainer.getUserPrivateKey(TEST_USER);
+    assertArrayEquals(testPrivateKey.getEncoded(), result.getEncoded());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testAddInvalidUserKeyingMaterialCertificate() throws IOException {
+    File store = tempFolder.newFolder("config");
+    KeyContainer keyContainer = new KeyContainer(store, STORE);
+    keyContainer.addUserKeyingMaterial(TEST_USER, null, testPrivateKey);
+    PrivateKey result = keyContainer.getUserPrivateKey(TEST_USER);
+    assertArrayEquals(testPrivateKey.getEncoded(), result.getEncoded());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testAddInvalidUserKeyingMaterialFriendlyName() throws IOException {
+    File store = tempFolder.newFolder("config");
+    KeyContainer keyContainer = new KeyContainer(store, STORE);
+    keyContainer.addUserKeyingMaterial(null, testCertificate, testPrivateKey);
+    PrivateKey result = keyContainer.getUserPrivateKey(TEST_USER);
+    assertArrayEquals(testPrivateKey.getEncoded(), result.getEncoded());
+  }
+
 }

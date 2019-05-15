@@ -1,8 +1,5 @@
 package ch.hsr.epj.localshare.demo.persistence;
 
-import ch.hsr.epj.localshare.demo.logic.environment.ConfigManager;
-import ch.hsr.epj.localshare.demo.logic.environment.StartupMethods;
-import ch.hsr.epj.localshare.demo.logic.environment.User;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -16,66 +13,101 @@ import org.json.simple.parser.ParseException;
 public class JSONParser {
 
   private static final Logger logger = Logger.getLogger(JSONParser.class.getName());
+  private static final String JSON_CONFIG_FILE = "config.json";
+  private static final String JSON_FRIENDLY_NAME = "friendly_name";
+  private static final String JSON_CONFIG_PATH = "config_path";
+  private static final String JSON_DOWNLOAD_PATH = "download_path";
 
-  String jsonFriendlyName = "friendly_name";
-  String jsonConfigPath = "config_path";
-  String jsonDownloadPath = "download_path";
-  User user;
-  ConfigManager manager;
-  private JSONObject obj;
+  private JSONObject jsonObject;
+  private String directoryPath;
+  private String friendlyName;
+  private String downloadPath;
+  private String configPath;
 
-  public JSONParser() {
-    obj = new JSONObject();
-    user = User.getInstance();
-    manager = ConfigManager.getInstance();
-  }
 
-  public void saveAllToJSON() {
-    obj.put(jsonFriendlyName, user.getFriendlyName());
-    obj.put(jsonConfigPath, manager.getConfigPath());
-    obj.put(jsonDownloadPath, manager.getDownloadPath());
-  }
+  public JSONParser(String directoryPath) throws IOException {
+    jsonObject = new JSONObject();
+    this.directoryPath = directoryPath;
+    this.friendlyName = "";
+    this.downloadPath = "";
+    this.configPath = directoryPath;
 
-  public void writeJSONToDisk() throws IOException {
-    Files.createDirectories(Paths.get(manager.getConfigPath()));
-    String savedFileName;
-
-    if (StartupMethods.isWindows()) {
-      savedFileName = manager.getConfigPath() + "\\config.json";
-    } else {
-      savedFileName = manager.getConfigPath() + "/config.json";
+    if (directoryPath == null) {
+      throw new IllegalArgumentException("Invalid argument");
     }
 
-    try (FileWriter jsonConfig = new FileWriter(savedFileName)) {
-      jsonConfig.write(obj.toJSONString());
+    Files.createDirectories(Paths.get(directoryPath));
+  }
+
+  public JSONParser(String directoryPath, String friendlyName, String downloadPath)
+      throws IOException {
+    this(directoryPath);
+    this.friendlyName = friendlyName;
+    this.downloadPath = downloadPath;
+
+    if (friendlyName == null || friendlyName.equals("") || downloadPath == null || downloadPath
+        .equals("")) {
+      throw new IllegalArgumentException("Invalid argument");
+    }
+  }
+
+  public boolean writeData() {
+    boolean success;
+
+    if (friendlyName == null || friendlyName.equals("")
+        || downloadPath == null || downloadPath.equals("")
+        || configPath == null || configPath.equals("")) {
+      success = false;
+      return success;
+    }
+
+    jsonObject.put(JSON_FRIENDLY_NAME, friendlyName);
+    jsonObject.put(JSON_CONFIG_PATH, configPath);
+    jsonObject.put(JSON_DOWNLOAD_PATH, downloadPath);
+
+    try (FileWriter fileWriter = new FileWriter(directoryPath + JSON_CONFIG_FILE)) {
+      fileWriter.write(jsonObject.toJSONString());
+      success = true;
     } catch (IOException e) {
+      success = false;
       logger.log(Level.WARNING, "Unable to write JSON file", e);
     }
+
+    return success;
   }
 
-  public void loadData() {
+  public boolean loadData() {
+    boolean success;
     org.json.simple.parser.JSONParser parser = new org.json.simple.parser.JSONParser();
     try {
-      JSONObject jsonObject;
-      if (StartupMethods.isWindows()) {
-        jsonObject = (JSONObject) parser
-            .parse(new FileReader(manager.getConfigPath() + "\\config.json"));
-      } else {
-        jsonObject = (JSONObject) parser
-            .parse(new FileReader(manager.getConfigPath() + "/config.json"));
-      }
+      JSONObject parsedJSONData = (JSONObject) parser
+          .parse(new FileReader(directoryPath + JSON_CONFIG_FILE));
 
-      String friendlyName = (String) jsonObject.get(jsonFriendlyName);
-      String downloadPath = (String) jsonObject.get(jsonDownloadPath);
-      String configPath = (String) jsonObject.get(jsonConfigPath);
+      friendlyName = (String) parsedJSONData.get(JSON_FRIENDLY_NAME);
+      downloadPath = (String) parsedJSONData.get(JSON_DOWNLOAD_PATH);
+      configPath = (String) parsedJSONData.get(JSON_CONFIG_PATH);
 
-      user.setFriendlyName(friendlyName);
-      manager.setDownloadPath(downloadPath);
-      manager.setConfigPath(configPath);
-
+      success = friendlyName != null && !friendlyName.equals("")
+          && downloadPath != null && !downloadPath.equals("")
+          && configPath != null && !configPath.equals("");
 
     } catch (IOException | ParseException e) {
+      success = false;
       logger.log(Level.WARNING, "Unable to load JSON file", e);
     }
+
+    return success;
+  }
+
+  public String getFriendlyName() {
+    return friendlyName;
+  }
+
+  public String getDownloadPath() {
+    return downloadPath;
+  }
+
+  public String getConfigPath() {
+    return configPath;
   }
 }

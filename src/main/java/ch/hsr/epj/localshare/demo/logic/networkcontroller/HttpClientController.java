@@ -1,6 +1,7 @@
 package ch.hsr.epj.localshare.demo.logic.networkcontroller;
 
 import ch.hsr.epj.localshare.demo.gui.presentation.Download;
+import ch.hsr.epj.localshare.demo.gui.presentation.Peer;
 import ch.hsr.epj.localshare.demo.logic.environment.ConfigManager;
 import ch.hsr.epj.localshare.demo.network.transfer.client.DownloadManager;
 import ch.hsr.epj.localshare.demo.network.transfer.client.HTTPDownloader;
@@ -31,10 +32,13 @@ public class HttpClientController implements Observer {
 
   private DownloadManager downloadManager;
   private ObservableList<Download> downloadObservableList;
+  private ObservableList<Peer> peerObservableList;
 
-  public HttpClientController(ObservableList<Download> downloadObservableList) {
+  public HttpClientController(ObservableList<Download> downloadObservableList,
+      ObservableList<Peer> peerObservableList) {
     this.downloadManager = new DownloadManager();
     this.downloadObservableList = downloadObservableList;
+    this.peerObservableList = peerObservableList;
   }
 
   public void downloadFileFromPeer(FileTransfer transfer) throws FileNotFoundException {
@@ -60,8 +64,8 @@ public class HttpClientController implements Observer {
     downloadManager.addNotifyTask(httpNotifier);
   }
 
-  public void checkPeerAvailability(Publisher publisher) throws IOException {
-    HTTPPeerChecker httpPeerChecker = new HTTPPeerChecker(publisher);
+  public void checkPeerAvailability(Peer peer) throws IOException {
+    HTTPPeerChecker httpPeerChecker = new HTTPPeerChecker(peer, peerObservableList);
     downloadManager.addAvailabilityTask(httpPeerChecker);
   }
 

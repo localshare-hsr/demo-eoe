@@ -26,7 +26,7 @@ public class ShareHandler implements HttpHandler {
 
   private static final Logger logger = Logger.getLogger(ShareHandler.class.getName());
 
-  private static final int BUFFER_SIZE = 1024;
+  private static final int BUFFER_SIZE = 8192;
   private static final int EOF = -1;
   private static final int NO_RESPONSE_BODY = -1;
 
