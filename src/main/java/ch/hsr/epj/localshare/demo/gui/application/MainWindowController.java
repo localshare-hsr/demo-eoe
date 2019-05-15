@@ -251,7 +251,8 @@ public class MainWindowController implements Initializable {
     friendlyNameText.setText(friendlyName);
     try {
       ownIcon.setFill(
-          Paint.valueOf(getPeerHexColor(friendlyName + IPAddressUtil.getLocalIPAddress())));
+          Paint.valueOf(getPeerHexColor(
+              friendlyName + IPAddressUtil.getLocalIPAddress().toString().substring(1))));
     } catch (NoSuchAlgorithmException e) {
       logger.log(Level.WARNING, "No Algorithm Found");
     }
