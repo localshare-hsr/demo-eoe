@@ -6,6 +6,7 @@ import ch.hsr.epj.localshare.demo.network.transfer.client.DownloadManager;
 import ch.hsr.epj.localshare.demo.network.transfer.client.HTTPDownloader;
 import ch.hsr.epj.localshare.demo.network.transfer.client.HTTPMetaDownloader;
 import ch.hsr.epj.localshare.demo.network.transfer.client.HTTPNotifier;
+import ch.hsr.epj.localshare.demo.network.transfer.client.HTTPPeerChecker;
 import ch.hsr.epj.localshare.demo.network.transfer.utils.UrlFactory;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -13,7 +14,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -30,12 +30,10 @@ public class HttpClientController implements Observer {
   private static final Logger logger = Logger.getLogger(HttpClientController.class.getName());
 
   private DownloadManager downloadManager;
-  private HTTPNotifier httpNotifier;
   private ObservableList<Download> downloadObservableList;
 
   public HttpClientController(ObservableList<Download> downloadObservableList) {
     this.downloadManager = new DownloadManager();
-    httpNotifier = new HTTPNotifier();
     this.downloadObservableList = downloadObservableList;
   }
 
@@ -58,22 +56,13 @@ public class HttpClientController implements Observer {
   }
 
   void sendNotification(Publisher publisher) {
-    try {
-      httpNotifier.sendNotification(publisher);
-    } catch (IOException e) {
-      logger.log(Level.WARNING, "IO problem sending notification", e);
-    }
+    HTTPNotifier httpNotifier = new HTTPNotifier(publisher);
+    downloadManager.addNotifyTask(httpNotifier);
   }
 
   public void checkPeerAvailability(Publisher publisher) throws IOException {
-
-    try {
-      httpNotifier.checkPeerAvailability(publisher);
-    } catch (ConnectException e) {
-      logger.log(Level.WARNING, "HTTP Client Controller: IP not Available");
-      throw e;
-    }
-
+    HTTPPeerChecker httpPeerChecker = new HTTPPeerChecker(publisher);
+    downloadManager.addAvailabilityTask(httpPeerChecker);
   }
 
   void getMetadataFromPeer(Publisher publisher) {
