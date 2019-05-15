@@ -9,14 +9,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.net.ssl.HttpsURLConnection;
 
-public class HTTPNotifier implements Runnable {
+public class HTTPPeerChecker implements Runnable {
 
-  private static final Logger logger = Logger.getLogger(HTTPNotifier.class.getName());
+  private static final Logger logger = Logger.getLogger(HTTPPeerChecker.class.getName());
 
   private Publisher publisher;
   private URL url;
 
-  public HTTPNotifier(Publisher publisher) {
+  public HTTPPeerChecker(Publisher publisher) {
     this.publisher = publisher;
     try {
       url = UrlFactory.generateNotifyUrl(publisher.getPeerAddress());
@@ -34,10 +34,9 @@ public class HTTPNotifier implements Runnable {
     }
   }
 
-
   private void startDownload() throws IOException {
     HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-    connection.setRequestMethod("PUT");
+    connection.setRequestMethod("HEAD");
     connection.setRequestProperty("Connection", "close");
     connection.setRequestProperty("X-Resource", publisher.getFileUri());
     connection.setRequestProperty("Connection", "close");
@@ -50,4 +49,5 @@ public class HTTPNotifier implements Runnable {
     }
     connection.disconnect();
   }
+
 }

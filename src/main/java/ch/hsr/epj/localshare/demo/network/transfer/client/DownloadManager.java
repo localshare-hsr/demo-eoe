@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 
 public class DownloadManager {
@@ -19,13 +18,9 @@ public class DownloadManager {
 
   public DownloadManager() {
     // Create all-trusting host name verifier
-    HostnameVerifier allHostsValid = new HostnameVerifier() {
-      public boolean verify(String hostname, SSLSession session) {
-        return true;
-      }
-    };
+    HostnameVerifier allHostsValid = (hostname, session) -> true;
     try {
-      SSLContext sslContext = SSLContext.getInstance("TLS");
+      SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
       TrustManager[] gullible = new TrustManager[]{new SelfSignedSSL()};
       sslContext.init(null, gullible, null);
       HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
@@ -38,12 +33,20 @@ public class DownloadManager {
 
   private ExecutorService executorService = Executors.newFixedThreadPool(10);
 
-  public void addDownload(HTTPDownloader httpDownloader) {
-    executorService.execute(httpDownloader);
+  public void addDownload(Runnable downloadTask) {
+    executorService.execute(downloadTask);
   }
 
-  public void addMetaDownload(HTTPMetaDownloader httpMetaDownloader) {
-    executorService.execute(httpMetaDownloader);
+  public void addMetaDownload(Runnable downloadTask) {
+    executorService.execute(downloadTask);
+  }
+
+  public void addNotifyTask(Runnable notifyTask) {
+    executorService.execute(notifyTask);
+  }
+
+  public void addAvailabilityTask(Runnable checkTask) {
+    executorService.execute(checkTask);
   }
 
 

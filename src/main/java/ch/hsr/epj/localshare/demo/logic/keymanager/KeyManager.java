@@ -8,7 +8,7 @@ import java.security.cert.X509Certificate;
 import java.util.LinkedList;
 import java.util.List;
 
-public class KeyManager implements KeyManagerServerInterface {
+public class KeyManager {
 
   private KeyContainer keyContainer;
   private KeyPeer user;
@@ -79,7 +79,6 @@ public class KeyManager implements KeyManagerServerInterface {
    *
    * @return KeyStore with all keying material
    */
-  @Override
   public KeyStore getKeyStore() {
     return keyContainer.getKeyStore();
   }
