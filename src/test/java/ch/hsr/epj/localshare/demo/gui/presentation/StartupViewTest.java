@@ -2,7 +2,6 @@ package ch.hsr.epj.localshare.demo.gui.presentation;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertFalse;
-import static org.testfx.assertions.api.Assertions.assertThat;
 import static org.testfx.matcher.control.LabeledMatchers.hasText;
 
 import java.io.IOException;
@@ -40,10 +39,11 @@ public class StartupViewTest extends ApplicationTest {
   }
 
   @Before
-  public void setUp() throws Exception{}
+  public void setUp() throws Exception {
+  }
 
   @After
-  public void tearDown() throws Exception{
+  public void tearDown() throws Exception {
     FxToolkit.hideStage();
     release(new KeyCode[]{});
     release(new MouseButton[]{});
@@ -51,22 +51,22 @@ public class StartupViewTest extends ApplicationTest {
 
 
   @Test
-  public void contains_finish_button() {
+  public void testContainsFinishButton() {
     FxAssert.verifyThat("#finishButton", hasText("Finish and start Application"));
   }
 
   @Test
-  public void contains_changeDir_button() {
+  public void testContainsChangeDirButton() {
     FxAssert.verifyThat("#changeDirectoryButton", hasText("Change Directory"));
   }
 
   @Test
-  public void contains_hello_label() {
+  public void testContainsHelloLabel() {
     FxAssert.verifyThat("#helloLabel", hasText("Hello and Welcome to LocalShare"));
   }
 
   @Test
-  public void enter_valid_displayName() {
+  public void testEnterValidDisplayName() {
     Button finishButton = (Button) scene.lookup("#finishButton");
 
     clickOn("#friendlyNameText");
@@ -76,20 +76,12 @@ public class StartupViewTest extends ApplicationTest {
   }
 
   @Test
-  public void enter_empty_displayName() {
+  public void testEnterEmptyDisplayName() {
     Button finishButton = (Button) scene.lookup("#finishButton");
     clickOn("#friendlyNameText");
     write("");
     assertTrue(finishButton.isVisible());
     assertTrue(finishButton.isDisabled());
   }
-
-  @Test
-  public void save_data_on_finish() {
-    clickOn("#friendlyNameText");
-    write("Martin");
-    clickOn("#finishButton");
-  }
-
 
 }
