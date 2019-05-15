@@ -16,9 +16,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 
 public class DownloadListViewCell extends ListCell<Download> {
 
@@ -37,7 +39,7 @@ public class DownloadListViewCell extends ListCell<Download> {
   private ImageView buttonAccept;
 
   @FXML
-  private ImageView buttonCancelTransfer;
+  private ImageView buttonCancel;
 
   @FXML
   private ProgressBar transferProgressBar;
@@ -115,7 +117,7 @@ public class DownloadListViewCell extends ListCell<Download> {
                   @Override
                   public void onFinishedEvent(int param0) {
                     progressHbox.setVisible(false);
-                    buttonCancelTransfer.setVisible(false);
+                    buttonCancel.setVisible(false);
                     finishedIcon.setVisible(true);
                     downloadingIcon.setVisible(false);
                   }
@@ -145,14 +147,12 @@ public class DownloadListViewCell extends ListCell<Download> {
           }
       );
 
-      buttonCancelTransfer.setOnMouseClicked(
+      buttonCancel.setOnMouseClicked(
           event -> {
             if (download.getDownloadState() == DownloadState.RUNNING) {
               fileTransfer.shutdownDownload();
               download.setDownloadState(DownloadState.WAITING);
-              progressHbox.setVisible(false);
-              transferProgressBar.setVisible(false);
-              buttonAccept.setVisible(true);
+              setWaitingVisibility();
             } else {
               ObservableList<Download> downloadObservableList = httpClientController
                   .getDownloadObservableList();
@@ -167,6 +167,41 @@ public class DownloadListViewCell extends ListCell<Download> {
 
     }
   }
+
+  private void setWaitingVisibility() {
+    progressHbox.setVisible(false);
+    transferProgressBar.setVisible(false);
+    buttonAccept.setVisible(true);
+  }
+
+  private DropShadow createDropShadow() {
+    DropShadow dropShadow = new DropShadow();
+    dropShadow.setOffsetX(2.0f);
+    dropShadow.setOffsetX(2.0f);
+    dropShadow.setColor(Color.GRAY);
+    return dropShadow;
+  }
+
+  @FXML
+  private void highlightCancelButton() {
+    buttonCancel.setEffect(createDropShadow());
+  }
+
+  @FXML
+  void normalizeCancelButton() {
+    buttonCancel.setEffect(null);
+  }
+
+  @FXML
+  void highlightAcceptButton() {
+    buttonAccept.setEffect(createDropShadow());
+  }
+
+  @FXML
+  void normalizeAcceptButton() {
+    buttonAccept.setEffect(null);
+  }
+
 
   private void setRunningVisibility() {
     buttonAccept.setVisible(false);
