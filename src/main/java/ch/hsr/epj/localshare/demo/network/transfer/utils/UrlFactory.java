@@ -14,7 +14,7 @@ public class UrlFactory {
   private static final String PROTOCOL = "https://";
   private static final String PORT = "8640";
 
-  private UrlFactory() {
+  UrlFactory() {
   }
 
   public static URL generateNotifyUrl(final InetAddress ipAddress) throws MalformedURLException {
