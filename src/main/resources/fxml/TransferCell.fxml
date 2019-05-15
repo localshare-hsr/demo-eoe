@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <AnchorPane fx:id="paneTransfer" xmlns="http://javafx.com/javafx/8"
-  fx:controller="ch.hsr.epj.localshare.demo.gui.application.DownloadListViewCell"
   xmlns:fx="http://javafx.com/fxml/1">
   <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
     AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
