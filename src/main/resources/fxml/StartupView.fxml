@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -10,81 +15,73 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" prefWidth="600.0"
-  xmlns="http://javafx.com/javafx/8"
-  fx:controller="ch.hsr.epj.localshare.demo.gui.application.StartupViewController">
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.hsr.epj.localshare.demo.gui.application.StartupViewController">
   <children>
-    <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-      AnchorPane.topAnchor="0.0" alignment="CENTER">
+    <VBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
-        <Label prefHeight="70.0" prefWidth="555.0" text="Hello and Welcome to LocalShare">
+        <Label fx:id="helloLabel" prefHeight="70.0" prefWidth="555.0" text="Hello and Welcome to LocalShare">
           <font>
-            <Font size="36.0"/>
+            <Font size="36.0" />
           </font>
         </Label>
         <GridPane alignment="CENTER" prefHeight="111.0" prefWidth="580.0">
           <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" percentWidth="30.0"/>
-            <ColumnConstraints hgrow="SOMETIMES"/>
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="30.0" />
+            <ColumnConstraints hgrow="SOMETIMES" />
           </columnConstraints>
           <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           </rowConstraints>
           <VBox.margin>
-            <Insets left="10.0" right="10.0" top="30.0"/>
+            <Insets left="10.0" right="10.0" top="30.0" />
           </VBox.margin>
           <padding>
-            <Insets left="50.0" right="50.0"/>
+            <Insets left="50.0" right="50.0" />
           </padding>
           <children>
             <Label prefHeight="11.0" prefWidth="276.0" text="Please enter a friendlyName:">
               <padding>
-                <Insets bottom="5.0" right="5.0" top="5.0"/>
+                <Insets bottom="5.0" right="5.0" top="5.0" />
               </padding>
             </Label>
-            <TextField GridPane.columnIndex="1" text="unknown" fx:id="friendlyNameText">
+            <TextField fx:id="friendlyNameText" GridPane.columnIndex="1">
               <GridPane.margin>
-                <Insets left="20.0" right="10.0"/>
+                <Insets left="20.0" right="10.0" />
               </GridPane.margin>
             </TextField>
-            <Label GridPane.rowIndex="1" text="Default Config Path:">
+            <Label text="Default Config Path:" GridPane.rowIndex="1">
               <GridPane.margin>
-                <Insets bottom="10.0" top="10.0"/>
+                <Insets bottom="10.0" top="10.0" />
               </GridPane.margin>
             </Label>
-            <Label GridPane.rowIndex="2" text="Set Default Download Folder:">
+            <Label text="Set Default Download Folder:" GridPane.rowIndex="2">
               <padding>
-                <Insets bottom="5.0" top="5.0"/>
+                <Insets bottom="5.0" top="5.0" />
               </padding>
             </Label>
-            <Label GridPane.columnIndex="1" GridPane.rowIndex="1" text="Label"
-              fx:id="defaultConfigLabel">
+            <Label fx:id="defaultConfigLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1">
               <GridPane.margin>
-                <Insets left="30.0"/>
+                <Insets left="30.0" />
               </GridPane.margin>
             </Label>
-            <Label GridPane.columnIndex="1" GridPane.rowIndex="2" text="Label"
-              fx:id="defaultDownloadLabel">
+            <Label fx:id="defaultDownloadLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2">
               <GridPane.margin>
-                <Insets left="30.0"/>
+                <Insets left="30.0" />
               </GridPane.margin>
             </Label>
-            <Button GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2"
-              mnemonicParsing="false" onAction="#handleChangeDownloadButtonClicked"
-              text="Change Directory">
+            <Button fx:id="changeDirectoryButton" mnemonicParsing="false" onAction="#handleChangeDownloadButtonClicked" text="Change Directory" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
               <GridPane.margin>
-                <Insets left="10.0" right="10.0"/>
+                <Insets left="10.0" right="10.0" />
               </GridPane.margin>
             </Button>
           </children>
         </GridPane>
-        <Button alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false"
-          onAction="#handleFinishButtonClick" text="Finish and start Application"
-          fx:id="finishButton">
+        <Button fx:id="finishButton" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#handleFinishButtonClick" text="Finish and start Application">
           <VBox.margin>
-            <Insets top="50.0"/>
+            <Insets top="50.0" />
           </VBox.margin>
         </Button>
       </children>
