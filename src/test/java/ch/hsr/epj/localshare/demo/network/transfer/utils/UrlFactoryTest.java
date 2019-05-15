@@ -1,14 +1,10 @@
 package ch.hsr.epj.localshare.demo.network.transfer.utils;
 
-import static ch.hsr.epj.localshare.demo.network.transfer.utils.UrlFactory.generateDownloadableURL;
 import static ch.hsr.epj.localshare.demo.network.transfer.utils.UrlFactory.generateMetaDataUrl;
 import static ch.hsr.epj.localshare.demo.network.transfer.utils.UrlFactory.generateNotifyUrl;
 import static org.junit.Assert.assertEquals;
 
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.Publisher;
-import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
-import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -36,13 +32,5 @@ public class UrlFactoryTest {
   public void testInvalidGenerateMetaDataUrl() throws MalformedURLException {
     Publisher publisher = new Publisher(null, "");
     generateMetaDataUrl(publisher);
-  }
-
-  @Test
-  public void testGenerateDownloadableURL() throws UnsupportedEncodingException {
-    File file = new File("test.file");
-    String url = generateDownloadableURL("random", file);
-    String ip = IPAddressUtil.getLocalIPAddress().getHostAddress();
-    assertEquals("https://" + ip + ":8640/share/random/test.file", url);
   }
 }
