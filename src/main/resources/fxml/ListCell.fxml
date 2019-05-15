@@ -19,7 +19,7 @@
     <Text fx:id="textIcon" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="FN"
       StackPane.alignment="CENTER">
       <font>
-        <Font size="28.0"/>
+        <Font size="25.0"/>
       </font>
       <StackPane.margin>
         <Insets bottom="5.0" left="5.0" top="5.0"/>
