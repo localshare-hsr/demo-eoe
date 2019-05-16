@@ -2,6 +2,7 @@ package ch.hsr.epj.localshare.demo;
 
 import ch.hsr.epj.localshare.demo.gui.application.MainWindowController;
 import ch.hsr.epj.localshare.demo.logic.environment.ConfigManager;
+import ch.hsr.epj.localshare.demo.logic.environment.OSDetector;
 import ch.hsr.epj.localshare.demo.logic.environment.StartupMethods;
 import ch.hsr.epj.localshare.demo.logic.environment.User;
 import ch.hsr.epj.localshare.demo.persistence.JSONParser;
@@ -28,7 +29,9 @@ public class Main extends Application {
 
   @Override
   public void start(Stage primaryStage) throws Exception {
-    if (StartupMethods.startupCheck()) {
+    OSDetector osDetector = new OSDetector();
+    StartupMethods startupMethods = new StartupMethods(osDetector);
+    if (startupMethods.startupCheck()) {
       Parent root =
           FXMLLoader.load(
               Objects.requireNonNull(
@@ -38,7 +41,7 @@ public class Main extends Application {
       primaryStage.setScene(new Scene(root, 800, 600));
       primaryStage.show();
     } else {
-      StartupMethods.loadConfig();
+      startupMethods.loadConfig();
       Parent root =
           FXMLLoader.load(
               Objects.requireNonNull(

@@ -25,7 +25,7 @@ public class JSONParser {
   private String configPath;
 
 
-  public JSONParser(String directoryPath) throws IOException {
+  public JSONParser(String directoryPath) {
     jsonObject = new JSONObject();
     this.directoryPath = directoryPath;
     this.friendlyName = "";
@@ -36,11 +36,14 @@ public class JSONParser {
       throw new IllegalArgumentException("Invalid argument");
     }
 
-    Files.createDirectories(Paths.get(directoryPath));
+    try {
+      Files.createDirectories(Paths.get(directoryPath));
+    } catch (IOException e) {
+      logger.log(Level.INFO, "File does already exist");
+    }
   }
 
-  public JSONParser(String directoryPath, String friendlyName, String downloadPath)
-      throws IOException {
+  public JSONParser(String directoryPath, String friendlyName, String downloadPath) {
     this(directoryPath);
     this.friendlyName = friendlyName;
     this.downloadPath = downloadPath;
