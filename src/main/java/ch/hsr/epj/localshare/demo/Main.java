@@ -1,5 +1,6 @@
 package ch.hsr.epj.localshare.demo;
 
+import ch.hsr.epj.localshare.demo.gui.application.MainWindowController;
 import ch.hsr.epj.localshare.demo.logic.environment.ConfigManager;
 import ch.hsr.epj.localshare.demo.logic.environment.StartupMethods;
 import ch.hsr.epj.localshare.demo.logic.environment.User;
@@ -53,6 +54,7 @@ public class Main extends Application {
 
     primaryStage.setOnCloseRequest(
         event -> {
+          MainWindowController.shutdownApplication();
           try {
             String configPath = ConfigManager.getInstance().getConfigPath();
             String downloadPath = ConfigManager.getInstance().getDownloadPath();

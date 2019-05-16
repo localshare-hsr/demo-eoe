@@ -4,6 +4,7 @@ import ch.hsr.epj.localshare.demo.gui.presentation.Peer;
 import ch.hsr.epj.localshare.demo.network.discovery.IPResource;
 import ch.hsr.epj.localshare.demo.network.discovery.searcher.NetworkDiscovery;
 import ch.hsr.epj.localshare.demo.network.discovery.server.OuroborosUDPServer;
+import ch.hsr.epj.localshare.demo.network.discovery.server.UDPServer;
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
 import java.io.IOException;
 import java.util.Observable;
@@ -17,6 +18,7 @@ public class DiscoveryController implements Observer {
   private static final Logger logger = Logger.getLogger(DiscoveryController.class.getName());
 
   private HttpClientController httpClientController;
+  private UDPServer udpServer;
 
   public DiscoveryController(HttpClientController httpClientController) {
     this.httpClientController = httpClientController;
@@ -30,7 +32,8 @@ public class DiscoveryController implements Observer {
           protected Void call() {
             IPResource.getInstance()
                 .setIdentity(IPAddressUtil.getLocalIPAddress().getHostAddress());
-            new OuroborosUDPServer().run();
+            udpServer = new OuroborosUDPServer();
+            udpServer.run();
             return null;
           }
         });
@@ -47,6 +50,10 @@ public class DiscoveryController implements Observer {
             return null;
           }
         });
+  }
+
+  public void stopServer() {
+    udpServer.shutdown();
   }
 
   private void startDaemonTask(Runnable runnable) {
