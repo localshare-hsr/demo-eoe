@@ -16,9 +16,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 
 public class DownloadListViewCell extends ListCell<Download> {
 
@@ -37,7 +39,7 @@ public class DownloadListViewCell extends ListCell<Download> {
   private ImageView buttonAccept;
 
   @FXML
-  private ImageView buttonCancelTransfer;
+  private ImageView buttonCancel;
 
   @FXML
   private ProgressBar transferProgressBar;
@@ -89,77 +91,23 @@ public class DownloadListViewCell extends ListCell<Download> {
         }
       }
 
-      if (download.getDownloadState() == DownloadState.RUNNING) {
-        setRunningVisibility();
-        ProgressBar progressBar = download.getProgressBar();
-        transferProgressBar.progressProperty().bind(progressBar.progressProperty());
+      setEmptyState();
 
-        Label transferSpeedLabel = download.getTransferSpeed();
-        transferSpeed.textProperty().bind(transferSpeedLabel.textProperty());
-
-        Label transferTime = download.getTransferTime();
-        secondsToGo.textProperty().bind(transferTime.textProperty());
+      if (download.getDownloadState() == DownloadState.WAITING) {
+        setWaitingVisibility();
       }
 
-      buttonAccept.setOnMouseClicked(
-          event -> {
-            setRunningVisibility();
-            download.setDownloadState(DownloadState.RUNNING);
+      if (download.getDownloadState() == DownloadState.RUNNING) {
+        setRunningState(download);
+      }
 
-            ProgressBar progressBar = new ProgressBar();
-            download.setProgressBar(progressBar);
-            transferProgressBar.progressProperty().bind(progressBar.progressProperty());
+      if (download.getDownloadState() == DownloadState.FINISHED) {
+        setFinishedVisibility();
+      }
 
-            progressBar.addEventHandler(CustomEvent.CUSTOM_EVENT_TYPE,
-                new MyCustomEventHandler() {
-                  @Override
-                  public void onFinishedEvent(int param0) {
-                    progressHbox.setVisible(false);
-                    buttonCancelTransfer.setVisible(false);
-                    finishedIcon.setVisible(true);
-                    downloadingIcon.setVisible(false);
-                  }
-                });
+      setOnMouseClickAcceptMethod(buttonAccept, download);
 
-            Label transferSpeedLabel = new Label();
-            download.setTransferSpeed(transferSpeedLabel);
-            transferSpeed.textProperty().bind(transferSpeedLabel.textProperty());
-
-            Label transferTimeLabel = new Label();
-            download.setTransferTime(transferTimeLabel);
-            secondsToGo.textProperty().bind(transferTimeLabel.textProperty());
-
-            try {
-              UIProgress uiProgress = new UIProgress(progressBar, transferSpeedLabel,
-                  transferTimeLabel, sizeCurrent);
-              fileTransfer = new FileTransfer(
-                  new Peer("10.10.10.10", download.getFriendlyName(), null, null),
-                  download.getUrl(), uiProgress);
-              httpClientController.downloadFileFromPeer(fileTransfer);
-
-            } catch (FileNotFoundException e) {
-              logger.log(Level.INFO, "Could not find file", e);
-            }
-
-
-          }
-      );
-
-      buttonCancelTransfer.setOnMouseClicked(
-          event -> {
-            if (download.getDownloadState() == DownloadState.RUNNING) {
-              fileTransfer.shutdownDownload();
-              download.setDownloadState(DownloadState.WAITING);
-              progressHbox.setVisible(false);
-              transferProgressBar.setVisible(false);
-              buttonAccept.setVisible(true);
-            } else {
-              ObservableList<Download> downloadObservableList = httpClientController
-                  .getDownloadObservableList();
-              downloadObservableList.remove(download);
-              this.getListView().refresh();
-            }
-          });
+      setOnMouseClickCancelMethod(buttonCancel, download);
 
       sizeTotal.setText(download.getFileSize());
       filename.setText(String.valueOf(download.getFileName()));
@@ -168,11 +116,146 @@ public class DownloadListViewCell extends ListCell<Download> {
     }
   }
 
-  private void setRunningVisibility() {
+  private void setOnMouseClickCancelMethod(ImageView buttonCancel, Download download) {
+    buttonCancel.setOnMouseClicked(
+        event -> {
+          if (download.getDownloadState() == DownloadState.RUNNING) {
+            fileTransfer.shutdownDownload();
+          }
+          removeDownload(download);
+
+        });
+  }
+
+  private void removeDownload(Download download) {
+    ObservableList<Download> downloadObservableList = httpClientController
+        .getDownloadObservableList();
+    downloadObservableList.remove(download);
+    refreshList();
+  }
+
+  private void setRunningState(Download download) {
+    setRunningVisibility();
+    ProgressBar progressBar = download.getProgressBar();
+    transferProgressBar.progressProperty().bind(progressBar.progressProperty());
+
+    Label transferSpeedLabel = download.getTransferSpeed();
+    transferSpeed.textProperty().bind(transferSpeedLabel.textProperty());
+
+    Label transferTime = download.getTransferTime();
+    secondsToGo.textProperty().bind(transferTime.textProperty());
+  }
+
+  private void setOnMouseClickAcceptMethod(ImageView buttonAccept, Download download) {
+    buttonAccept.setOnMouseClicked(
+        event -> {
+          setEmptyState();
+          setRunningVisibility();
+          download.setDownloadState(DownloadState.RUNNING);
+
+          ProgressBar progressBar = new ProgressBar();
+          download.setProgressBar(progressBar);
+          transferProgressBar.progressProperty().bind(progressBar.progressProperty());
+
+          progressBar.addEventHandler(CustomEvent.CUSTOM_EVENT_TYPE,
+              new MyCustomEventHandler() {
+                @Override
+                public void onFinishedEvent(int param0) {
+                  setEmptyState();
+                  setFinishedVisibility();
+                  download.setDownloadState(DownloadState.FINISHED);
+                  refreshList();
+                }
+              });
+
+          Label transferSpeedLabel = new Label();
+          download.setTransferSpeed(transferSpeedLabel);
+          transferSpeed.textProperty().bind(transferSpeedLabel.textProperty());
+
+          Label transferTimeLabel = new Label();
+          download.setTransferTime(transferTimeLabel);
+          secondsToGo.textProperty().bind(transferTimeLabel.textProperty());
+
+          try {
+            UIProgress uiProgress = new UIProgress(progressBar, transferSpeedLabel,
+                transferTimeLabel, sizeCurrent);
+            fileTransfer = new FileTransfer(
+                new Peer("10.10.10.10", download.getFriendlyName(), null, null),
+                download.getUrl(), uiProgress);
+            httpClientController.downloadFileFromPeer(fileTransfer);
+
+          } catch (FileNotFoundException e) {
+            logger.log(Level.INFO, "Could not find file", e);
+          }
+
+
+        }
+    );
+  }
+
+  private void refreshList() {
+    this.getListView().refresh();
+  }
+
+  private void setEmptyState() {
     buttonAccept.setVisible(false);
-    buttonAccept.setDisable(true);
+    buttonCancel.setVisible(false);
+    finishedIcon.setVisible(false);
+    downloadingIcon.setVisible(false);
+    progressHbox.setVisible(false);
+    transferProgressBar.setVisible(false);
+    filename.setVisible(false);
+  }
+
+  private void setFinishedVisibility() {
+    finishedIcon.setVisible(true);
+    filename.setVisible(true);
+  }
+
+  private void setWaitingVisibility() {
+    progressHbox.setVisible(false);
+    transferProgressBar.setVisible(false);
+    buttonAccept.setVisible(true);
+    filename.setVisible(true);
+    buttonCancel.setVisible(true);
+    downloadingIcon.setVisible(true);
+  }
+
+  private DropShadow createDropShadow() {
+    DropShadow dropShadow = new DropShadow();
+    dropShadow.setOffsetX(2.0f);
+    dropShadow.setOffsetX(2.0f);
+    dropShadow.setColor(Color.GRAY);
+    return dropShadow;
+  }
+
+  @FXML
+  private void highlightCancelButton() {
+    buttonCancel.setEffect(createDropShadow());
+  }
+
+  @FXML
+  void normalizeCancelButton() {
+    buttonCancel.setEffect(null);
+  }
+
+  @FXML
+  void highlightAcceptButton() {
+    buttonAccept.setEffect(createDropShadow());
+  }
+
+  @FXML
+  void normalizeAcceptButton() {
+    buttonAccept.setEffect(null);
+  }
+
+
+  private void setRunningVisibility() {
     progressHbox.setVisible(true);
+    filename.setVisible(true);
     transferProgressBar.setVisible(true);
+    buttonCancel.setVisible(true);
+    downloadingIcon.setVisible(true);
   }
 
 }

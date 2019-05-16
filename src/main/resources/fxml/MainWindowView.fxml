@@ -149,8 +149,6 @@
             <Button id="button_prefernces" layoutX="31.0" layoutY="46.0" mnemonicParsing="false"
               onAction="#handlePreferencesButtonAction" prefHeight="43.0" prefWidth="217.0"
               text="Preferences"/>
-            <Button layoutX="31.0" layoutY="117.0" mnemonicParsing="false" prefHeight="43.0"
-              prefWidth="217.0" text="Button"/>
           </AnchorPane>
           <AnchorPane fx:id="preferencesRootPane" minHeight="0.0" minWidth="0.0" prefHeight="561.0"
             prefWidth="415.0"/>

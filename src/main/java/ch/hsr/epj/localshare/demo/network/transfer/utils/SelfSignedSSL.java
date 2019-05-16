@@ -9,13 +9,19 @@ public class SelfSignedSSL implements X509TrustManager {
   @Override
   public void checkClientTrusted(X509Certificate[] x509Certificates, String s)
       throws CertificateException {
-    // accept all clients
+    // accept all client certificates
+    if (x509Certificates.length == 0) {
+      throw new CertificateException("Client certificate length is zero");
+    }
   }
 
   @Override
   public void checkServerTrusted(X509Certificate[] x509Certificates, String s)
       throws CertificateException {
-    // accept all servers
+    // accept all server certificates
+    if (x509Certificates.length == 0) {
+      throw new CertificateException("Server certificate length is zero");
+    }
   }
 
   @Override

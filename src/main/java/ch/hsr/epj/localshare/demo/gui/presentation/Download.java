@@ -83,6 +83,6 @@ public class Download {
   }
 
   public enum DownloadState {
-    RUNNING, WAITING
+    RUNNING, WAITING, FINISHED
   }
 }
