@@ -33,4 +33,13 @@ public class ConfigManagerTest {
     assertNull(configManager.getDownloadPath());
   }
 
+  @Test
+  public void testGetConfigPathNormal() {
+    ConfigManager configManager = ConfigManager.getInstance();
+    String configPath = "C:\\Users\\Dominique\\LocalShare";
+    configManager.setConfigPath(configPath);
+
+    assertEquals(configManager.getConfigPath(), configPath);
+  }
+
 }
