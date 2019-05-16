@@ -60,7 +60,7 @@ public class StartupViewController implements Initializable {
 
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     stage.setTitle("GUI Prototype");
-    stage.setScene(new Scene(root, 800, 600));
+    stage.setScene(new Scene(root, 1200, 700));
     stage.show();
   }
 
