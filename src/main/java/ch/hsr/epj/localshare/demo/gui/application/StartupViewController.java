@@ -18,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import jfxtras.styles.jmetro8.JMetro;
@@ -62,6 +63,8 @@ public class StartupViewController implements Initializable {
 
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     stage.setTitle("LocalShare");
+    Image icon = new Image("file:icon.png");
+    stage.getIcons().add(icon);
     new JMetro(Style.LIGHT).applyTheme(root);
     stage.setScene(new Scene(root, 1200, 700));
     stage.show();
