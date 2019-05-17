@@ -30,7 +30,7 @@ public class HTTPPeerChecker implements Runnable {
       InetAddress ip = InetAddress.getByName(peer.getIP());
       url = UrlFactory.generateNotifyUrl(ip);
     } catch (MalformedURLException e) {
-      logger.log(Level.WARNING, "URL malcormed");
+      logger.log(Level.WARNING, "URL malformed");
     } catch (UnknownHostException e) {
       logger.log(Level.WARNING, "Invalid peer ip address");
     }
@@ -41,7 +41,8 @@ public class HTTPPeerChecker implements Runnable {
     try {
       startDownload();
     } catch (IOException e) {
-      logger.log(Level.SEVERE, "Could not run download", e);
+      removePeerFromList(peer);
+      logger.log(Level.FINE, String.format("Peer %s not online", peer.getIP()));
     }
   }
 
@@ -49,15 +50,16 @@ public class HTTPPeerChecker implements Runnable {
     HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
     connection.setRequestMethod("GET");
     connection.setRequestProperty("Connection", "close");
+    connection.setConnectTimeout(45);
     connection.connect();
     KeyPeer keyPeer = new KeyPeer((X509Certificate) connection.getServerCertificates()[0]);
-    update(keyPeer);
+    addNewPeerToList(keyPeer);
     peer.setFriendlyName(keyPeer.getFriendlyName());
     peer.setFingerPrint(keyPeer.getFingerprintSpaces());
     connection.disconnect();
   }
 
-  private void update(KeyPeer keyPeer) {
+  private void addNewPeerToList(KeyPeer keyPeer) {
     Platform.runLater(
         () -> {
           Peer newPeer = new Peer(peer.getIP(), keyPeer.getFriendlyName(), "",
@@ -67,6 +69,12 @@ public class HTTPPeerChecker implements Runnable {
             observableList.add(newPeer);
           }
         });
+  }
+
+  private void removePeerFromList(Peer peer) {
+    Platform.runLater(
+        () -> observableList.remove(peer));
+
   }
 
 }

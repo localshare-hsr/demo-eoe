@@ -21,7 +21,7 @@ public class HTTPNotifier implements Runnable {
     try {
       url = UrlFactory.generateNotifyUrl(publisher.getPeerAddress());
     } catch (MalformedURLException e) {
-      logger.log(Level.WARNING, "URL malcormed");
+      logger.log(Level.WARNING, "URL malformed");
     }
   }
 
@@ -30,7 +30,7 @@ public class HTTPNotifier implements Runnable {
     try {
       startDownload();
     } catch (IOException e) {
-      logger.log(Level.SEVERE, "Could not run download", e);
+      logger.log(Level.WARNING, "Could not notify peer");
     }
   }
 
@@ -40,13 +40,10 @@ public class HTTPNotifier implements Runnable {
     connection.setRequestMethod("PUT");
     connection.setRequestProperty("Connection", "close");
     connection.setRequestProperty("X-Resource", publisher.getFileUri());
-    connection.setRequestProperty("Connection", "close");
     connection.connect();
     int status = connection.getResponseCode();
     if (status == 200) {
       logger.log(Level.INFO, "Sent notification");
-    } else {
-      logger.log(Level.SEVERE, "HTTP status code not 200 OK but {0}", status);
     }
     connection.disconnect();
   }
