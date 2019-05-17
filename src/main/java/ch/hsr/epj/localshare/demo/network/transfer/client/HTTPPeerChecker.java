@@ -30,7 +30,7 @@ public class HTTPPeerChecker implements Runnable {
       InetAddress ip = InetAddress.getByName(peer.getIP());
       url = UrlFactory.generateNotifyUrl(ip);
     } catch (MalformedURLException e) {
-      logger.log(Level.WARNING, "URL malcormed");
+      logger.log(Level.WARNING, "URL malformed");
     } catch (UnknownHostException e) {
       logger.log(Level.WARNING, "Invalid peer ip address");
     }
