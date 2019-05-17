@@ -154,7 +154,12 @@ public class DownloadListViewCell extends ListCell<Download> {
           download.setDownloadState(DownloadState.RUNNING);
 
           ProgressBar progressBar = new ProgressBar();
-          download.setProgressBar(progressBar);
+          Label transferSpeedLabel = new Label();
+          Label transferTimeLabel = new Label();
+          UIProgress uiProgress = new UIProgress(progressBar, transferSpeedLabel, transferTimeLabel,
+              sizeCurrent);
+          download.setUiProgress(uiProgress);
+
           transferProgressBar.progressProperty().bind(progressBar.progressProperty());
 
           progressBar.addEventHandler(CustomEvent.CUSTOM_EVENT_TYPE,
@@ -168,17 +173,11 @@ public class DownloadListViewCell extends ListCell<Download> {
                 }
               });
 
-          Label transferSpeedLabel = new Label();
-          download.setTransferSpeed(transferSpeedLabel);
           transferSpeed.textProperty().bind(transferSpeedLabel.textProperty());
 
-          Label transferTimeLabel = new Label();
-          download.setTransferTime(transferTimeLabel);
           secondsToGo.textProperty().bind(transferTimeLabel.textProperty());
 
           try {
-            UIProgress uiProgress = new UIProgress(progressBar, transferSpeedLabel,
-                transferTimeLabel, sizeCurrent);
             fileTransfer = new FileTransfer(
                 new Peer("10.10.10.10", download.getFriendlyName(), null, null),
                 download.getUrl(), uiProgress);

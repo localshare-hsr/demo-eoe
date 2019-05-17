@@ -65,4 +65,16 @@ public class UIProgress {
     }
     return success;
   }
+
+  ProgressBar getProgress() {
+    return progress;
+  }
+
+  Label getBytesPerSecond() {
+    return bytesPerSecond;
+  }
+
+  Label getSecondsToGo() {
+    return secondsToGo;
+  }
 }
