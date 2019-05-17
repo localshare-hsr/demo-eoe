@@ -2,7 +2,6 @@ package ch.hsr.epj.localshare.demo.logic.environment;
 
 import ch.hsr.epj.localshare.demo.persistence.JSONParser;
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,85 +9,56 @@ public class StartupMethods {
 
   private static final Logger logger = Logger.getLogger(StartupMethods.class.getName());
 
-  private static boolean firstLaunch = true;
-  private static String os = null;
+  private String folderLocalShare;
+  private String folderConfig;
+  private String folderDownload;
 
-  private StartupMethods() {
+  public StartupMethods(OSDetector osDetector) {
+    this.folderLocalShare = osDetector.getOSSpecificLocalShareDirectory();
+    this.folderConfig = osDetector.getOSSpecificConfigDirectory();
+    this.folderDownload = osDetector.getOSSpecificDownloadDirectory();
+
+    initConfigManager();
   }
 
-  public static boolean startupCheck() {
-    ConfigManager configManager = ConfigManager.getInstance();
-    File configFile;
-
-    if (isWindows()) {
-      configManager.setDownloadPath(getHomePath() + "\\LocalShare\\download\\");
-      configManager.setConfigPath(getHomePath() + "\\LocalShare\\config\\");
-    } else {
-      configManager.setDownloadPath(getHomePath() + "/LocalShare/download/");
-      configManager.setConfigPath(getHomePath() + "/LocalShare/config/");
-    }
-
-    File downloadFolder = new File(String.valueOf(configManager.getDownloadPath()));
-    File localShareFolder;
-    if (isWindows()) {
-      localShareFolder = new File(getHomePath() + "\\LocalShare");
-    } else {
-      localShareFolder = new File(getHomePath() + "/LocalShare");
-    }
+  public boolean startupCheck() {
+    File localShareFolder = new File(folderLocalShare);
+    File configFolder = new File(folderConfig);
+    File downloadFolder = new File(folderDownload);
 
     boolean existsLocalShareFolder = localShareFolder.mkdir();
-    if (!existsLocalShareFolder) {
-      logger.log(Level.WARNING, "Could not create folder LocalShare");
+    if (existsLocalShareFolder) {
+      logger.log(Level.INFO, "Folder LocalShare exists");
     }
+
+    boolean existsConfigFolder = configFolder.mkdir();
+    if (existsConfigFolder) {
+      logger.log(Level.WARNING, "Folder config exists");
+    }
+
     boolean existsDownloadFolder = downloadFolder.mkdir();
-    if (!existsDownloadFolder) {
-      logger.log(Level.WARNING, "Could not create folder download");
+    if (existsDownloadFolder) {
+      logger.log(Level.WARNING, "Folder download exists");
     }
 
-    configFile = new File(configManager.getConfigPath() + "config.json");
+    File configFile = new File(folderConfig + "config.json");
 
-    if (configFile.exists() && !configFile.isDirectory()) {
-      firstLaunch = false;
-    }
-    return firstLaunch;
+    return !configFile.exists() || configFile.isDirectory();
   }
 
-  private static String getOsName() {
-    if (os == null) {
-      os = System.getProperty("os.name");
-    }
-    return os;
+  public boolean loadConfig() {
+    boolean success;
+    JSONParser parser = new JSONParser(ConfigManager.getInstance().getConfigPath());
+    success = parser.loadData();
+    ConfigManager.getInstance().setDownloadPath(parser.getDownloadPath());
+    ConfigManager.getInstance().setConfigPath(parser.getConfigPath());
+    User.getInstance().setFriendlyName(parser.getFriendlyName());
+    return success;
   }
 
-  public static boolean isWindows() {
-    return getOsName().startsWith("Windows");
-  }
-
-  private static boolean isLinux() {
-    return getOsName().startsWith("Linux");
-  }
-
-  public static void loadConfig() {
-    try {
-      JSONParser parser = new JSONParser(ConfigManager.getInstance().getConfigPath());
-      parser.loadData();
-      ConfigManager.getInstance().setDownloadPath(parser.getDownloadPath());
-      ConfigManager.getInstance().setConfigPath(parser.getConfigPath());
-      User.getInstance().setFriendlyName(parser.getFriendlyName());
-    } catch (IOException e) {
-      logger.log(Level.SEVERE, "Could not safe config file");
-    }
-  }
-
-
-  private static String getHomePath() {
-    String homePath = "";
-    if (isWindows()) {
-      homePath = System.getenv("USERPROFILE");
-    }
-    if (isLinux()) {
-      homePath = System.getProperty("user.home");
-    }
-    return homePath;
+  private void initConfigManager() {
+    ConfigManager configManager = ConfigManager.getInstance();
+    configManager.setConfigPath(folderConfig);
+    configManager.setDownloadPath(folderDownload);
   }
 }

@@ -15,10 +15,12 @@ public abstract class UDPServer implements Runnable {
   private static Logger logger = Logger.getLogger(UDPServer.class.getName());
   private final int bufferSize;
   private final int port;
+  private volatile boolean isCanceled;
 
   private UDPServer(int port, int bufferSize) {
     this.bufferSize = bufferSize;
     this.port = port;
+    this.isCanceled = false;
   }
 
   UDPServer(int port) {
@@ -37,6 +39,10 @@ public abstract class UDPServer implements Runnable {
 
   public abstract void respond(DatagramSocket socket, DatagramPacket request) throws IOException;
 
+  public void shutdown() {
+    isCanceled = true;
+  }
+
   private void startUDPServer(InetAddress myIP) {
     byte[] buffer = new byte[bufferSize];
     try (DatagramSocket socket = new DatagramSocket(port, myIP)) {
@@ -44,6 +50,9 @@ public abstract class UDPServer implements Runnable {
           Level.INFO, "Listen on " + socket.getLocalAddress() + " port " + socket.getLocalPort());
       boolean isRunning = true;
       while (isRunning) {
+        if (isCanceled) {
+          break;
+        }
         DatagramPacket incoming = new DatagramPacket(buffer, buffer.length);
         isRunning = processIncomingMessage(incoming, socket);
       }
