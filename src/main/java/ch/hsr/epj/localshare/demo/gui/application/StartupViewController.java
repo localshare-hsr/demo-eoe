@@ -18,8 +18,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import jfxtras.styles.jmetro8.JMetro;
+import jfxtras.styles.jmetro8.JMetro.Style;
 
 public class StartupViewController implements Initializable {
 
@@ -59,8 +62,11 @@ public class StartupViewController implements Initializable {
                 getClass().getClassLoader().getResource("fxml/MainWindowView.fxml")));
 
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-    stage.setTitle("GUI Prototype");
-    stage.setScene(new Scene(root, 800, 600));
+    stage.setTitle("LocalShare");
+    Image icon = new Image("file:icon.png");
+    stage.getIcons().add(icon);
+    new JMetro(Style.LIGHT).applyTheme(root);
+    stage.setScene(new Scene(root, 1200, 700));
     stage.show();
   }
 

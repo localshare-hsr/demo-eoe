@@ -37,8 +37,10 @@ public class Main extends Application {
               Objects.requireNonNull(
                   getClass().getClassLoader().getResource("fxml/StartupView.fxml")));
       primaryStage.setTitle("Startup Window");
+      Image icon = new Image("file:icon.png");
+      primaryStage.getIcons().add(icon);
       new JMetro(JMetro.Style.LIGHT).applyTheme(root);
-      primaryStage.setScene(new Scene(root, 800, 600));
+      primaryStage.setScene(new Scene(root, 1000, 600));
       primaryStage.show();
     } else {
       startupMethods.loadConfig();

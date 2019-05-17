@@ -8,6 +8,7 @@ import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
@@ -106,10 +107,14 @@ public class PeerListViewCell extends ListCell<Peer> {
 
   private void addDisplayNameActionListener(final MenuItem menuItem, final Peer peer) {
     menuItem.setOnAction(event -> {
-      TextInputDialog textInputDialog = new TextInputDialog("hanswurst");
+      TextInputDialog textInputDialog = new TextInputDialog();
       textInputDialog.setHeaderText("Enter Displayname");
-      textInputDialog.showAndWait();
-      peer.setDisplayName(textInputDialog.getEditor().getText());
+      Optional<String> result = textInputDialog.showAndWait();
+      if (result.isPresent()) {
+        peer.setDisplayName(textInputDialog.getEditor().getText());
+      } else {
+        textInputDialog.close();
+      }
       this.getListView().refresh();
     });
   }

@@ -9,6 +9,8 @@ import ch.hsr.epj.localshare.demo.logic.networkcontroller.DiscoveryController;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpClientController;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.HttpServerController;
 import ch.hsr.epj.localshare.demo.network.utils.IPAddressUtil;
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.URL;
@@ -159,8 +161,9 @@ public class MainWindowController implements Initializable {
 
   @FXML
   private void openDownloadFolder() throws IOException {
-    Runtime.getRuntime()
-        .exec("explorer.exe /select," + ConfigManager.getInstance().getDownloadPath());
+    Desktop d = Desktop.getDesktop();
+    File dir = new File(ConfigManager.getInstance().getDownloadPath());
+    d.open(dir);
   }
 
 
@@ -257,7 +260,8 @@ public class MainWindowController implements Initializable {
     friendlyNameText.setText(friendlyName);
     try {
       ownIcon.setFill(
-          Paint.valueOf(getPeerHexColor(friendlyName + IPAddressUtil.getLocalIPAddress())));
+          Paint.valueOf(getPeerHexColor(
+              friendlyName + IPAddressUtil.getLocalIPAddress().toString().substring(1))));
     } catch (NoSuchAlgorithmException e) {
       logger.log(Level.WARNING, "No Algorithm Found");
     }

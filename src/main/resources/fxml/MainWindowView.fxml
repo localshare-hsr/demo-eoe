@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.image.Image?>
@@ -55,7 +53,7 @@
               prefHeight="68.0" prefWidth="120.0">
               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Friendly Name:"
                 wrappingWidth="116.7392578125"/>
-              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Own IP Address:"
+              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="My IP Address:"
                 wrappingWidth="160.7392578125"/>
               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Fingerprint:"
                 wrappingWidth="581.7392578125"/>
@@ -140,20 +138,7 @@
       <fx:include source="ChannelView.fxml"/>
     </Tab>
     <Tab text="Settings">
-      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-        <SplitPane dividerPositions="0.39266304347826086" layoutX="13.0" layoutY="13.0"
-          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-          AnchorPane.topAnchor="0.0">
-          <AnchorPane maxWidth="-Infinity" minHeight="0.0" minWidth="-Infinity" prefHeight="589.0"
-            prefWidth="280.0">
-            <Button id="button_prefernces" layoutX="31.0" layoutY="46.0" mnemonicParsing="false"
-              onAction="#handlePreferencesButtonAction" prefHeight="43.0" prefWidth="217.0"
-              text="Preferences"/>
-          </AnchorPane>
-          <AnchorPane fx:id="preferencesRootPane" minHeight="0.0" minWidth="0.0" prefHeight="561.0"
-            prefWidth="415.0"/>
-        </SplitPane>
-      </AnchorPane>
+      <fx:include source="PreferencesView.fxml"/>
     </Tab>
   </TabPane>
 </VBox>

@@ -21,6 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 public class DownloadListViewCell extends ListCell<Download> {
 
@@ -61,6 +62,9 @@ public class DownloadListViewCell extends ListCell<Download> {
 
   @FXML
   private ImageView downloadingIcon;
+
+  @FXML
+  private Text fileEnding;
 
   private FXMLLoader mLLoader;
 
@@ -110,9 +114,18 @@ public class DownloadListViewCell extends ListCell<Download> {
       setOnMouseClickCancelMethod(buttonCancel, download);
 
       sizeTotal.setText(download.getFileSize());
-      filename.setText(String.valueOf(download.getFileName()));
+      setFileName(download);
       setGraphic(paneTransfer);
+      fileEnding.setText(download.getFileName().substring(download.getFileName().length() - 4));
 
+    }
+  }
+
+  private void setFileName(Download download) {
+    if (download.getFileName().length() >= 42) {
+      filename.setText(download.getFileName().substring(0, 42) + "...");
+    } else {
+      filename.setText(download.getFileName());
     }
   }
 
@@ -204,6 +217,7 @@ public class DownloadListViewCell extends ListCell<Download> {
     progressHbox.setVisible(false);
     transferProgressBar.setVisible(false);
     filename.setVisible(false);
+    fileEnding.setVisible(false);
   }
 
   private void setFinishedVisibility() {
@@ -218,6 +232,7 @@ public class DownloadListViewCell extends ListCell<Download> {
     filename.setVisible(true);
     buttonCancel.setVisible(true);
     downloadingIcon.setVisible(true);
+    fileEnding.setVisible(true);
   }
 
   private DropShadow createDropShadow() {
@@ -255,6 +270,7 @@ public class DownloadListViewCell extends ListCell<Download> {
     transferProgressBar.setVisible(true);
     buttonCancel.setVisible(true);
     downloadingIcon.setVisible(true);
+    fileEnding.setVisible(true);
   }
 
 }
