@@ -15,8 +15,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -43,7 +45,13 @@ public class HttpClientController implements Observer {
 
   public void downloadFileFromPeer(FileTransfer transfer) throws FileNotFoundException {
     String path = transfer.getPath().getFile();
-    String filename = path.substring(path.lastIndexOf('/') + 1);
+    String uriname = path.substring(path.lastIndexOf('/') + 1);
+    String filename = null;
+    try {
+      filename = URLDecoder.decode(uriname.replaceAll("%20", "\\+"), "UTF-8");
+    } catch (UnsupportedEncodingException e) {
+      logger.log(Level.SEVERE, "UTF-8 encoding not available on this system", e);
+    }
     File file = new File(ConfigManager.getInstance().getDownloadPath() + filename);
 
     OutputStream outputStream = new FileOutputStream(file);
