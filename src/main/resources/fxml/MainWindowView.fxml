@@ -53,7 +53,7 @@
               prefHeight="68.0" prefWidth="120.0">
               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Friendly Name:"
                 wrappingWidth="116.7392578125"/>
-              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Own IP Address:"
+              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="My IP Address:"
                 wrappingWidth="160.7392578125"/>
               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Fingerprint:"
                 wrappingWidth="581.7392578125"/>
