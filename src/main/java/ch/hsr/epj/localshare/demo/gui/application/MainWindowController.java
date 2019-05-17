@@ -98,8 +98,9 @@ public class MainWindowController implements Initializable {
 
   private String fingerPrint;
   private String friendlyName;
-  private HttpServerController httpServerController;
+  private static HttpServerController httpServerController;
   private HttpClientController httpClientController;
+  private static DiscoveryController discoveryController;
 
   private DropShadow createDropShadow() {
     DropShadow dropShadow = new DropShadow();
@@ -125,10 +126,7 @@ public class MainWindowController implements Initializable {
 
     httpClientController = new HttpClientController(downloadObservableList, peerObservableList);
 
-    DiscoveryController discoveryController = new DiscoveryController(httpClientController);
-    discoveryController.startServer();
-    discoveryController.startSearcher();
-
+    startDiscovery();
 
     User user = User.getInstance();
     friendlyName = user.getFriendlyName();
@@ -138,8 +136,16 @@ public class MainWindowController implements Initializable {
 
   }
 
-  private void startHttpServer() {
-    httpServerController = new HttpServerController(keyManager.getKeyStore());
+  public static void shutdownApplication() {
+    discoveryController.stopServer();
+    httpServerController.stopHTTPServer();
+    logger.log(Level.INFO, "LocalShare properly closed");
+  }
+
+  private synchronized void startDiscovery() {
+    discoveryController = new DiscoveryController(httpClientController);
+    discoveryController.startServer();
+    discoveryController.startSearcher();
   }
 
   @FXML
@@ -261,9 +267,8 @@ public class MainWindowController implements Initializable {
     ownText.setText(friendlyName.substring(0, 2).toUpperCase());
   }
 
-  public void shutdownApplication() {
-    httpServerController.stopHTTPServer();
-    logger.log(Level.INFO, "LocalShare properly closed");
+  private synchronized void startHttpServer() {
+    httpServerController = new HttpServerController(keyManager.getKeyStore());
   }
 
   private void startHttpClient() {

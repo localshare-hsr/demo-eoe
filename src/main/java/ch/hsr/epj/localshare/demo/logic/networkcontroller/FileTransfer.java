@@ -1,22 +1,16 @@
 package ch.hsr.epj.localshare.demo.logic.networkcontroller;
 
-import ch.hsr.epj.localshare.demo.gui.application.FinishedEvent;
 import ch.hsr.epj.localshare.demo.gui.presentation.Peer;
 import ch.hsr.epj.localshare.demo.gui.presentation.UIProgress;
 import ch.hsr.epj.localshare.demo.logic.networkcontroller.TransferCalculator.BytePrefix;
 import ch.hsr.epj.localshare.demo.network.transfer.client.HTTPDownloader;
 import java.net.URL;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 
 public class FileTransfer {
 
   private Peer peer;
   private URL path;
-  private ProgressBar progress;
-  private Label transferSpeedInBytesPerSecond;
-  private Label approximateTimeToDownloadInSeconds;
-  private Label currentSize;
+  private UIProgress uiProgress;
   private TransferCalculator transferSpeedCalculator;
   private TransferCalculator transferSizeCalculator;
   private TransferTimeCalculator transferTimeCalculator;
@@ -25,10 +19,7 @@ public class FileTransfer {
   public FileTransfer(final Peer peer, final URL path, final UIProgress uiProgress) {
     this.peer = peer;
     this.path = path;
-    this.progress = uiProgress.getProgress();
-    this.transferSpeedInBytesPerSecond = uiProgress.getBytesPerSecond();
-    this.approximateTimeToDownloadInSeconds = uiProgress.getSecondsToGo();
-    this.currentSize = uiProgress.getCurrentSize();
+    this.uiProgress = uiProgress;
     this.transferSpeedCalculator = new TransferCalculator(BytePrefix.DECIMAL, false);
     this.transferSizeCalculator = new TransferCalculator(BytePrefix.DECIMAL, true);
     this.transferTimeCalculator = new TransferTimeCalculator();
@@ -43,26 +34,23 @@ public class FileTransfer {
     return path;
   }
 
-  public void updateProgressBar(final double percentage, boolean isFinished) {
-    progress.setProgress(percentage);
-    if (isFinished) {
-      progress.fireEvent(new FinishedEvent(42));
-    }
+  public boolean updateProgressBar(final double percentage, boolean isFinished) {
+    return uiProgress.updateProgressBar(percentage, isFinished);
   }
 
-  public void updateTransferSpeed(final int bps) {
+  public boolean updateTransferSpeed(final int bps) {
     String niceFormat = transferSpeedCalculator.formatBytesToNiceString(bps);
-    transferSpeedInBytesPerSecond.setText(niceFormat);
+    return uiProgress.updateTransferSpeed(niceFormat);
   }
 
-  public void updateTimeToGo(final long millis) {
+  public boolean updateTimeToGo(final long millis) {
     String niceFormat = transferTimeCalculator.formatSecond(millis);
-    approximateTimeToDownloadInSeconds.setText(niceFormat);
+    return uiProgress.updateTimeToGo(niceFormat);
   }
 
-  public void updateTransferBytes(final long bytes) {
+  public boolean updateTransferBytes(final long bytes) {
     String niceFormat = transferSizeCalculator.formatBytesToNiceString(bytes);
-    currentSize.setText(niceFormat);
+    return uiProgress.updateTransferBytes(niceFormat);
   }
 
   void setHttpDownloader(final HTTPDownloader httpDownloader) {
