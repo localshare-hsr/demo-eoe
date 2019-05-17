@@ -18,10 +18,7 @@ public class DownloadManager {
 
   public DownloadManager() {
     // Create all-trusting host name verifier
-    HostnameVerifier allHostsValid = (hostname, session) -> {
-      logger.log(Level.INFO, "Hostname {0}", hostname);
-      return hostname != null;
-    };
+    HostnameVerifier allHostsValid = (hostname, session) -> hostname != null;
     try {
       SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
       TrustManager[] gullible = new TrustManager[]{new SelfSignedSSL()};

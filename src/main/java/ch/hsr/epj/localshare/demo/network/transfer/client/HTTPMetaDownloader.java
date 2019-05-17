@@ -43,6 +43,7 @@ public class HTTPMetaDownloader extends Observable implements Runnable {
 
   private void startDownload() throws IOException {
     HttpsURLConnection connection = (HttpsURLConnection) metaUrl.openConnection();
+    logger.log(Level.INFO, "starting metadata download: {0}", metaUrl);
     connection.setRequestMethod("GET");
     connection.setDoOutput(true);
     connection.setRequestProperty("Connection", "close");
