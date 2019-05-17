@@ -13,9 +13,8 @@ public class Download {
   private long size;
   private String fileName;
   private URL url;
-  private ProgressBar progressBar;
-  private Label transferSpeed;
-  private Label transferTime;
+  private UIProgress uiProgress;
+  private DownloadState downloadState;
 
   public Download(String friendlyName, long size, String fileName, URL url) {
     this.friendlyName = friendlyName;
@@ -28,7 +27,6 @@ public class Download {
     downloadState = DownloadState.WAITING;
   }
 
-  private DownloadState downloadState;
 
   public String getFileSize() {
     return fileSize;
@@ -59,30 +57,30 @@ public class Download {
   }
 
   public ProgressBar getProgressBar() {
-    return progressBar;
-  }
-
-  public void setProgressBar(ProgressBar progressBar) {
-    this.progressBar = progressBar;
+    return uiProgress.getProgress();
   }
 
   public Label getTransferSpeed() {
-    return transferSpeed;
-  }
-
-  public void setTransferSpeed(Label transferSpeed) {
-    this.transferSpeed = transferSpeed;
+    return uiProgress.getBytesPerSecond();
   }
 
   public Label getTransferTime() {
-    return transferTime;
-  }
-
-  public void setTransferTime(Label transferTime) {
-    this.transferTime = transferTime;
+    return uiProgress.getSecondsToGo();
   }
 
   public enum DownloadState {
     RUNNING, WAITING, FINISHED
   }
+
+  public boolean setUiProgress(UIProgress uiProgress) {
+    boolean success;
+    if (uiProgress != null) {
+      this.uiProgress = uiProgress;
+      success = true;
+    } else {
+      success = false;
+    }
+    return success;
+  }
+
 }
