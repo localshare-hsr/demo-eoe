@@ -161,8 +161,9 @@ public class MainWindowController implements Initializable {
 
   @FXML
   private void openDownloadFolder() throws IOException {
+    Desktop d = Desktop.getDesktop();
     File dir = new File(ConfigManager.getInstance().getDownloadPath());
-    Desktop.getDesktop().open(dir);
+    d.open(dir);
   }
 
 
